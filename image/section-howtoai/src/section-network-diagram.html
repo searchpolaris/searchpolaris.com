@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Diagram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+
+/* ===== BASE ===== */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #08090A;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ===== DIAGRAM CONTAINER ===== */
+.demo-container {
+  position: relative;
+  width: 100%;
+  max-width: 1112px;
+  height: 526px;
+  margin: 0 auto;
+}
+
+/* ===== BEAMS SVG LAYER ===== */
+.beams-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateZ(0);
+  z-index: 0;
+}
+
+/* ===== BODY GRID ===== */
+.body-search-intelligence {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ===== GRID ROWS ===== */
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row.middle {
+  margin: 36px 0;
+}
+
+/* ===== ICON WRAPPER ===== */
+.icon-box {
+  position: relative;
+  width: 101px;
+  height: 101px;
+  padding: 32px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-box img {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  filter: invert(1);
+}
+
+/* ===== CENTER NODE ===== */
+.icon-box.center {
+  width: 112px;
+  height: 112px;
+  padding: 20px;
+}
+
+.icon-box.center img {
+  width: 70px;
+  height: 70px;
+  filter: invert(1);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .demo-container {
+    height: 360px;
+  }
+  .body-search-intelligence {
+    padding: 30px;
+  }
+  .icon-box {
+    width: 64px;
+    height: 64px;
+    padding: 16px;
+  }
+  .icon-box img {
+    width: 24px;
+    height: 24px;
+  }
+  .icon-box.center {
+    width: 76px;
+    height: 76px;
+    padding: 12px;
+  }
+  .icon-box.center img {
+    width: 48px;
+    height: 48px;
+  }
+  .row.middle {
+    margin: 20px 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+  <div class="body-search-intelligence">
+
+    <!-- Row 1: Top -->
+    <div class="row top">
+      <div class="icon-box" data-node="chatgpt">
+        <img src="../../ai-icons/chatgpt.svg" alt="ChatGPT">
+      </div>
+      <div class="icon-box" data-node="google">
+        <img src="../../ai-icons/google.svg" alt="Google">
+      </div>
+    </div>
+
+    <!-- Row 2: Middle -->
+    <div class="row middle">
+      <div class="icon-box" data-node="claude">
+        <img src="../../ai-icons/claude.svg" alt="Claude">
+      </div>
+      <div class="icon-box center" data-node="center">
+        <img src="../../ai-icons/omnius-logo.svg" alt="Center Logo">
+      </div>
+      <div class="icon-box" data-node="perplexity">
+        <img src="../../ai-icons/perplexity.svg" alt="Perplexity">
+      </div>
+    </div>
+
+    <!-- Row 3: Bottom -->
+    <div class="row bottom">
+      <div class="icon-box" data-node="bing">
+        <img src="../../ai-icons/bing.svg" alt="Bing">
+      </div>
+      <div class="icon-box" data-node="gemini">
+        <img src="../../ai-icons/gemini.svg" alt="Gemini">
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ===== AnimatedBeamJS (extracted from omnius.so) ===== */
+const __BeamClocks = new Map();
+
+function getClock(id, duration, delay) {
+  if (!__BeamClocks.has(id)) {
+    __BeamClocks.set(id, {
+      startTime: null,
+      duration,
+      delay,
+      started: false,
+      ensureStart(nowTs) {
+        if (!this.started) {
+          if (this.startTime === null) this.startTime = nowTs;
+          if (nowTs - this.startTime >= this.delay * 1000) this.started = true;
+        }
+        return this;
+      }
+    });
+  }
+  const clk = __BeamClocks.get(id);
+  clk.duration = duration;
+  clk.delay = delay;
+  return clk;
+}
+
+function ensureDefs(svg) {
+  let defs = svg.querySelector('defs');
+  if (!defs) {
+    defs = document.createElementNS(svg.namespaceURI, 'defs');
+    svg.prepend(defs);
+  }
+  return defs;
+}
+
+class AnimatedBeamJS {
+  constructor({
+    beamsSvg, containerEl, fromEl, toEl,
+    curvature = 0, reverse = false,
+    duration = (Math.random() * 3 + 4),
+    delay = 0,
+    pathColor = "rgba(100,100,100,0.35)",
+    pathWidth = 2,
+    pathOpacity = 0.25,
+    gradientStartColor = "#ffaa40",
+    gradientStopColor = "#9c40ff",
+    startXOffset = 0, startYOffset = 0,
+    endXOffset = 0, endYOffset = 0,
+    clockId = null,
+  }) {
+    Object.assign(this, {
+      beamsSvg, containerEl, fromEl, toEl, curvature, reverse,
+      duration, delay, pathColor, pathWidth, pathOpacity,
+      gradientStartColor, gradientStopColor,
+      startXOffset, startYOffset, endXOffset, endYOffset,
+      clockId
+    });
+    this.gradId1 = `beam-grad-${Math.random().toString(36).slice(2)}`;
+    this.gradId2 = `beam-grad-${Math.random().toString(36).slice(2)}`;
+    this.t0 = null;
+    this.started = false;
+    if (this.clockId) this.clock = getClock(this.clockId, this.duration, this.delay);
+    this.init();
+    this.updatePath = this.updatePath.bind(this);
+    this.tick = this.tick.bind(this);
+    this.updatePath();
+    new ResizeObserver(this.updatePath).observe(this.containerEl);
+    window.addEventListener("resize", this.updatePath, true);
+    window.addEventListener("scroll", this.updatePath, true);
+    requestAnimationFrame(this.tick);
+  }
+
+  init() {
+    const defs = ensureDefs(this.beamsSvg);
+    const makeGradient = (id) => {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+      g.setAttribute('id', id);
+      g.setAttribute('gradientUnits', 'objectBoundingBox');
+      g.setAttribute('y1', '0');
+      g.setAttribute('y2', '0');
+      const mkStop = (offset, color, op) => {
+        const s = document.createElementNS(g.namespaceURI, 'stop');
+        s.setAttribute('offset', offset);
+        s.setAttribute('stop-color', color);
+        s.setAttribute('stop-opacity', String(op));
+        return s;
+      };
+      g.append(
+        mkStop('0%',   this.gradientStartColor, 0),
+        mkStop('10%',  this.gradientStartColor, 1),
+        mkStop('50%',  this.gradientStopColor, 1),
+        mkStop('100%', this.gradientStopColor, 0)
+      );
+      defs.appendChild(g);
+      return g;
+    };
+    this.gradient1 = makeGradient(this.gradId1);
+    this.gradient2 = makeGradient(this.gradId2);
+
+    this.pathBg = document.createElementNS(this.beamsSvg.namespaceURI, 'path');
+    this.pathBg.setAttribute('fill', 'none');
+    this.pathBg.setAttribute('stroke', this.pathColor);
+    this.pathBg.setAttribute('stroke-width', String(this.pathWidth));
+    this.pathBg.setAttribute('stroke-linecap', 'round');
+    this.pathBg.setAttribute('stroke-opacity', String(this.pathOpacity));
+
+    this.pathFg1 = document.createElementNS(this.beamsSvg.namespaceURI, 'path');
+    this.pathFg1.setAttribute('fill', 'none');
+    this.pathFg1.setAttribute('stroke', `url(#${this.gradId1})`);
+    this.pathFg1.setAttribute('stroke-width', String(this.pathWidth));
+    this.pathFg1.setAttribute('stroke-linecap', 'round');
+
+    this.pathFg2 = document.createElementNS(this.beamsSvg.namespaceURI, 'path');
+    this.pathFg2.setAttribute('fill', 'none');
+    this.pathFg2.setAttribute('stroke', `url(#${this.gradId2})`);
+    this.pathFg2.setAttribute('stroke-width', String(this.pathWidth));
+    this.pathFg2.setAttribute('stroke-linecap', 'round');
+
+    this.beamsSvg.append(this.pathBg, this.pathFg1, this.pathFg2);
+  }
+
+  updatePath() {
+    const cont = this.containerEl.getBoundingClientRect();
+    const a = this.fromEl.getBoundingClientRect();
+    const b = this.toEl.getBoundingClientRect();
+    const w = cont.width, h = cont.height;
+    this.beamsSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    this.beamsSvg.setAttribute('width', w);
+    this.beamsSvg.setAttribute('height', h);
+    const sx = (a.left - cont.left) + a.width / 2 + this.startXOffset;
+    const sy = (a.top - cont.top) + a.height / 2 + this.startYOffset;
+    const ex = (b.left - cont.left) + b.width / 2 + this.endXOffset;
+    const ey = (b.top - cont.top) + b.height / 2 + this.endYOffset;
+    const cy = sy - this.curvature;
+    const d = `M ${sx},${sy} Q ${(sx+ex)/2},${cy} ${ex},${ey}`;
+    this.pathBg.setAttribute('d', d);
+    this.pathFg1.setAttribute('d', d);
+    this.pathFg2.setAttribute('d', d);
+  }
+
+  _posFromU(u) {
+    const start = this.reverse ? 0.9 : 0.1;
+    const end   = this.reverse ? -0.1 : 1.1;
+    const x1 = start + (end - start) * u;
+    const x2 = (this.reverse ? 1.0 : 0.0) + ((this.reverse ? 0.0 : 1.0) - (this.reverse ? 1.0 : 0.0)) * u;
+    return { x1, x2 };
+  }
+
+  tick(ts) {
+    if (this.clock) {
+      const { started, startTime, duration } = this.clock.ensureStart(ts);
+      if (!started) { requestAnimationFrame(this.tick); return; }
+      const u  = ((ts - startTime) / (duration * 1000)) % 1;
+      const u2 = (u + 0.5) % 1;
+      const p1 = this._posFromU(u);
+      const p2 = this._posFromU(u2);
+      this.gradient1.setAttribute('x1', p1.x1.toFixed(3));
+      this.gradient1.setAttribute('x2', p1.x2.toFixed(3));
+      this.gradient2.setAttribute('x1', p2.x1.toFixed(3));
+      this.gradient2.setAttribute('x2', p2.x2.toFixed(3));
+      requestAnimationFrame(this.tick);
+      return;
+    }
+    if (!this.started) {
+      if (!this.t0) this.t0 = ts;
+      if (ts - this.t0 < this.delay * 1000) { requestAnimationFrame(this.tick); return; }
+      this.started = true;
+      this.t0 = ts;
+    }
+    const u  = ((ts - this.t0) / (this.duration * 1000)) % 1;
+    const u2 = (u + 0.5) % 1;
+    const p1 = this._posFromU(u);
+    const p2 = this._posFromU(u2);
+    this.gradient1.setAttribute('x1', p1.x1.toFixed(3));
+    this.gradient1.setAttribute('x2', p1.x2.toFixed(3));
+    this.gradient2.setAttribute('x1', p2.x1.toFixed(3));
+    this.gradient2.setAttribute('x2', p2.x2.toFixed(3));
+    requestAnimationFrame(this.tick);
+  }
+}
+
+/* ===== INITIALIZE BEAMS ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.querySelector('.demo-container');
+  if (!container) return;
+
+  const beamsLayer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  beamsLayer.setAttribute('class', 'beams-layer');
+  container.prepend(beamsLayer);
+
+  const fit = () => {
+    const r = container.getBoundingClientRect();
+    beamsLayer.setAttribute('width', r.width);
+    beamsLayer.setAttribute('height', r.height);
+    beamsLayer.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+  };
+  fit();
+  new ResizeObserver(fit).observe(container);
+
+  const chatgpt    = container.querySelector('[data-node="chatgpt"]');
+  const google     = container.querySelector('[data-node="google"]');
+  const claude     = container.querySelector('[data-node="claude"]');
+  const centerNode = container.querySelector('[data-node="center"]');
+  const perplexity = container.querySelector('[data-node="perplexity"]');
+  const bing       = container.querySelector('[data-node="bing"]');
+  const gemini     = container.querySelector('[data-node="gemini"]');
+
+  if (!centerNode) return;
+
+  const SLOWDOWN = 1.35;
+  const DUR = 2.6 * SLOWDOWN;
+  const BEAM_COLOR = "rgba(255,255,255,0.25)";
+
+  const beamConfig = [
+    { from: chatgpt,    curvature: 20,  reverse: true,  clockId: "pair-top" },
+    { from: google,     curvature: 20,  reverse: false, clockId: "pair-top" },
+    { from: claude,     curvature: 1,   reverse: true,  clockId: "pair-mid" },
+    { from: perplexity, curvature: 1,   reverse: false, clockId: "pair-mid" },
+    { from: bing,       curvature: -20, reverse: true,  clockId: "pair-bot" },
+    { from: gemini,     curvature: -20, reverse: false, clockId: "pair-bot" },
+  ];
+
+  beamConfig.forEach(cfg => {
+    if (!cfg.from) return;
+    new AnimatedBeamJS({
+      beamsSvg: beamsLayer,
+      containerEl: container,
+      fromEl: cfg.from,
+      toEl: centerNode,
+      curvature: cfg.curvature,
+      reverse: cfg.reverse,
+      gradientStartColor: BEAM_COLOR,
+      gradientStopColor: BEAM_COLOR,
+      pathColor: "rgba(255,255,255,0.08)",
+      duration: DUR,
+      delay: 0,
+      clockId: cfg.clockId,
+    });
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Query Fan-out Diagram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+/* ===== BASE ===== */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #08090A;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ===== DIAGRAM CONTAINER ===== */
+.demo-container {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+/* ===== BEAMS SVG LAYER ===== */
+.beams-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateZ(0);
+  z-index: 0;
+}
+
+/* ===== BODY GRID ===== */
+.body-fanout {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===== LEFT: ORIGIN NODE ===== */
+.origin-col {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+}
+
+.origin-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+}
+
+.origin-node .node-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+/* ===== RIGHT: TARGET NODES ===== */
+.target-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 16px 0;
+}
+
+/* ===== CENTER LABEL ===== */
+.fanout-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Spinning beam border */
+.fanout-label::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    transparent 0deg,
+    transparent 200deg,
+    rgba(255,255,255,0.3) 240deg,
+    rgba(255,255,255,0.7) 290deg,
+    rgba(255,255,255,1) 330deg,
+    rgba(255,255,255,0.7) 345deg,
+    transparent 360deg
+  );
+  animation: spinBeam 3s linear infinite;
+}
+
+/* Inner circle mask */
+.fanout-label::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 50%;
+  background: #08090A;
+}
+
+@keyframes spinBeam {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.fanout-label span {
+  position: relative;
+  z-index: 1;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.85);
+}
+
+.target-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  width: fit-content;
+}
+
+.target-node .node-text {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .demo-container {
+    height: 400px;
+  }
+  .body-fanout {
+    padding: 30px 24px;
+  }
+  .origin-node {
+    padding: 12px 16px;
+  }
+  .origin-node .node-text {
+    font-size: 12px;
+  }
+  .target-node {
+    padding: 8px 12px;
+  }
+  .target-node .node-text {
+    font-size: 11px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+  <div class="body-fanout">
+
+    <!-- Center Label -->
+    <div class="fanout-label">
+      <span>Fan out</span>
+    </div>
+
+    <!-- Left: Origin Query -->
+    <div class="origin-col">
+      <div class="origin-node" data-node="origin">
+        <span class="node-text">서울 여행 맛집 추천해줘</span>
+      </div>
+    </div>
+
+    <!-- Right: Sub-queries -->
+    <div class="target-column">
+      <div class="target-node" data-node="q1">
+        <span class="node-text">서울 한식 맛집 평점순</span>
+      </div>
+      <div class="target-node" data-node="q2">
+        <span class="node-text">서울 관광지 근처 맛집</span>
+      </div>
+      <div class="target-node" data-node="q3">
+        <span class="node-text">서울 데이트 코스 맛집</span>
+      </div>
+      <div class="target-node" data-node="q4">
+        <span class="node-text">서울 맛집 블로그 후기</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ===== AnimatedBeamJS (from network-diagram.html) ===== */
+const __BeamClocks = new Map();
+
+function getClock(id, duration, delay) {
+  if (!__BeamClocks.has(id)) {
+    __BeamClocks.set(id, {
+      startTime: null, duration, delay, started: false,
+      ensureStart(nowTs) {
+        if (!this.started) {
+          if (this.startTime === null) this.startTime = nowTs;
+          if (nowTs - this.startTime >= this.delay * 1000) this.started = true;
+        }
+        return this;
+      }
+    });
+  }
+  const clk = __BeamClocks.get(id);
+  clk.duration = duration; clk.delay = delay;
+  return clk;
+}
+
+function ensureDefs(svg) {
+  let defs = svg.querySelector('defs');
+  if (!defs) { defs = document.createElementNS(svg.namespaceURI, 'defs'); svg.prepend(defs); }
+  return defs;
+}
+
+class AnimatedBeamJS {
+  constructor({
+    beamsSvg, containerEl, fromEl, toEl,
+    curvature = 0, reverse = false,
+    duration = (Math.random() * 3 + 4),
+    delay = 0,
+    pathColor = "rgba(100,100,100,0.35)",
+    pathWidth = 2,
+    pathOpacity = 0.25,
+    gradientStartColor = "#ffaa40",
+    gradientStopColor = "#9c40ff",
+    startXOffset = 0, startYOffset = 0,
+    endXOffset = 0, endYOffset = 0,
+    clockId = null,
+  }) {
+    Object.assign(this, {
+      beamsSvg, containerEl, fromEl, toEl, curvature, reverse,
+      duration, delay, pathColor, pathWidth, pathOpacity,
+      gradientStartColor, gradientStopColor,
+      startXOffset, startYOffset, endXOffset, endYOffset, clockId
+    });
+    this.gradId1 = `beam-grad-${Math.random().toString(36).slice(2)}`;
+    this.gradId2 = `beam-grad-${Math.random().toString(36).slice(2)}`;
+    this.t0 = null;
+    this.started = false;
+    if (this.clockId) this.clock = getClock(this.clockId, this.duration, this.delay);
+    this.init();
+    this.updatePath = this.updatePath.bind(this);
+    this.tick = this.tick.bind(this);
+    this.updatePath();
+    new ResizeObserver(this.updatePath).observe(this.containerEl);
+    window.addEventListener("resize", this.updatePath, true);
+    window.addEventListener("scroll", this.updatePath, true);
+    requestAnimationFrame(this.tick);
+  }
+
+  init() {
+    const defs = ensureDefs(this.beamsSvg);
+    const makeGradient = (id) => {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+      g.setAttribute('id', id);
+      g.setAttribute('gradientUnits', 'objectBoundingBox');
+      g.setAttribute('y1', '0'); g.setAttribute('y2', '0');
+      const mkStop = (offset, color, op) => {
+        const s = document.createElementNS(g.namespaceURI, 'stop');
+        s.setAttribute('offset', offset);
+        s.setAttribute('stop-color', color);
+        s.setAttribute('stop-opacity', String(op));
+        return s;
+      };
+      g.append(
+        mkStop('0%', this.gradientStartColor, 0),
+        mkStop('10%', this.gradientStartColor, 1),
+        mkStop('50%', this.gradientStopColor, 1),
+        mkStop('100%', this.gradientStopColor, 0)
+      );
+      defs.appendChild(g);
+      return g;
+    };
+    this.gradient1 = makeGradient(this.gradId1);
+    this.gradient2 = makeGradient(this.gradId2);
+
+    this.pathBg = document.createElementNS(this.beamsSvg.namespaceURI, 'path');
+    this.pathBg.setAttribute('fill', 'none');
+    this.pathBg.setAttribute('stroke', this.pathColor);
+    this.pathBg.setAttribute('stroke-width', String(this.pathWidth));
+    this.pathBg.setAttribute('stroke-linecap', 'round');
+    this.pathBg.setAttribute('stroke-opacity', String(this.pathOpacity));
+
+    this.pathFg1 = document.createElementNS(this.beamsSvg.namespaceURI, 'path');
+    this.pathFg1.setAttribute('fill', 'none');
+    this.pathFg1.setAttribute('stroke', `url(#${this.gradId1})`);
+    this.pathFg1.setAttribute('stroke-width', String(this.pathWidth));
+    this.pathFg1.setAttribute('stroke-linecap', 'round');
+
+    this.pathFg2 = document.createElementNS(this.beamsSvg.namespaceURI, 'path');
+    this.pathFg2.setAttribute('fill', 'none');
+    this.pathFg2.setAttribute('stroke', `url(#${this.gradId2})`);
+    this.pathFg2.setAttribute('stroke-width', String(this.pathWidth));
+    this.pathFg2.setAttribute('stroke-linecap', 'round');
+
+    this.beamsSvg.append(this.pathBg, this.pathFg1, this.pathFg2);
+  }
+
+  updatePath() {
+    const cont = this.containerEl.getBoundingClientRect();
+    const a = this.fromEl.getBoundingClientRect();
+    const b = this.toEl.getBoundingClientRect();
+    const w = cont.width, h = cont.height;
+    this.beamsSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    this.beamsSvg.setAttribute('width', w);
+    this.beamsSvg.setAttribute('height', h);
+    const sx = (a.left - cont.left) + a.width / 2 + this.startXOffset;
+    const sy = (a.top - cont.top) + a.height / 2 + this.startYOffset;
+    const ex = (b.left - cont.left) + b.width / 2 + this.endXOffset;
+    const ey = (b.top - cont.top) + b.height / 2 + this.endYOffset;
+    const cy = sy - this.curvature;
+    const d = `M ${sx},${sy} Q ${(sx+ex)/2},${cy} ${ex},${ey}`;
+    this.pathBg.setAttribute('d', d);
+    this.pathFg1.setAttribute('d', d);
+    this.pathFg2.setAttribute('d', d);
+  }
+
+  _posFromU(u) {
+    const start = this.reverse ? 0.9 : 0.1;
+    const end = this.reverse ? -0.1 : 1.1;
+    const x1 = start + (end - start) * u;
+    const x2 = (this.reverse ? 1.0 : 0.0) + ((this.reverse ? 0.0 : 1.0) - (this.reverse ? 1.0 : 0.0)) * u;
+    return { x1, x2 };
+  }
+
+  tick(ts) {
+    if (this.clock) {
+      const { started, startTime, duration } = this.clock.ensureStart(ts);
+      if (!started) { requestAnimationFrame(this.tick); return; }
+      const u = ((ts - startTime) / (duration * 1000)) % 1;
+      const u2 = (u + 0.5) % 1;
+      const p1 = this._posFromU(u), p2 = this._posFromU(u2);
+      this.gradient1.setAttribute('x1', p1.x1.toFixed(3));
+      this.gradient1.setAttribute('x2', p1.x2.toFixed(3));
+      this.gradient2.setAttribute('x1', p2.x1.toFixed(3));
+      this.gradient2.setAttribute('x2', p2.x2.toFixed(3));
+      requestAnimationFrame(this.tick);
+      return;
+    }
+    if (!this.started) {
+      if (!this.t0) this.t0 = ts;
+      if (ts - this.t0 < this.delay * 1000) { requestAnimationFrame(this.tick); return; }
+      this.started = true;
+      this.t0 = ts;
+    }
+    const u = ((ts - this.t0) / (this.duration * 1000)) % 1;
+    const u2 = (u + 0.5) % 1;
+    const p1 = this._posFromU(u), p2 = this._posFromU(u2);
+    this.gradient1.setAttribute('x1', p1.x1.toFixed(3));
+    this.gradient1.setAttribute('x2', p1.x2.toFixed(3));
+    this.gradient2.setAttribute('x1', p2.x1.toFixed(3));
+    this.gradient2.setAttribute('x2', p2.x2.toFixed(3));
+    requestAnimationFrame(this.tick);
+  }
+}
+
+/* ===== INITIALIZE BEAMS ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.querySelector('.demo-container');
+  if (!container) return;
+
+  const beamsLayer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  beamsLayer.setAttribute('class', 'beams-layer');
+  container.prepend(beamsLayer);
+
+  const fit = () => {
+    const r = container.getBoundingClientRect();
+    beamsLayer.setAttribute('width', r.width);
+    beamsLayer.setAttribute('height', r.height);
+    beamsLayer.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+  };
+  fit();
+  new ResizeObserver(fit).observe(container);
+
+  const origin = container.querySelector('[data-node="origin"]');
+  const q1 = container.querySelector('[data-node="q1"]');
+  const q2 = container.querySelector('[data-node="q2"]');
+  const q3 = container.querySelector('[data-node="q3"]');
+  const q4 = container.querySelector('[data-node="q4"]');
+
+  if (!origin) return;
+
+  const SLOWDOWN = 1.35;
+  const DUR = 2.6 * SLOWDOWN;
+  const BEAM_COLOR = "rgba(255,255,255,0.25)";
+
+  const originW = origin.offsetWidth / 2;
+  const beamConfig = [
+    { to: q1, curvature: 0, clockId: "fanout" },
+    { to: q2, curvature: 0, clockId: "fanout" },
+    { to: q3, curvature: 0, clockId: "fanout" },
+    { to: q4, curvature: 0, clockId: "fanout" },
+  ];
+
+  beamConfig.forEach(cfg => {
+    if (!cfg.to) return;
+    const targetW = cfg.to.offsetWidth / 2;
+    new AnimatedBeamJS({
+      beamsSvg: beamsLayer,
+      containerEl: container,
+      fromEl: origin,
+      toEl: cfg.to,
+      curvature: cfg.curvature,
+      reverse: false,
+      gradientStartColor: BEAM_COLOR,
+      gradientStopColor: BEAM_COLOR,
+      pathColor: "rgba(255,255,255,0.08)",
+      pathWidth: 1.5,
+      duration: DUR,
+      delay: 0,
+      clockId: cfg.clockId,
+      startXOffset: originW,
+      endXOffset: -targetW,
+    });
+  });
+});
+</script>
+
+</body>
+</html>

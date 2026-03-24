@@ -1,0 +1,8 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- SerpAPI: 4 connected nodes in S-shape -->
+  <circle cx="7" cy="5" r="2.5" fill="black"/>
+  <circle cx="17" cy="5" r="2.5" fill="black"/>
+  <circle cx="7" cy="19" r="2.5" fill="black"/>
+  <circle cx="17" cy="19" r="2.5" fill="black"/>
+  <path d="M7 5 L17 5 Q21 5 21 9 L21 12 Q21 15 17 15 L7 15 Q3 15 3 19 L7 19" stroke="black" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON Code Block</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #08090A;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.code-card {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Header */
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.code-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+}
+
+.code-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: #10B981;
+  padding: 4px 12px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+}
+
+/* Code Body */
+.code-content {
+  position: relative;
+  padding: 24px 24px 28px;
+}
+
+.code-content pre {
+  font-family: 'JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.35);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ===== CODE LINE ANIMATION ===== */
+.code-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: lineReveal 0.4s ease-out forwards;
+}
+
+.code-line:nth-child(1) { animation-delay: 0.2s; }
+.code-line:nth-child(2) { animation-delay: 0.4s; }
+.code-line:nth-child(3) { animation-delay: 0.6s; }
+.code-line:nth-child(4) { animation-delay: 0.8s; }
+.code-line:nth-child(5) { animation-delay: 1.0s; }
+.code-line:nth-child(6) { animation-delay: 1.2s; }
+.code-line:nth-child(7) { animation-delay: 1.4s; }
+.code-line:nth-child(8) { animation-delay: 1.6s; }
+.code-line:nth-child(9) { animation-delay: 1.8s; }
+
+@keyframes lineReveal {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== VALUE GLOW PULSE ===== */
+.code-content .key {
+  color: rgba(255,255,255,0.7);
+}
+
+.code-content .number {
+  color: #7DD3FC;
+  animation: pulseNumber 3s ease-in-out infinite;
+}
+
+.code-content .string {
+  color: #86EFAC;
+  animation: pulseString 3s ease-in-out infinite;
+}
+
+@keyframes pulseNumber {
+  0%, 100% { text-shadow: none; color: #7DD3FC; }
+  50%      { text-shadow: 0 0 8px rgba(125,211,252,0.4); color: #a5e4fd; }
+}
+
+@keyframes pulseString {
+  0%, 100% { text-shadow: none; color: #86EFAC; }
+  50%      { text-shadow: 0 0 8px rgba(134,239,172,0.4); color: #b0f5cb; }
+}
+
+/* ===== SCAN LINE ===== */
+.scan-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 24px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(255,255,255,0.03) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: scanMove 4s ease-in-out infinite;
+  animation-delay: 2.2s;
+  opacity: 0;
+}
+
+@keyframes scanMove {
+  0%   { top: 0; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: calc(100% - 24px); opacity: 0; }
+}
+
+/* ===== CURSOR BLINK ===== */
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 16px;
+  background: rgba(255,255,255,0.6);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cursorBlink 1s step-end infinite;
+  opacity: 0;
+}
+
+.code-line:last-child .cursor {
+  animation: cursorAppear 0s 1.8s forwards, cursorBlink 1s 1.8s step-end infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+@keyframes cursorAppear {
+  to { opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<div class="code-card">
+  <div class="code-header">
+    <span class="code-title">Real JSON Example</span>
+    <span class="code-badge">JSON</span>
+  </div>
+  <div class="code-content">
+    <div class="scan-line"></div>
+<pre><span class="code-line">{</span><span class="code-line">  "<span class="key">sonic_classification_result</span>": {</span><span class="code-line">    "<span class="key">latency_ms</span>": <span class="number">196.58</span>,</span><span class="code-line">    "<span class="key">search_prob</span>": <span class="number">0.7135</span>,</span><span class="code-line">    "<span class="key">force_search_threshold</span>": <span class="number">0.65</span>,</span><span class="code-line">    "<span class="key">classifier_config_name</span>": <span class="string">"sonic_force_pg_switcher"</span></span><span class="code-line">  }</span><span class="code-line">}<span class="cursor"></span></span></pre>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,3 @@
+[    1334ms] Identifier 'nativeMax' has already been declared
+[    1338ms] [ERROR] Load failed, error in settings @ https://cdn.vector.co/pixel.js:1
+[    1338ms] [ERROR] No visitor ID available. Load may have failed. @ https://cdn.vector.co/pixel.js:1

@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서치폴라리스 - Hero Section</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { font-family: inherit; border: none; cursor: pointer; }
+
+/* ===== DESIGN SYSTEM ===== */
+:root {
+  --bg: #08090A;
+  --bg-elevated: #111214;
+  --bg-surface: #18191C;
+  --border: #232323;
+  --border-light: rgba(255,255,255,0.08);
+  --text-primary: rgba(255,255,255,0.95);
+  --text-secondary: rgba(255,255,255,0.5);
+  --text-tertiary: rgba(255,255,255,0.35);
+  --text-muted: rgba(255,255,255,0.2);
+  --white: #FFFFFF;
+  --accent: #FFFFFF;
+  --radius: 8px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+/* ===== BASE ===== */
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* ===== HEADER ===== */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: 64px;
+  background: rgba(8,9,10,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.header-logo {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.header-logo span {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-nav > a,
+.nav-dropdown > .nav-dropdown-trigger {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  transition: color 0.2s;
+  letter-spacing: 0.01em;
+  background: none;
+  padding: 0;
+}
+
+.header-nav > a:hover,
+.header-nav > a.active,
+.nav-dropdown:hover > .nav-dropdown-trigger,
+.nav-dropdown.active > .nav-dropdown-trigger { color: var(--text-primary); }
+
+.nav-dropdown { position: relative; }
+
+.nav-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.nav-dropdown-trigger svg {
+  width: 12px; height: 12px;
+  stroke: currentColor; fill: none; stroke-width: 2;
+  transition: transform 0.2s;
+}
+
+.nav-dropdown:hover .nav-dropdown-trigger svg { transform: rotate(180deg); }
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 160px;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 999;
+}
+
+.nav-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -16px; left: 0; right: 0;
+  height: 16px;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu { opacity: 1; visibility: visible; }
+
+.nav-dropdown-menu a {
+  display: block;
+  font-size: 14px; font-weight: 500;
+  color: var(--text-secondary);
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.nav-dropdown-menu a:hover { color: var(--text-primary); background: var(--bg-surface); }
+.nav-dropdown-menu a.active { color: var(--text-primary); }
+
+.btn-header {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--white);
+  padding: 8px 20px;
+  border-radius: var(--radius);
+  transition: opacity 0.2s;
+}
+
+.btn-header:hover { opacity: 0.9; }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  padding-top: 144px;
+  padding-bottom: 80px;
+  text-align: center;
+  overflow: hidden;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 80px 32px;
+}
+
+.hero h1 {
+  font-size: 54px; font-weight: 800;
+  line-height: 1.3;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  max-width: 800px;
+}
+
+/* Rotating Text */
+.rotating-text-wrapper {
+  display: inline-block;
+  position: relative;
+  vertical-align: bottom;
+  overflow: hidden;
+  height: 1.3em;
+  transition: width 0.4s ease;
+}
+
+.rotating-text {
+  position: absolute;
+  left: 0; top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  white-space: nowrap;
+}
+
+.rotating-text.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rotating-icon {
+  width: 36px; height: 36px;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.hero-subtitle {
+  font-size: 18px; font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 540px;
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.btn-cta {
+  font-family: var(--font-sans);
+  font-size: 16px; font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #111111;
+  background: var(--white);
+  padding: 16px 32px;
+  border-radius: var(--radius);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.btn-cta:hover { background: rgba(255,255,255,0.9); transform: translateY(-1px); }
+
+/* ===== DEMO SHOWCASE (Tab + Video) ===== */
+.demo-showcase {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.demo-tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 4px;
+}
+
+.demo-tab {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-tertiary);
+  background: none;
+  padding: 8px 20px;
+  border-radius: 100px;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.demo-tab:hover { color: var(--text-secondary); }
+
+.demo-tab.active {
+  color: var(--bg);
+  background: var(--white);
+}
+
+.demo-video-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  background: #000;
+}
+
+.demo-video-wrap video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.demo-video-wrap video.active {
+  opacity: 1;
+}
+
+.demo-video-wrap::before {
+  content: '';
+  display: block;
+  padding-top: 55.7%;
+}
+
+/* Progress bar */
+.demo-progress {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.demo-progress-bar {
+  width: 48px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.demo-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--text-secondary);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.demo-progress-bar.active .demo-progress-fill {
+  animation: progress-fill 5s linear forwards;
+}
+
+.demo-caption {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.01em;
+}
+
+@keyframes progress-fill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* ===== HERO PLATFORMS ===== */
+.hero-platforms {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+  width: 100%;
+}
+
+.hero-platforms-label {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+.hero-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.hero-icons img {
+  width: 32px; height: 32px;
+  border-radius: 7px;
+  box-shadow: 0px 4px 3px rgba(0,0,0,0.07), 0px 2px 2px rgba(0,0,0,0.06);
+  transition: transform 0.2s;
+}
+
+.hero-icons img:hover { transform: scale(1.1); }
+
+/* ===== PORTFOLIO MARQUEE ===== */
+.portfolio-marquee {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--bg);
+  padding: 48px 0 32px;
+  position: relative;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.portfolio-marquee-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: marquee-scroll 20s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 32px;
+  opacity: 0.35;
+  transition: opacity 0.3s;
+}
+
+.marquee-item:hover {
+  opacity: 0.7;
+}
+
+.marquee-item svg,
+.marquee-item img {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Fade edges */
+.portfolio-marquee::before,
+.portfolio-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.portfolio-marquee::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg), transparent);
+}
+
+.portfolio-marquee::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg), transparent);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content > * {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+.hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+.hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+.hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+.hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .hero { border-left: none; border-right: none; max-width: 100%; }
+}
+
+@media (max-width: 768px) {
+  .header-nav { display: none; }
+  .hero h1 { font-size: 28px; }
+  .rotating-icon { width: 24px; height: 24px; }
+  .rotating-text { gap: 6px; }
+  .hero-subtitle { font-size: 16px; }
+  .demo-showcase { max-width: 100%; }
+  .demo-tab { font-size: 12px; padding: 7px 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <a href="../searchpolaris.html" class="header-logo">서치폴라리스 <span>/ SearchPolaris</span></a>
+    <nav class="header-nav">
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger">서비스 <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="../searchpolaris-methodology.html">GEO 최적화</a>
+          <a href="../searchpolaris-seo-methodology.html">SEO 최적화</a>
+          <a href="../searchpolaris-naver-seo-methodology.html">네이버</a>
+        </div>
+      </div>
+      <a href="../searchpolaris.html#case-study">성과</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#contact" class="btn-header">상담 신청</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="../image/bg/hero-bg.svg" alt="">
+  </div>
+  <div class="hero-content">
+    <h1>지금 이 순간,
+      <span class="rotating-text-wrapper">
+        <span class="rotating-text"><img src="../image/icons/icon-chatgpt-white.svg" alt="" class="rotating-icon">ChatGPT가</span>
+        <span class="rotating-text"><img src="../image/icons/icon-gemini-white.svg" alt="" class="rotating-icon">Gemini가</span>
+        <span class="rotating-text"><img src="../image/icons/icon-claude-white.svg" alt="" class="rotating-icon">Claude가</span>
+        <span class="rotating-text"><img src="../image/icons/icon-perplexity-white.svg" alt="" class="rotating-icon">Perplexity가</span>
+      </span>
+      <br>경쟁사 브랜드를 추천하고 있습니다.</h1>
+    <p class="hero-subtitle">AI가 모르면, 존재하지 않는 브랜드입니다. GEO, SEO, 네이버까지<br>GEO 최적화 업체 서치폴라리스와 상의해보세요.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-cta"><img src="../image/team/googlemeetlogo.png" alt="Google Meet" style="width:20px; height:auto; flex-shrink:0;">1:1 무료 진단받기</a>
+    </div>
+
+    <!-- Demo Showcase -->
+    <div class="demo-showcase">
+      <div class="demo-tabs">
+        <button class="demo-tab active" data-index="0">서비스</button>
+        <button class="demo-tab" data-index="1">커머스</button>
+        <button class="demo-tab" data-index="2">병원</button>
+      </div>
+      <div class="demo-video-wrap">
+        <video class="active" data-index="0" autoplay muted loop playsinline>
+          <source src="../video/hero-demo-cropped.mp4" type="video/mp4">
+        </video>
+        <video data-index="1" muted loop playsinline>
+          <source src="../video/hero-demo-cropped.mp4" type="video/mp4">
+        </video>
+        <video data-index="2" muted loop playsinline>
+          <source src="../video/hero-demo-cropped.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="demo-progress">
+        <div class="demo-progress-bar active" data-index="0"><div class="demo-progress-fill"></div></div>
+        <div class="demo-progress-bar" data-index="1"><div class="demo-progress-fill"></div></div>
+        <div class="demo-progress-bar" data-index="2"><div class="demo-progress-fill"></div></div>
+      </div>
+      <p class="demo-caption">실제 ChatGPT 검색 사례입니다.</p>
+    </div>
+
+    <div class="hero-platforms">
+      <p class="hero-platforms-label">Get mentioned in</p>
+      <div class="hero-icons">
+        <img src="../image/icons/icon-chatgpt-web.png" alt="ChatGPT" width="32" height="32">
+        <img src="../image/icons/icon-perplexity-web.png" alt="Perplexity" width="32" height="32">
+        <img src="../image/icons/icon-gemini-web.png" alt="Gemini" width="32" height="32" style="background:#fff; padding:3px;">
+        <img src="../image/icons/icon-claude-web.png" alt="Claude" width="32" height="32">
+        <img src="../image/icons/icon-google-g-logo.svg" alt="Google AI Overview" width="32" height="32" style="background:#fff; padding:4px;">
+        <img src="../image/icons/icon-naver.png" alt="Naver" width="32" height="32">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO MARQUEE -->
+<section class="portfolio-marquee">
+  <p class="portfolio-marquee-label">Trusted by leading brands</p>
+  <div class="marquee-track">
+    <!-- 원본 8개 -->
+    <div class="marquee-item">
+      <img src="../image/logos/logo-meitu-w.png" alt="메이투" style="height:28px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-esther-w.png" alt="에스더포뮬러" style="height:15px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-brighteyes-w.svg" alt="밝은눈안과" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-skyeye-w.svg" alt="하늘안과" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-korea-univ-w.png" alt="고려대학교" style="height:28px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-polytech-w.png" alt="한국폴리텍대학" style="height:36px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-kg-eduone-w.png" alt="KG에듀원" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-neowiz-w.svg" alt="네오위즈" />
+    </div>
+    <!-- 복제 (무한루프) -->
+    <div class="marquee-item">
+      <img src="../image/logos/logo-meitu-w.png" alt="메이투" style="height:28px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-esther-w.png" alt="에스더포뮬러" style="height:15px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-brighteyes-w.svg" alt="밝은눈안과" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-skyeye-w.svg" alt="하늘안과" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-korea-univ-w.png" alt="고려대학교" style="height:28px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-polytech-w.png" alt="한국폴리텍대학" style="height:36px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-kg-eduone-w.png" alt="KG에듀원" />
+    </div>
+    <div class="marquee-item">
+      <img src="../image/logos/logo-neowiz-w.svg" alt="네오위즈" />
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const tabs = document.querySelectorAll('.demo-tab');
+  const videos = document.querySelectorAll('.demo-video-wrap video:not(.demo-video-sizer)');
+  const bars = document.querySelectorAll('.demo-progress-bar');
+  const INTERVAL = 5000;
+  let current = 0;
+  let timer = null;
+
+  function switchTo(index) {
+    // tabs
+    tabs.forEach(t => t.classList.remove('active'));
+    tabs[index].classList.add('active');
+
+    // videos
+    videos.forEach(v => {
+      v.classList.remove('active');
+      v.pause();
+      v.currentTime = 0;
+    });
+    videos[index].classList.add('active');
+    videos[index].play();
+
+    // progress bars - reset all, activate current
+    bars.forEach(b => b.classList.remove('active'));
+    // force reflow to restart animation
+    void bars[index].offsetWidth;
+    bars[index].classList.add('active');
+
+    current = index;
+  }
+
+  function next() {
+    switchTo((current + 1) % 3);
+  }
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(next, INTERVAL);
+  }
+
+  // Tab clicks
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      switchTo(parseInt(tab.dataset.index));
+      startTimer();
+    });
+  });
+
+  // Progress bar clicks
+  bars.forEach(bar => {
+    bar.addEventListener('click', () => {
+      switchTo(parseInt(bar.dataset.index));
+      startTimer();
+    });
+  });
+
+  // Init
+  startTimer();
+})();
+
+// Rotating text for hero headline
+(function() {
+  const items = document.querySelectorAll('.rotating-text');
+  const wrapper = document.querySelector('.rotating-text-wrapper');
+  if (!items.length || !wrapper) return;
+  let idx = 0;
+
+  function updateWidth() {
+    const active = items[idx];
+    wrapper.style.width = active.scrollWidth + 'px';
+  }
+
+  // Set initial width and animate in after fonts are loaded
+  document.fonts.ready.then(() => {
+    items[0].classList.add('active');
+    updateWidth();
+  });
+
+  setInterval(() => {
+    items[idx].classList.remove('active');
+    idx = (idx + 1) % items.length;
+    items[idx].classList.add('active');
+    updateWidth();
+  }, 3000);
+})();
+</script>
+
+</body>
+</html>

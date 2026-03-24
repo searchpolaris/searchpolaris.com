@@ -1,0 +1,3 @@
+[     487ms] ReferenceError: wp is not defined
+    at wp-i18n-js-after:3:1
+[    1595ms] [WARNING] Google Maps JavaScript API has been loaded directly without loading=async. This can result in suboptimal performance. For best-practice loading patterns please see https://goo.gle/js-api-loading @ https://maps.googleapis.com/maps/api/js?callback=_dk_google_maps_loader_cb&key=AIzaSyB9b1jndpB20PPuKXoHJYAvlr1EI9biQSc:336

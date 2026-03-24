@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Providers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #08090A;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* ===== CARD ===== */
+.table-card {
+  width: 100%;
+  max-width: 440px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* ===== HEADER ===== */
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.table-title {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+}
+
+
+/* ===== TABLE ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  padding: 8px 12px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+tbody td {
+  padding: 10px 12px;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  vertical-align: middle;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Provider name */
+td.provider-name {
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  white-space: nowrap;
+}
+
+.provider-name-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.provider-logo {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  filter: invert(1);
+  flex-shrink: 0;
+}
+
+/* Type badge */
+.type-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 400;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.6);
+  white-space: nowrap;
+}
+
+/* Description */
+td.description {
+  color: rgba(255,255,255,0.45);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* ===== ROW STAGGER REVEAL ===== */
+tbody tr {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: rowReveal 0.4s ease-out forwards;
+  transition: background 0.15s ease;
+}
+
+tbody tr:nth-child(1) { animation-delay: 0.1s; }
+tbody tr:nth-child(2) { animation-delay: 0.2s; }
+tbody tr:nth-child(3) { animation-delay: 0.3s; }
+tbody tr:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes rowReveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Hover */
+tbody tr:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .table-card { border-radius: 8px; }
+  .table-header { padding: 8px 10px; }
+  thead th { padding: 6px 10px; font-size: 8px; }
+  tbody td { padding: 8px 10px; font-size: 11px; }
+  td.description { font-size: 10px; }
+  .type-badge { font-size: 9px; padding: 2px 6px; }
+  .provider-logo { width: 14px; height: 14px; }
+}
+</style>
+</head>
+<body>
+
+<div class="table-card">
+  <div class="table-header">
+    <span class="table-title">데이터 프로바이더</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>PROVIDER</th>
+        <th>TYPE</th>
+        <th>USAGE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="provider-name"><span class="provider-name-inner"><img class="provider-logo" src="../ai-icons/serpapi.svg" alt="">SerpAPI</span></td>
+        <td><span class="type-badge">웹 검색 + 이미지</span></td>
+        <td class="description">Google 검색 결과를 스크래핑하여 구조화된 JSON으로 제공하는 메인 프로바이더</td>
+      </tr>
+      <tr>
+        <td class="provider-name"><span class="provider-name-inner"><img class="provider-logo" src="../ai-icons/bing.svg" alt="">Bing</span></td>
+        <td><span class="type-badge">웹 검색</span></td>
+        <td class="description">Microsoft Bing 검색 API (2025년 8월 서비스 종료 예정, 용도 미확정)</td>
+      </tr>
+      <tr>
+        <td class="provider-name"><span class="provider-name-inner"><img class="provider-logo" src="../ai-icons/labrador.svg" alt="">Labrador</span></td>
+        <td><span class="type-badge">이미지</span></td>
+        <td class="description">Getty Images API를 통한 이미지 검색 프로바이더</td>
+      </tr>
+      <tr>
+        <td class="provider-name"><span class="provider-name-inner"><img class="provider-logo" src="../ai-icons/searchapi.svg" alt="">SearchAPI</span></td>
+        <td><span class="type-badge">쇼핑</span></td>
+        <td class="description">Google Shopping 결과를 스크래핑하여 상품 데이터 수집</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

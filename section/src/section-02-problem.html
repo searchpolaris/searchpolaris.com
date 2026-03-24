@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서치폴라리스 - 02. 문제심화</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+
+/* ===== DESIGN SYSTEM ===== */
+:root {
+  --bg: #08090A;
+  --bg-elevated: #111214;
+  --bg-surface: #18191C;
+  --border: #232323;
+  --border-light: rgba(255,255,255,0.08);
+  --text-primary: rgba(255,255,255,0.95);
+  --text-secondary: rgba(255,255,255,0.5);
+  --text-tertiary: rgba(255,255,255,0.35);
+  --text-muted: rgba(255,255,255,0.2);
+  --white: #FFFFFF;
+  --radius: 8px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 120px;
+}
+
+.section-border {
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ===== BADGE ===== */
+.sp-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 20px;
+  margin-bottom: 32px;
+}
+
+/* ===== SECTION ===== */
+.problem-section {
+  padding: 140px 0;
+}
+
+.problem-header {
+  text-align: center;
+}
+
+.problem-header h2 {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--white);
+}
+
+.problem-header p {
+  font-size: 20px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== CHART ===== */
+.chart-wrap {
+  margin-top: 72px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px 22px;
+  max-width: 880px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chart-title {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 20px;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 0;
+  margin-bottom: 8px;
+  padding-left: 6%;
+  padding-right: 3%;
+}
+
+.legend-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.legend-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--white);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-dot.c1 { background: #FF4500; }
+.legend-dot.c2 { background: #D4793A; }
+.legend-dot.c3 { background: #A8876E; }
+.legend-dot.c4 { background: #868B90; }
+.legend-dot.c5 { background: #6B7280; }
+
+.legend-value {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.legend-num {
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--white);
+  letter-spacing: -0.03em;
+}
+
+.legend-change {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.legend-change.up { color: #FF4500; }
+.legend-change.down { color: #6B7280; }
+
+/* SVG Chart */
+.chart-area {
+  position: relative;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.chart-area svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-line {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+}
+
+.chart-area.visible .chart-line {
+  transition: stroke-dashoffset 2s ease-out;
+  stroke-dashoffset: 0;
+}
+
+.chart-endpoint {
+  opacity: 0;
+}
+
+.chart-area.visible .chart-endpoint {
+  transition: opacity 0.4s ease-out 1.8s;
+  opacity: 1;
+}
+
+.chart-source {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.chart-source a {
+  color: var(--text-tertiary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.chart-source a:hover { color: var(--text-secondary); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .section-border { border-left: none; border-right: none; max-width: 100%; }
+  .container { padding: 0 48px; }
+  .problem-header h2 { font-size: 42px; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+  .problem-section { padding: 96px 0; }
+  .problem-header h2 { font-size: 32px; }
+  .problem-header p { font-size: 17px; }
+  .chart-wrap { padding: 20px 16px 16px; }
+  .chart-legend { flex-wrap: wrap; }
+  .legend-item { flex: 0 0 calc(50% - 8px); }
+  .legend-num { font-size: 22px; }
+  .chart-title { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- 02. 문제심화 -->
+<div class="section-border">
+  <section class="problem-section">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="problem-header">
+        <span class="sp-badge">Don't fall behind</span>
+        <h2>먼저 시작하면 기준이 됩니다</h2>
+        <p>1년 뒤, 같은 자리를 잡는 비용은 지금의 몇 배가 됩니다. 상위 25% 브랜드는 나머지보다 10배 더 많이 노출됩니다.</p>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-wrap">
+        <h3 class="chart-title">AI 브랜드 언급 시계열별 추정치</h3>
+
+        <!-- Legend -->
+        <div class="chart-legend">
+          <div class="legend-item">
+            <span class="legend-label"><span class="legend-dot c1"></span>상위 25%</span>
+            <div class="legend-value">
+              <span class="legend-num">90.4%</span>
+              <span class="legend-change up">+10x</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="legend-label"><span class="legend-dot c2"></span>상위 25-50%</span>
+            <div class="legend-value">
+              <span class="legend-num">7.5%</span>
+              <span class="legend-change down">+5x</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="legend-label"><span class="legend-dot c3"></span>상위 50-75%</span>
+            <div class="legend-value">
+              <span class="legend-num">1.6%</span>
+              <span class="legend-change down">+3x</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="legend-label"><span class="legend-dot c4"></span>하위 25%</span>
+            <div class="legend-value">
+              <span class="legend-num">0.5%</span>
+              <span class="legend-change down">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SVG Line Chart -->
+        <div class="chart-area">
+          <svg viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid meet">
+            <!-- Grid lines -->
+            <line x1="60" y1="40" x2="960" y2="40" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="60" y1="112" x2="960" y2="112" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="60" y1="184" x2="960" y2="184" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="60" y1="256" x2="960" y2="256" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="60" y1="328" x2="960" y2="328" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+            <!-- Y-axis labels (점유율) -->
+            <text x="45" y="44" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">100%</text>
+            <text x="45" y="116" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">75%</text>
+            <text x="45" y="188" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">50%</text>
+            <text x="45" y="260" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">25%</text>
+            <text x="45" y="332" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">0%</text>
+
+            <!-- X-axis labels -->
+            <text x="120" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q1 '24</text>
+            <text x="300" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q2 '24</text>
+            <text x="480" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q3 '24</text>
+            <text x="660" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q4 '24</text>
+            <text x="840" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q1 '25</text>
+            <text x="950" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q2 '25</text>
+
+            <!-- Line 1: 상위 25% — 90.4% 점유, 급상승 -->
+            <polyline class="chart-line"
+              points="80,310 180,305 300,290 400,260 480,220 580,170 660,130 740,95 840,68 950,55"
+              fill="none" stroke="#FF4500" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle class="chart-endpoint" cx="950" cy="55" r="5" fill="#FF4500"/>
+
+            <!-- Line 2: 상위 25-50% — 7.5% 점유, 소폭 상승 -->
+            <polyline class="chart-line"
+              points="80,312 180,310 300,305 400,296 480,285 580,272 660,260 740,250 840,242 950,238"
+              fill="none" stroke="#D4793A" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle class="chart-endpoint" cx="950" cy="238" r="5" fill="#D4793A"/>
+
+            <!-- Line 3: 상위 50-75% — 1.6% 점유, 거의 변화 없음 -->
+            <polyline class="chart-line"
+              points="80,314 180,313 300,311 400,308 480,305 580,302 660,300 740,298 840,296 950,295"
+              fill="none" stroke="#A8876E" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle class="chart-endpoint" cx="950" cy="295" r="5" fill="#A8876E"/>
+
+            <!-- Line 4: 하위 25% — 0.5% 점유, 바닥 근처 -->
+            <polyline class="chart-line"
+              points="80,316 180,316 300,316 400,316 480,316 580,316 660,317 740,317 840,318 950,318"
+              fill="none" stroke="#868B90" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle class="chart-endpoint" cx="950" cy="318" r="5" fill="#868B90"/>
+          </svg>
+        </div>
+
+        <p class="chart-source">— <a href="https://ahrefs.com/blog/ai-overview-brand-correlation/" target="_blank" rel="noopener">Ahrefs, 75,000개 브랜드 AI Overview 가시성 요인 분석 (2025)</a></p>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+const chart = document.querySelector('.chart-area');
+if (chart) observer.observe(chart);
+</script>
+
+</body>
+</html>

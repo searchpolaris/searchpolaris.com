@@ -1,0 +1,2 @@
+[     122ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8765/section/section-%EC%84%B8%EC%97%B0-AI.html:0
+[     165ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8765/favicon.ico:0

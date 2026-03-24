@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GEO 프로세스 - Section</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+
+/* ===== DESIGN SYSTEM ===== */
+:root {
+  --bg: #08090A;
+  --bg-elevated: #111214;
+  --bg-surface: #18191C;
+  --border: #232323;
+  --border-light: rgba(255,255,255,0.08);
+  --text-primary: rgba(255,255,255,0.95);
+  --text-secondary: rgba(255,255,255,0.5);
+  --text-tertiary: rgba(255,255,255,0.35);
+  --text-muted: rgba(255,255,255,0.2);
+  --white: #FFFFFF;
+  --accent: #FF6B00;
+  --radius: 8px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+/* ===== BASE ===== */
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 120px;
+}
+
+/* ===== LAYOUT ===== */
+.section-border {
+  border-left: none;
+  border-right: none;
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+}
+/* Dashed left / right borders */
+.section-border::before,
+.section-border::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--border) 0px,
+    var(--border) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+.section-border::before { left: 0; }
+.section-border::after  { right: 0; }
+
+/* ===== GEO PROCESS SECTION ===== */
+.geo-section {
+  padding: 96px 0 0;
+}
+
+/* ===== SECTION HEADER ===== */
+.geo-header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+
+.geo-header-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 18px;
+}
+
+.geo-header h2 {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+  color: var(--white);
+}
+
+.geo-header p {
+  font-size: 18px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* ===== STEP BLOCK ===== */
+.step-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  margin-bottom: 64px;
+}
+
+/* Dashed top + bottom borders → 2 lines between steps */
+.step-block::before,
+.step-block::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border) 0px,
+    var(--border) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+.step-block::before { top: 0; }
+.step-block::after  { bottom: 0; }
+
+/* -- Left column -- */
+.step-left {
+  padding: 56px 48px 56px 0;
+  position: relative;
+}
+
+/* Last step-block: no bottom margin */
+.step-block:last-child {
+  margin-bottom: 0;
+}
+
+/* Custom dashed center divider — extends into gap via negative bottom */
+.step-left::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: -64px;
+  width: 1px;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--border) 0px,
+    var(--border) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+.step-block:last-child .step-left::after {
+  bottom: 0;
+}
+
+.step-number-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* White vertical bar before step number */
+.step-number-wrap::before {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 24px;
+  background: var(--white);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.step-number {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+}
+
+.step-number-line {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+
+.step-title {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+  color: var(--white);
+  clip-path: inset(0 100% 0 0);
+}
+
+.step-title.typed {
+  animation: type-in 1.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@keyframes type-in {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
+.step-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.step-desc strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Chips */
+.chip-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.chip {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* -- Right column (image frame) -- */
+.step-right {
+  padding: 56px 0 56px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-image-frame {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(145deg, #1e1f22 0%, #141517 30%, #0d0e10 70%, #0a0b0c 100%);
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.2),
+    0 4px 16px rgba(0,0,0,0.3),
+    0 16px 48px rgba(0,0,0,0.5),
+    0 32px 80px rgba(0,0,0,0.3);
+}
+
+.step-image-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.10) 40%, rgba(255,255,255,0.03) 70%, rgba(255,255,255,0.12) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.step-image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+}
+
+/* ===== REVERSED LAYOUT (2, 4단계) ===== */
+.step-block.reversed {
+  direction: rtl;
+}
+.step-block.reversed > * {
+  direction: ltr;
+}
+.step-block.reversed .step-left {
+  padding: 56px 0 56px 48px;
+}
+.step-block.reversed .step-left::after {
+  right: auto;
+  left: 0;
+}
+.step-block.reversed .step-right {
+  padding: 56px 48px 56px 0;
+}
+
+/* ===== IMAGE FADE-IN ===== */
+.step-image-frame {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.step-image-frame.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .container { padding: 0 48px; }
+  .section-border { max-width: 100%; }
+  .section-border::before, .section-border::after { display: none; }
+  .geo-header h2 { font-size: 36px; }
+  .step-block { margin-bottom: 48px; }
+  .step-left { padding: 40px 36px 40px 0; }
+  .step-left::after { bottom: -48px; }
+  .step-block:last-child .step-left::after { bottom: 0; }
+  .step-right { padding: 40px 0 40px 36px; }
+  .step-block.reversed .step-left { padding: 40px 0 40px 36px; }
+  .step-block.reversed .step-right { padding: 40px 36px 40px 0; }
+  .step-image-frame { padding: 20px; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+  .geo-header h2 { font-size: 28px; }
+
+  .step-block {
+    grid-template-columns: 1fr;
+    margin-bottom: 40px;
+  }
+
+  .step-left {
+    padding: 36px 0 24px;
+  }
+  .step-left::after {
+    display: none;
+  }
+
+  .step-right {
+    padding: 0 0 36px;
+  }
+
+  .step-block.reversed { direction: ltr; }
+  .step-block.reversed .step-left { padding: 36px 0 24px; }
+  .step-block.reversed .step-left::after { display: none; }
+  .step-block.reversed .step-right { padding: 0 0 36px; }
+
+  .step-title { font-size: 22px; }
+  .step-image-frame { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- GEO PROCESS — FULL STATIC SECTION -->
+<div class="section-border">
+  <div class="container">
+
+    <!-- ===== SECTION HEADER ===== -->
+    <div class="geo-section">
+      <div class="geo-header">
+        <div class="geo-header-label">HOW TO GEO?</div>
+        <h2>GEO 프로세스</h2>
+        <p>AI와 검색엔진 모두에서 브랜드가 발견되고 인용되도록,<br>체계적인 4단계 프로세스를 통해 최적화합니다.</p>
+      </div>
+    </div>
+
+    <!-- ===== STEP 1 — 브랜드 상태 진단 ===== -->
+    <div class="step-block">
+      <div class="step-left">
+        <div class="step-number-wrap">
+          <div class="step-number">001</div>
+          <div class="step-number-line"></div>
+        </div>
+        <h3 class="step-title">브랜드 상태 진단</h3>
+        <p class="step-desc">문제점을 발견하는 단계로, 내/외부 차원에서의 종합 진단이 시행됩니다. <strong>AI 언급 빈도와 도메인 권위</strong>, 백링크 횟수, 콘텐츠 수준, 현금 유입 등 개선가능한 전반적인 지표 파악 과정입니다.<br><br>Ahrefs, SEMrush 등 서드파티 도구를 활용하여 도메인 권위, 백링크 프로필, <strong>경쟁사 대비 포지셔닝을 분석</strong>하고, ChatGPT, Perplexity, Gemini 등 주요 AI 플랫폼에서 브랜드가 어떤 맥락으로 언급되고 있는지를 추적합니다.<br><br>내부적으로는 크롤링 효율성, 인덱싱 현황, 페이지 속도, 구조화 데이터 적용 여부 등 <strong>200개 이상의 항목을 종합 진단</strong>합니다. 모든 데이터는 실시간 대시보드로 통합되어 현재 상태와 개선 영역을 시각화하며, 우선순위가 매겨진 개선 로드맵으로 이후 단계의 실행 방향을 결정합니다.</p>
+        <div class="chip-wrapper">
+          <div class="chip">브랜드 진단 대시보드 제작</div>
+          <div class="chip">AI 언급 빈도 분석</div>
+          <div class="chip">웹사이트 외부 구조 진단</div>
+          <div class="chip">웹사이트 내부 구조 진단</div>
+        </div>
+      </div>
+      <div class="step-right">
+        <div class="step-image-frame">
+          <img src="../image/process/프로세스1단계.jpg" alt="1단계: 브랜드 상태 진단">
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 2 — 테크니컬 GEO ===== -->
+    <div class="step-block">
+      <div class="step-left">
+        <div class="step-number-wrap">
+          <div class="step-number">002</div>
+          <div class="step-number-line"></div>
+        </div>
+        <h3 class="step-title">테크니컬 GEO</h3>
+        <p class="step-desc">GEO를 위한 기초 틀을 잡는 과정입니다. 앞선 1단계에서 파악한 <strong>문제점을 토대로 기술적 개선</strong>이 진행됩니다.<br><br>도출된 문제점들을 긴급도와 영향도에 따라 우선순위를 매기고, 즉시 수정 가능한 항목과 장기 개선 항목을 분리합니다. robots.txt, sitemap.xml, llms.txt 등 <strong>크롤러 제어 파일을 세밀하게 최적화</strong>하고, AI 크롤러(GPTBot, PerplexityBot 등)의 접근 허용 여부를 조정합니다.<br><br>URL 구조를 검색엔진과 AI가 이해하기 쉬운 형태로 재설계하고, 구조화 데이터(Schema Markup)의 누락된 마크업을 보완합니다. 이 단계의 핵심은 <strong>기술적 장벽 없이 크롤링과 인덱싱</strong>이 가능한 환경을 만드는 것입니다.</p>
+        <div class="chip-wrapper">
+          <div class="chip">문제점 구체화 및 분류</div>
+          <div class="chip">크롤링 파일 최적화</div>
+          <div class="chip">페이지 속도 최적화</div>
+          <div class="chip">AI 크롤러 접근성</div>
+          <div class="chip">URL 구조 개선</div>
+        </div>
+      </div>
+      <div class="step-right">
+        <div class="step-image-frame">
+          <img src="../image/process/프로세스2단계.jpg" alt="2단계: 테크니컬 GEO">
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 3 — Entity & Schema 최적화 ===== -->
+    <div class="step-block">
+      <div class="step-left">
+        <div class="step-number-wrap">
+          <div class="step-number">003</div>
+          <div class="step-number-line"></div>
+        </div>
+        <h3 class="step-title">Entity & Schema 최적화</h3>
+        <p class="step-desc">AI가 브랜드를 단순 키워드가 아닌 <strong>고유 엔티티로 인식하게 만드는</strong> 단계입니다. 브랜드명을 말하면 AI가 즉시 연결하는 상태 — 그것이 이 단계의 목표입니다.<br><br>주요 AI 플랫폼에서 브랜드가 어떤 엔티티로 분류되고 있는지 진단하고, 브랜드 — 제품 — 전문가 — 카테고리 간의 <strong>관계를 정의하는 지식 그래프를 설계</strong>합니다. Google Business Profile, 위키피디아, Crunchbase, LinkedIn 등 AI가 신뢰하는 외부 출처에서 브랜드 정보를 일관되게 관리합니다.<br><br>Organization, Product, FAQPage, Person 등 핵심 Schema를 <strong>JSON-LD 형식으로 설계하고 적용</strong>하며, Google Rich Results Test로 정합성을 검증합니다. 각 페이지별 Schema 적용 현황을 Entity-Schema 매핑 대시보드로 모니터링하여, AI가 관련 질문에 귀사를 우선 인용하도록 만듭니다.</p>
+        <div class="chip-wrapper">
+          <div class="chip">엔티티 현황 진단</div>
+          <div class="chip">지식 그래프 설계</div>
+          <div class="chip">권위 소스 정비</div>
+          <div class="chip">JSON-LD Schema 적용</div>
+        </div>
+      </div>
+      <div class="step-right">
+        <div class="step-image-frame">
+          <img src="../image/process/프로세스3단계.jpg" alt="3단계: Entity & Schema 최적화">
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 4 — GEO 맞춤 EEAT 콘텐츠 발행 ===== -->
+    <div class="step-block">
+      <div class="step-left">
+        <div class="step-number-wrap">
+          <div class="step-number">004</div>
+          <div class="step-number-line"></div>
+        </div>
+        <h3 class="step-title">GEO 맞춤 EEAT 콘텐츠 발행</h3>
+        <p class="step-desc">주요 키워드를 구성하는 <strong>LSI 키워드와 PAA 접점을 분석</strong>한 뒤, 적절한 콘텐츠 구성 및 T&D 구성 요소를 추출합니다.<br><br>SEO 측면에서는 검색량이 높고 전환 가능성이 큰 키워드를 추출하여 <strong>Title & Description을 정밀 최적화</strong>하고, Onpage SEO 요소를 조정합니다. GEO 측면에서는 LLM이 인용할 때 선호하는 형식으로 콘텐츠를 재설계하고, FAQ Schema 분석을 통해 AI 인용 확률을 높입니다.<br><br>최종적으로 SEO와 GEO를 통합한 콘텐츠 체계를 구축하고, <strong>AI 인용률과 콘텐츠 성과를 실시간 추적</strong>합니다. 지속적인 모니터링과 개선 점검을 통해 검색엔진과 AI 양쪽에서 브랜드 가시성을 극대화합니다.</p>
+        <div class="chip-wrapper">
+          <div class="chip">SEO 키워드 전략 수립</div>
+          <div class="chip">AI 검색 최적화(GEO)</div>
+          <div class="chip">LLM 콘텐츠 구조화</div>
+          <div class="chip">FAQ & LSI 최적화</div>
+          <div class="chip">SEO & GEO 통합 체계 구축</div>
+          <div class="chip">성과 대시보드 & 추적</div>
+        </div>
+      </div>
+      <div class="step-right">
+        <div class="step-image-frame">
+          <img src="../image/process/프로세스4단계.jpg" alt="4단계: GEO 맞춤 EEAT 콘텐츠 발행">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var titles = document.querySelectorAll('.step-title');
+
+  // IntersectionObserver 지원 여부 체크
+  var imageFrames = document.querySelectorAll('.step-image-frame');
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('typed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0 });
+
+    var imgObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          imgObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    titles.forEach(function(title) {
+      observer.observe(title);
+    });
+
+    imageFrames.forEach(function(frame) {
+      imgObserver.observe(frame);
+    });
+  } else {
+    titles.forEach(function(title) {
+      title.classList.add('typed');
+    });
+    imageFrames.forEach(function(frame) {
+      frame.classList.add('visible');
+    });
+  }
+});
+</script>
+
+</body>
+</html>

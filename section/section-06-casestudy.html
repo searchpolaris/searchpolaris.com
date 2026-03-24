@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서치폴라리스 - Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+
+/* ===== DESIGN SYSTEM ===== */
+:root {
+  --bg: #08090A;
+  --bg-elevated: #111214;
+  --bg-surface: #18191C;
+  --border: #232323;
+  --border-light: rgba(255,255,255,0.08);
+  --text-primary: rgba(255,255,255,0.95);
+  --text-secondary: rgba(255,255,255,0.5);
+  --text-tertiary: rgba(255,255,255,0.35);
+  --text-muted: rgba(255,255,255,0.2);
+  --white: #FFFFFF;
+  --radius: 8px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 120px;
+}
+
+.section-border {
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ===== BADGE ===== */
+.sp-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 20px;
+  margin-bottom: 40px;
+}
+
+/* ===== SECTION ===== */
+.casestudy-section {
+  padding: 140px 0;
+}
+
+/* Section header */
+.casestudy-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.casestudy-header h2 {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+  color: var(--white);
+}
+
+.casestudy-header p {
+  font-size: 18px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ===== CASE STUDY CARD ===== */
+.cs-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.cs-card-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Left column */
+.cs-left {
+  padding: 56px 48px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 32px;
+}
+
+.cs-headline {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.cs-headline .cs-highlight {
+  color: var(--text-secondary);
+}
+
+.cs-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cs-brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: contain;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 6px;
+  flex-shrink: 0;
+}
+
+.cs-brand-logo-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+  overflow: hidden;
+  padding: 0;
+}
+
+.cs-brand-logo-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Video caption */
+.cs-video-caption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+}
+
+/* In-card video */
+.cs-video-wrap {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  position: relative;
+}
+
+.cs-video-wrap::before {
+  content: '';
+  display: block;
+  padding-top: 56.25%; /* 16:9 */
+}
+
+.cs-video-wrap video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* ── 영상 위 하이라이트 오버레이 ── */
+.cs-video-highlight {
+  position: absolute;
+  /* ★ 위치/크기 조정: top·left는 영상 기준 %, width·height는 강조 영역 크기 */
+  top: 38%;
+  left: 12%;
+  width: 42%;
+  height: 14%;
+
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  pointer-events: none;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* 활성 상태 (JS로 토글) */
+.cs-video-highlight.active {
+  opacity: 1;
+  animation: highlight-pulse 2s ease-in-out infinite;
+}
+
+
+@keyframes highlight-pulse {
+  0%, 100% { border-color: rgba(255,255,255,0.9); box-shadow: 0 0 0 0 rgba(255,255,255,0.2); }
+  50%       { border-color: rgba(255,255,255,0.5); box-shadow: 0 0 0 6px rgba(255,255,255,0); }
+}
+
+.cs-brand-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cs-brand-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cs-brand-category {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* Right column */
+.cs-right {
+  padding: 56px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 32px;
+}
+
+/* What we did */
+.cs-block-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.cs-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cs-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 12px;
+  letter-spacing: 0.02em;
+}
+
+.cs-tag-plus {
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+/* Results */
+.cs-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cs-result-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.cs-slash {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.cs-result-text {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Case study link */
+.cs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 14px;
+  transition: color 0.2s, border-color 0.2s;
+  width: fit-content;
+}
+
+.cs-link:hover {
+  color: var(--text-primary);
+  border-color: var(--text-tertiary);
+}
+
+.cs-link svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  flex-shrink: 0;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .section-border { border-left: none; border-right: none; max-width: 100%; }
+  .container { padding: 0 48px; }
+  .casestudy-header h2 { font-size: 40px; }
+  .cs-left, .cs-right { padding: 40px 32px; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+  .casestudy-section { padding: 96px 0; }
+  .casestudy-header h2 { font-size: 32px; }
+  .casestudy-header p { font-size: 16px; }
+  .casestudy-header { margin-bottom: 48px; }
+  .cs-card-inner { grid-template-columns: 1fr; }
+  .cs-left { border-right: none; border-bottom: 1px solid var(--border); padding: 32px 24px; gap: 32px; }
+  .cs-right { padding: 32px 24px; }
+  .cs-headline { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- Case Study Section -->
+<div class="section-border">
+  <section class="casestudy-section">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="casestudy-header">
+        <span class="sp-badge">Case Studies</span>
+        <h2>당신의 브랜드는 AI가 추천하고 있나요?</h2>
+        <p>지금 스마일라식 유명한 안과를 AI에게 물어보세요.</p>
+      </div>
+
+      <!-- Card 1 -->
+      <div class="cs-card">
+        <div class="cs-card-inner">
+
+          <!-- Left -->
+          <div class="cs-left">
+
+            <!-- 영상 위 후킹 텍스트 -->
+            <h3 class="cs-headline">3개월 만에 AI 검색에 올라탔습니다.</h3>
+
+            <!-- Video -->
+            <div class="cs-video-wrap">
+              <video id="cs-video" autoplay muted loop playsinline>
+                <source src="../video/case study.mp4" type="video/mp4">
+              </video>
+              <div class="cs-video-highlight" id="cs-highlight"></div>
+            </div>
+
+            <!-- 영상 캡션 + 브랜드 -->
+            <div class="cs-brand">
+              <div class="cs-brand-logo-placeholder">
+                <img src="../image/logos/20260224_SNS_네이버_썸네일.jpg" alt="밝은눈안과">
+              </div>
+              <div class="cs-brand-info">
+                <span class="cs-brand-name">밝은눈안과 강남</span>
+                <span class="cs-brand-category">안과 의원</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right -->
+          <div class="cs-right">
+
+            <!-- What we did -->
+            <div>
+              <div class="cs-block-label">{}   What we did</div>
+              <div class="cs-tags">
+                <span class="cs-tag"><span class="cs-tag-plus">+</span>테크니컬 GEO</span>
+                <span class="cs-tag"><span class="cs-tag-plus">+</span>Entity 최적화</span>
+                <span class="cs-tag"><span class="cs-tag-plus">+</span>Schema 최적화</span>
+                <span class="cs-tag"><span class="cs-tag-plus">+</span>AI 접근성 최적화</span>
+              </div>
+            </div>
+
+            <!-- Results -->
+            <div>
+              <div class="cs-block-label">{}  Results</div>
+              <div class="cs-results">
+                <div class="cs-result-item">
+                  <span class="cs-slash">/</span>
+                  <span class="cs-result-text">AI 브랜드 인용 2배 증가 (3개월)</span>
+                </div>
+                <div class="cs-result-item">
+                  <span class="cs-slash">/</span>
+                  <span class="cs-result-text">오가닉 트래픽 300% 증가 (전년 동기 대비)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Link -->
+            <a href="#" class="cs-link">
+              <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#cs-clip-1)">
+                  <path d="M4.2 0.7H2.1C1.73 0.7 1.38 0.85 1.11 1.11C0.85 1.37 0.7 1.73 0.7 2.1V4.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M13.3 4.2V2.1C13.3 1.73 13.15 1.37 12.89 1.11C12.62 0.85 12.27 0.7 11.9 0.7H9.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M0.7 9.8V11.9C0.7 12.27 0.85 12.62 1.11 12.89C1.38 13.15 1.73 13.3 2.1 13.3H4.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9.8 13.3H11.9C12.27 13.3 12.62 13.15 12.89 12.89C13.15 12.62 13.3 12.27 13.3 11.9V9.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs><clipPath id="cs-clip-1"><rect width="14" height="14" fill="white"/></clipPath></defs>
+              </svg>
+              Case study
+            </a>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const video     = document.getElementById('cs-video');
+  const highlight = document.getElementById('cs-highlight');
+  if (!video || !highlight) return;
+
+  // ★ 타이밍 조정: 영상에서 브랜드명이 등장하는 구간 (초 단위)
+  const SHOW_FROM = 3.0;   // 하이라이트 시작 시점 (초)
+  const SHOW_TO   = 9.0;   // 하이라이트 종료 시점 (초)
+
+  video.addEventListener('timeupdate', function () {
+    const t = video.currentTime;
+    const shouldShow = t >= SHOW_FROM && t <= SHOW_TO;
+    highlight.classList.toggle('active', shouldShow);
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서치폴라리스 - GEO 최적화 에이전시</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { font-family: inherit; border: none; cursor: pointer; }
+
+/* ===== DESIGN SYSTEM ===== */
+:root {
+  --bg: #08090A;
+  --bg-elevated: #111214;
+  --bg-surface: #18191C;
+  --border: #232323;
+  --border-light: rgba(255,255,255,0.08);
+  --text-primary: rgba(255,255,255,0.95);
+  --text-secondary: rgba(255,255,255,0.5);
+  --text-tertiary: rgba(255,255,255,0.35);
+  --text-muted: rgba(255,255,255,0.2);
+  --white: #FFFFFF;
+  --accent: #FFFFFF;
+  --green: #22c55e;
+  --yellow: #eab308;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --radius: 8px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+/* ===== BASE ===== */
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* ===== COMMON LAYOUT ===== */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 120px;
+}
+
+.section-border {
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.sp-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 20px;
+  margin-bottom: 32px;
+}
+
+.btn-cta {
+  font-family: var(--font-sans);
+  font-size: 16px; font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #111111;
+  background: var(--white);
+  padding: 16px 32px;
+  border-radius: var(--radius);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.btn-cta:hover { background: rgba(255,255,255,0.9); transform: translateY(-1px); }
+
+/* ============================================================
+   SECTION 01: HEADER + HERO
+   ============================================================ */
+
+/* ===== HEADER ===== */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: 64px;
+  background: rgba(8,9,10,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.header-logo {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.header-logo span {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-nav > a,
+.nav-dropdown > .nav-dropdown-trigger {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  transition: color 0.2s;
+  letter-spacing: 0.01em;
+  background: none;
+  padding: 0;
+}
+
+.header-nav > a:hover,
+.header-nav > a.active,
+.nav-dropdown:hover > .nav-dropdown-trigger,
+.nav-dropdown.active > .nav-dropdown-trigger { color: var(--text-primary); }
+
+.nav-dropdown { position: relative; }
+
+.nav-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.nav-dropdown-trigger svg {
+  width: 12px; height: 12px;
+  stroke: currentColor; fill: none; stroke-width: 2;
+  transition: transform 0.2s;
+}
+
+.nav-dropdown:hover .nav-dropdown-trigger svg { transform: rotate(180deg); }
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 160px;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 999;
+}
+
+.nav-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -16px; left: 0; right: 0;
+  height: 16px;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu { opacity: 1; visibility: visible; }
+
+.nav-dropdown-menu a {
+  display: block;
+  font-size: 14px; font-weight: 500;
+  color: var(--text-secondary);
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.nav-dropdown-menu a:hover { color: var(--text-primary); background: var(--bg-surface); }
+.nav-dropdown-menu a.active { color: var(--text-primary); }
+
+.btn-header {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--white);
+  padding: 8px 20px;
+  border-radius: var(--radius);
+  transition: opacity 0.2s;
+}
+
+.btn-header:hover { opacity: 0.9; }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  padding-top: 144px;
+  padding-bottom: 80px;
+  text-align: center;
+  overflow: hidden;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 80px 32px;
+}
+
+.hero h1 {
+  font-size: 54px; font-weight: 800;
+  line-height: 1.3;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  max-width: 800px;
+}
+
+/* Rotating Text */
+.rotating-text-wrapper {
+  display: inline-block;
+  position: relative;
+  vertical-align: bottom;
+  overflow: hidden;
+  height: 1.3em;
+  transition: width 0.4s ease;
+}
+
+.rotating-text {
+  position: absolute;
+  left: 0; top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  white-space: nowrap;
+}
+
+.rotating-text.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rotating-icon {
+  width: 36px; height: 36px;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.hero-subtitle {
+  font-size: 18px; font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 540px;
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+/* ===== DEMO SHOWCASE ===== */
+.demo-showcase {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.demo-tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 4px;
+}
+
+.demo-tab {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-tertiary);
+  background: none;
+  padding: 8px 20px;
+  border-radius: 100px;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.demo-tab:hover { color: var(--text-secondary); }
+
+.demo-tab.active {
+  color: var(--bg);
+  background: var(--white);
+}
+
+.demo-video-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  background: #000;
+}
+
+.demo-video-wrap video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.demo-video-wrap video.active {
+  opacity: 1;
+}
+
+.demo-video-wrap::before {
+  content: '';
+  display: block;
+  padding-top: 55.7%;
+}
+
+/* Progress bar */
+.demo-progress {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.demo-progress-bar {
+  width: 48px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.demo-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--text-secondary);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.demo-progress-bar.active .demo-progress-fill {
+  animation: progress-fill 5s linear forwards;
+}
+
+.demo-caption {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.01em;
+}
+
+@keyframes progress-fill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* ===== HERO PLATFORMS ===== */
+.hero-platforms {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+  width: 100%;
+}
+
+.hero-platforms-label {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+.hero-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.hero-icons img {
+  width: 32px; height: 32px;
+  border-radius: 7px;
+  box-shadow: 0px 4px 3px rgba(0,0,0,0.07), 0px 2px 2px rgba(0,0,0,0.06);
+  transition: transform 0.2s;
+}
+
+.hero-icons img:hover { transform: scale(1.1); }
+
+/* ===== PORTFOLIO MARQUEE ===== */
+.portfolio-marquee {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--bg);
+  padding: 48px 0 32px;
+  position: relative;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.portfolio-marquee-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.portfolio-marquee .marquee-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: marquee-scroll 20s linear infinite;
+}
+
+.portfolio-marquee .marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 32px;
+  opacity: 0.35;
+  transition: opacity 0.3s;
+}
+
+.marquee-item:hover {
+  opacity: 0.7;
+}
+
+.marquee-item svg,
+.marquee-item img {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Fade edges */
+.portfolio-marquee::before,
+.portfolio-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.portfolio-marquee::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg), transparent);
+}
+
+.portfolio-marquee::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg), transparent);
+}
+
+/* ===== HERO ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content > * {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+.hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+.hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+.hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+.hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+
+/* ============================================================
+   SECTION 02: PROBLEM
+   ============================================================ */
+
+.problem-section {
+  padding: 140px 0;
+}
+
+.problem-header {
+  text-align: center;
+}
+
+.problem-header h2 {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--white);
+}
+
+.problem-header p {
+  font-size: 20px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== CHART ===== */
+.chart-wrap {
+  margin-top: 72px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px 22px;
+  max-width: 880px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chart-title {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--white);
+  margin-bottom: 20px;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 0;
+  margin-bottom: 8px;
+  padding-left: 6%;
+  padding-right: 3%;
+}
+
+.legend-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.legend-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--white);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-dot.c1 { background: #FF4500; }
+.legend-dot.c2 { background: #D4793A; }
+.legend-dot.c3 { background: #A8876E; }
+.legend-dot.c4 { background: #868B90; }
+.legend-dot.c5 { background: #6B7280; }
+
+.legend-value {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.legend-num {
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--white);
+  letter-spacing: -0.03em;
+}
+
+.legend-change {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.legend-change.up { color: #FF4500; }
+.legend-change.down { color: #6B7280; }
+
+/* SVG Chart */
+.chart-area {
+  position: relative;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.chart-area svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-line {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+}
+
+.chart-area.visible .chart-line {
+  transition: stroke-dashoffset 2s ease-out;
+  stroke-dashoffset: 0;
+}
+
+.chart-endpoint {
+  opacity: 0;
+}
+
+.chart-area.visible .chart-endpoint {
+  transition: opacity 0.4s ease-out 1.8s;
+  opacity: 1;
+}
+
+.chart-source {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.chart-source a {
+  color: var(--text-tertiary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.chart-source a:hover { color: var(--text-secondary); }
+
+/* ============================================================
+   SECTION 02.5: GEO STAIRCASE
+   ============================================================ */
+
+.geo-section {
+  padding: 80px 0;
+}
+
+.geo-inner {
+  padding: 0 120px;
+}
+
+.geo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 0;
+}
+
+.geo-card {
+  padding: 24px;
+  position: relative;
+}
+
+.geo-card--1 {
+  border-bottom: 1px dashed var(--border);
+  border-right: 1px dashed var(--border);
+}
+
+.geo-card--2 {
+  border-bottom: 1px dashed var(--border);
+}
+
+.geo-card--3 {
+  border: none;
+}
+
+.geo-empty {
+  height: 100%;
+  position: relative;
+}
+
+.geo-empty--2 {
+  border-bottom: 1px dashed var(--border);
+  border-right: 1px dashed var(--border);
+}
+
+.geo-empty--3 {
+  border-bottom: 1px dashed var(--border);
+}
+
+.geo-empty--4 {
+  border-bottom: 1px dashed var(--border);
+  border-right: 1px dashed var(--border);
+}
+
+.geo-empty--6 {
+  border-bottom: 1px dashed var(--border);
+  border-left: 1px dashed var(--border);
+}
+
+.geo-empty--7 {
+  border-right: 1px dashed var(--border);
+}
+
+.geo-empty--8 {
+  border-right: 1px dashed var(--border);
+}
+
+.geo-line-vertical {
+  z-index: 2;
+  background: #FFFFFF;
+  width: 2px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: -1.5px;
+  transform-origin: 50% 0px;
+  transform: scale3d(1, 0, 1);
+  will-change: transform;
+}
+
+.geo-line-horizontal {
+  z-index: 2;
+  background: #FFFFFF;
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  transform-origin: 0% center;
+  transform: scale3d(0, 1, 1);
+  will-change: transform;
+}
+
+.geo-square-dot {
+  background: #FFFFFF;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  z-index: 3;
+}
+
+.geo-card h2 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.geo-card p {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.geo-card p:last-child {
+  margin-bottom: 0;
+}
+
+.geo-card p strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+@media (max-width: 1024px) {
+  .geo-inner { padding: 0 48px; }
+}
+
+@media (max-width: 768px) {
+  .geo-section { padding: 48px 0; }
+  .geo-inner { padding: 0 20px; }
+  .geo-grid { display: flex; flex-direction: column; }
+  .geo-empty { display: none; }
+  .geo-card { border: 1px dashed var(--border) !important; margin-bottom: -1px; }
+  .geo-line-vertical, .geo-line-horizontal { display: none; }
+  .geo-square-dot { display: none; }
+  .geo-card h2 { font-size: 22px; }
+}
+
+/* ============================================================
+   SECTION 03: METHODOLOGY
+   ============================================================ */
+
+.method-section {
+  padding: 96px 0;
+}
+
+.method-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.method-header h2 {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  color: var(--white);
+}
+
+.method-header p {
+  font-size: 20px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.method-step {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  padding: 64px 0;
+  border-top: 1px solid var(--border);
+}
+
+.method-step:nth-child(even) .method-text { order: 2; }
+.method-step:nth-child(even) .method-visual { order: 1; }
+
+.method-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 18px;
+}
+
+.method-text h3 {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.method-text > p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 28px;
+}
+
+.why-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.why-box-label {
+  display: none;
+}
+
+.why-box-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg);
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 5px 12px;
+  border-radius: 0;
+  white-space: nowrap;
+}
+
+/* ===== VISUAL CARDS ===== */
+.visual-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  overflow: hidden;
+}
+
+.visual-card-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 20px;
+}
+
+/* Health Score Card */
+.health-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.health-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+}
+
+.health-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.health-item-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.health-item-score {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.health-item-score.high { color: var(--green); }
+.health-item-score.medium { color: var(--yellow); }
+.health-item-score.low { color: var(--red); }
+
+.health-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.health-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.health-bar-fill.high { background: var(--green); }
+.health-bar-fill.medium { background: var(--yellow); }
+.health-bar-fill.low { background: var(--red); }
+
+.health-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.health-footer span {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.health-footer .score-total {
+  font-weight: 700;
+  color: var(--yellow);
+}
+
+/* Topic Cluster Card */
+.cluster-map {
+  position: relative;
+  min-height: 240px;
+}
+
+.cluster-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--white);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 12px 20px;
+  border-radius: 6px;
+  text-align: center;
+  z-index: 2;
+}
+
+.cluster-node {
+  position: absolute;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 8px 14px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.cluster-node::before {
+  content: '';
+  position: absolute;
+  width: 1px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.cluster-line {
+  position: absolute;
+  background: var(--border);
+  z-index: 0;
+}
+
+.cluster-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+}
+
+.cluster-footer span {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* SERP Feature Card */
+.serp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.serp-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.serp-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.serp-icon {
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.serp-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.serp-status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.serp-status.captured {
+  background: rgba(34,197,94,0.12);
+  color: var(--green);
+}
+
+.serp-status.opportunity {
+  background: rgba(234,179,8,0.12);
+  color: var(--yellow);
+}
+
+.serp-status.missing {
+  background: rgba(239,68,68,0.1);
+  color: var(--red);
+}
+
+.serp-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.serp-footer span {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* Growth Flywheel Card */
+.growth-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.growth-metric {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.growth-metric-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.growth-metric-value.highlight { color: var(--green); }
+
+.growth-metric-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.growth-outlier-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+}
+
+.growth-outlier {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.growth-outlier-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.growth-outlier-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.growth-outlier-pct {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.growth-outlier-meta {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.growth-channels {
+  margin-top: 12px;
+}
+
+.growth-channels-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.growth-channel-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.growth-channel-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.audit-visual {
+  transition: transform 0.3s ease;
+}
+
+.audit-visual:hover {
+  transform: translateY(-4px);
+}
+
+/* ============================================================
+   SECTION 04: PROMPT MARQUEE
+   ============================================================ */
+
+.prompt-marquee {
+  padding: 140px 0;
+  text-align: center;
+  overflow: hidden;
+}
+
+.prompt-marquee-header {
+  margin-bottom: 48px;
+  padding: 0 24px;
+}
+
+.prompt-marquee-header h2 {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--white);
+}
+
+.prompt-marquee-header p {
+  font-size: 20px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.marquee-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.marquee-row {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.marquee-row:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.prompt-marquee .marquee-track {
+  display: flex;
+  width: max-content;
+}
+
+.marquee-track--left {
+  animation: marquee-left 35s linear infinite;
+}
+
+.marquee-track--right {
+  animation: marquee-right 35s linear infinite;
+}
+
+.marquee-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  margin-right: 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.marquee-card:hover {
+  border-color: rgba(255,255,255,0.15);
+  background: var(--bg-surface);
+}
+
+.marquee-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.marquee-card-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* ============================================================
+   SECTION 05: CTA + TEAM
+   ============================================================ */
+
+.cta-team {
+  padding: 96px 0;
+}
+
+.cta-team-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.team-intro h2 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.team-intro h2 .highlight {
+  background: rgba(255,255,255,0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.team-intro > p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.team-avatars {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.team-avatar-group {
+  display: flex;
+}
+
+.team-avatar-group .avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 2px solid var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--text-tertiary);
+  overflow: hidden;
+  transition: transform 0.3s ease, margin 0.3s ease;
+  cursor: pointer;
+}
+
+.team-avatar-group .avatar:hover {
+  transform: translateY(-4px) scale(1.1);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.team-avatar-group .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-avatar-group .avatar + .avatar {
+  margin-left: -12px;
+}
+
+.team-avatar-group:hover .avatar + .avatar {
+  margin-left: 4px;
+}
+
+.team-meta .team-names {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.team-meta .team-roles {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.cta-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px;
+  text-align: center;
+}
+
+.cta-card h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.cta-card > p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.cta-card .btn-cta {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.cta-card .cta-note {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1024px) {
+  .hero { border-left: none; border-right: none; max-width: 100%; }
+  .section-border { border-left: none; border-right: none; max-width: 100%; }
+  .container { padding: 0 48px; }
+  .method-step { gap: 32px; }
+  .prompt-marquee-header h2 { font-size: 42px; }
+  .problem-header h2 { font-size: 42px; }
+  .cta-team-grid { gap: 32px; }
+}
+
+@media (max-width: 768px) {
+  .header-nav { display: none; }
+  .container { padding: 0 24px; }
+
+  /* Hero */
+  .hero h1 { font-size: 28px; }
+  .rotating-icon { width: 24px; height: 24px; }
+  .rotating-text { gap: 6px; }
+  .hero-subtitle { font-size: 16px; }
+  .demo-showcase { max-width: 100%; }
+  .demo-tab { font-size: 12px; padding: 7px 14px; }
+
+  /* Problem */
+  .problem-section { padding: 96px 0; }
+  .problem-header h2 { font-size: 32px; }
+  .problem-header p { font-size: 17px; }
+  .chart-wrap { padding: 20px 16px 16px; }
+  .chart-legend { flex-wrap: wrap; }
+  .legend-item { flex: 0 0 calc(50% - 8px); }
+  .legend-num { font-size: 22px; }
+  .chart-title { font-size: 14px; }
+
+  /* Method */
+  .method-step {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .method-step:nth-child(even) .method-text { order: 1; }
+  .method-step:nth-child(even) .method-visual { order: 2; }
+  .method-header h2 { font-size: 26px; }
+  .growth-metrics { grid-template-columns: repeat(3, 1fr); }
+  .health-grid { grid-template-columns: 1fr; }
+
+  /* Prompt Marquee */
+  .prompt-marquee { padding: 96px 0; }
+  .prompt-marquee-header h2 { font-size: 32px; }
+  .prompt-marquee-header p { font-size: 17px; }
+  .marquee-card { padding: 10px 16px; }
+  .marquee-card-text { font-size: 13px; }
+
+  /* CTA */
+  .cta-team-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     SECTION 01: HEADER + HERO
+     ============================================================ -->
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <a href="../searchpolaris.html" class="header-logo">서치폴라리스 <span>/ SearchPolaris</span></a>
+    <nav class="header-nav">
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger">서비스 <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="../searchpolaris-methodology.html">GEO 최적화</a>
+          <a href="../searchpolaris-seo-methodology.html">SEO 최적화</a>
+          <a href="../searchpolaris-naver-seo-methodology.html">네이버</a>
+        </div>
+      </div>
+      <a href="../searchpolaris.html#case-study">성과</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#contact" class="btn-header">상담 신청</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="../sp-images/hero-bg.svg" alt="">
+  </div>
+  <div class="hero-content">
+    <h1>지금 이 순간,
+      <span class="rotating-text-wrapper">
+        <span class="rotating-text"><img src="../sp-images/icon-chatgpt-white.svg" alt="" class="rotating-icon">ChatGPT가</span>
+        <span class="rotating-text"><img src="../sp-images/icon-gemini-white.svg" alt="" class="rotating-icon">Gemini가</span>
+        <span class="rotating-text"><img src="../sp-images/icon-claude-white.svg" alt="" class="rotating-icon">Claude가</span>
+        <span class="rotating-text"><img src="../sp-images/icon-perplexity-white.svg" alt="" class="rotating-icon">Perplexity가</span>
+      </span>
+      <br>경쟁사 브랜드를 추천하고 있습니다.</h1>
+    <p class="hero-subtitle">AI가 모르면, 존재하지 않는 브랜드입니다. GEO, SEO, 네이버까지<br>GEO 최적화 업체 서치폴라리스와 상의해보세요.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-cta"><img src="../image/googlemeetlogo.png" alt="Google Meet" style="width:20px; height:auto; flex-shrink:0;">1:1 무료 진단받기</a>
+    </div>
+
+    <!-- Demo Showcase -->
+    <div class="demo-showcase">
+      <div class="demo-tabs">
+        <button class="demo-tab active" data-index="0">서비스</button>
+        <button class="demo-tab" data-index="1">커머스</button>
+        <button class="demo-tab" data-index="2">병원</button>
+      </div>
+      <div class="demo-video-wrap">
+        <video class="active" data-index="0" autoplay muted loop playsinline>
+          <source src="../video/hero-demo-cropped.mp4" type="video/mp4">
+        </video>
+        <video data-index="1" muted loop playsinline>
+          <source src="../video/hero-demo-cropped.mp4" type="video/mp4">
+        </video>
+        <video data-index="2" muted loop playsinline>
+          <source src="../video/hero-demo-cropped.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="demo-progress">
+        <div class="demo-progress-bar active" data-index="0"><div class="demo-progress-fill"></div></div>
+        <div class="demo-progress-bar" data-index="1"><div class="demo-progress-fill"></div></div>
+        <div class="demo-progress-bar" data-index="2"><div class="demo-progress-fill"></div></div>
+      </div>
+      <p class="demo-caption">실제 ChatGPT 검색 사례입니다.</p>
+    </div>
+
+    <div class="hero-platforms">
+      <p class="hero-platforms-label">Get mentioned in</p>
+      <div class="hero-icons">
+        <img src="../sp-images/icon-chatgpt-web.png" alt="ChatGPT" width="32" height="32">
+        <img src="../sp-images/icon-perplexity-web.png" alt="Perplexity" width="32" height="32">
+        <img src="../sp-images/icon-gemini-web.png" alt="Gemini" width="32" height="32" style="background:#fff; padding:3px;">
+        <img src="../sp-images/icon-claude-web.png" alt="Claude" width="32" height="32">
+        <img src="../sp-images/icon-google-g-logo.svg" alt="Google AI Overview" width="32" height="32" style="background:#fff; padding:4px;">
+        <img src="../sp-images/icon-naver.png" alt="Naver" width="32" height="32">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO MARQUEE -->
+<section class="portfolio-marquee">
+  <p class="portfolio-marquee-label">Trusted by leading brands</p>
+  <div class="marquee-track">
+    <!-- 원본 8개 -->
+    <div class="marquee-item">
+      <img src="../sp-images/logo-meitu-w.png" alt="메이투" style="height:28px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-esther-w.png" alt="에스더포뮬러" style="height:15px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-brighteyes-w.svg" alt="밝은눈안과" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-skyeye-w.svg" alt="하늘안과" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-korea-univ-w.png" alt="고려대학교" style="height:28px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-polytech-w.png" alt="한국폴리텍대학" style="height:36px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-kg-eduone-w.png" alt="KG에듀원" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-neowiz-w.svg" alt="네오위즈" />
+    </div>
+    <!-- 복제 (무한루프) -->
+    <div class="marquee-item">
+      <img src="../sp-images/logo-meitu-w.png" alt="메이투" style="height:28px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-esther-w.png" alt="에스더포뮬러" style="height:15px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-brighteyes-w.svg" alt="밝은눈안과" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-skyeye-w.svg" alt="하늘안과" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-korea-univ-w.png" alt="고려대학교" style="height:28px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-polytech-w.png" alt="한국폴리텍대학" style="height:36px" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-kg-eduone-w.png" alt="KG에듀원" />
+    </div>
+    <div class="marquee-item">
+      <img src="../sp-images/logo-neowiz-w.svg" alt="네오위즈" />
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 02: PROBLEM
+     ============================================================ -->
+
+<div class="section-divider"></div>
+
+<div class="section-border">
+  <section class="problem-section">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="problem-header">
+        <span class="sp-badge">Don't fall behind</span>
+        <h2>먼저 시작하면 기준이 됩니다</h2>
+        <p>1년 뒤, 같은 자리를 잡는 비용은 지금의 몇 배가 됩니다. 상위 25% 브랜드는 나머지보다 10배 더 많이 노출됩니다.</p>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-wrap">
+        <h3 class="chart-title">AI 브랜드 언급 시계열별 추정치</h3>
+
+        <!-- Legend -->
+        <div class="chart-legend">
+          <div class="legend-item">
+            <span class="legend-label"><span class="legend-dot c1"></span>상위 25%</span>
+            <div class="legend-value">
+              <span class="legend-num">90.4%</span>
+              <span class="legend-change up">+10x</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="legend-label"><span class="legend-dot c2"></span>상위 25-50%</span>
+            <div class="legend-value">
+              <span class="legend-num">7.5%</span>
+              <span class="legend-change down">+5x</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="legend-label"><span class="legend-dot c3"></span>상위 50-75%</span>
+            <div class="legend-value">
+              <span class="legend-num">1.6%</span>
+              <span class="legend-change down">+3x</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="legend-label"><span class="legend-dot c4"></span>하위 25%</span>
+            <div class="legend-value">
+              <span class="legend-num">0.5%</span>
+              <span class="legend-change down">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SVG Line Chart -->
+        <div class="chart-area">
+          <svg viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid meet">
+            <!-- Grid lines -->
+            <line x1="60" y1="40" x2="960" y2="40" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="60" y1="112" x2="960" y2="112" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="60" y1="184" x2="960" y2="184" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="60" y1="256" x2="960" y2="256" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="60" y1="328" x2="960" y2="328" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+            <!-- Y-axis labels -->
+            <text x="45" y="44" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">100%</text>
+            <text x="45" y="116" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">75%</text>
+            <text x="45" y="188" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">50%</text>
+            <text x="45" y="260" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">25%</text>
+            <text x="45" y="332" text-anchor="end" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">0%</text>
+
+            <!-- X-axis labels -->
+            <text x="120" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q1 '24</text>
+            <text x="300" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q2 '24</text>
+            <text x="480" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q3 '24</text>
+            <text x="660" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q4 '24</text>
+            <text x="840" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q1 '25</text>
+            <text x="950" y="370" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="12" font-family="Menlo,Monaco,monospace">Q2 '25</text>
+
+            <!-- Line 1: 상위 25% -->
+            <polyline class="chart-line"
+              points="80,310 180,305 300,290 400,260 480,220 580,170 660,130 740,95 840,68 950,55"
+              fill="none" stroke="#FF4500" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle class="chart-endpoint" cx="950" cy="55" r="5" fill="#FF4500"/>
+
+            <!-- Line 2: 상위 25-50% -->
+            <polyline class="chart-line"
+              points="80,312 180,310 300,305 400,296 480,285 580,272 660,260 740,250 840,242 950,238"
+              fill="none" stroke="#D4793A" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle class="chart-endpoint" cx="950" cy="238" r="5" fill="#D4793A"/>
+
+            <!-- Line 3: 상위 50-75% -->
+            <polyline class="chart-line"
+              points="80,314 180,313 300,311 400,308 480,305 580,302 660,300 740,298 840,296 950,295"
+              fill="none" stroke="#A8876E" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle class="chart-endpoint" cx="950" cy="295" r="5" fill="#A8876E"/>
+
+            <!-- Line 4: 하위 25% -->
+            <polyline class="chart-line"
+              points="80,316 180,316 300,316 400,316 480,316 580,316 660,317 740,317 840,318 950,318"
+              fill="none" stroke="#868B90" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle class="chart-endpoint" cx="950" cy="318" r="5" fill="#868B90"/>
+          </svg>
+        </div>
+
+        <p class="chart-source">— <a href="https://ahrefs.com/blog/ai-overview-brand-correlation/" target="_blank" rel="noopener">Ahrefs, 75,000개 브랜드 AI Overview 가시성 요인 분석 (2025)</a></p>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     SECTION 02.5: GEO STAIRCASE
+     ============================================================ -->
+
+<div class="section-divider"></div>
+
+<div class="section-border">
+  <section class="geo-section">
+    <div class="geo-inner">
+      <div class="geo-grid" id="geoGrid">
+
+        <div class="geo-card geo-card--1">
+          <div class="geo-square-dot"></div>
+          <div class="geo-line-vertical" data-geo-seg="0"></div>
+          <h2>GEO란 무엇인가요?</h2>
+          <p>GEO(Generative Engine Optimization)는 <strong>AI 검색 엔진에서 브랜드가 추천되도록 최적화</strong>하는 전략입니다. ChatGPT, Gemini, Perplexity 같은 AI 플랫폼이 답변을 생성할 때, 여러분의 브랜드가 언급되도록 만드는 것이 핵심입니다.</p>
+          <p>기존 SEO가 구글 검색 결과 순위를 높이는 데 집중했다면, GEO는 <strong>AI가 참조하는 정보의 품질과 구조를 최적화</strong>합니다.</p>
+          <div class="geo-line-horizontal" data-geo-seg="1"></div>
+        </div>
+
+        <div class="geo-empty geo-empty--2"></div>
+        <div class="geo-empty geo-empty--3"></div>
+
+        <div class="geo-empty geo-empty--4">
+          <div class="geo-square-dot"></div>
+        </div>
+
+        <div class="geo-card geo-card--2">
+          <div class="geo-square-dot"></div>
+          <div class="geo-line-vertical" data-geo-seg="2"></div>
+          <h2>어떻게 작동하나요?</h2>
+          <p>AI는 웹상의 콘텐츠를 학습하고 종합하여 답변을 생성합니다. <strong>브랜드의 전문성, 신뢰도, 콘텐츠 구조</strong>를 체계적으로 구축하면 AI가 답변 생성 시 여러분의 브랜드를 자연스럽게 인용합니다.</p>
+          <p>서치폴라리스는 <strong>AI 플랫폼별 인용 패턴을 분석</strong>하고, 데이터 기반의 콘텐츠 전략을 수립하여 브랜드의 AI 검색 가시성을 극대화합니다.</p>
+          <div class="geo-line-horizontal" data-geo-seg="3"></div>
+        </div>
+
+        <div class="geo-empty geo-empty--6"></div>
+        <div class="geo-empty geo-empty--7"></div>
+
+        <div class="geo-empty geo-empty--8">
+          <div class="geo-square-dot"></div>
+        </div>
+
+        <div class="geo-card geo-card--3">
+          <div class="geo-square-dot"></div>
+          <div class="geo-line-vertical" data-geo-seg="4"></div>
+          <h2>어떤 효과가 있나요?</h2>
+          <p>GEO를 도입한 브랜드는 <strong>AI 플랫폼에서의 멘션율이 평균 3배 이상 증가</strong>했습니다. 고객이 AI에게 질문할 때, 경쟁사가 아닌 여러분의 브랜드가 추천됩니다.</p>
+          <p>AI 검색 시장은 매년 급성장하고 있으며, 지금 시작하지 않으면 경쟁사에게 자리를 빼앗깁니다. <strong>AI가 모르면, 존재하지 않는 브랜드입니다.</strong></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     SECTION 03: METHODOLOGY
+     ============================================================ -->
+
+<div class="section-divider"></div>
+
+<div class="section-border">
+  <section class="method-section">
+    <div class="container">
+      <div class="method-header">
+        <h2>브랜드를 발견되게 만드는 방법</h2>
+        <p>AI와 검색엔진, 어디서든 추천받는 브랜드로 만듭니다. SEO와 GEO를 통합 설계하여 귀사가 선택받는 구조를 구축합니다.</p>
+      </div>
+
+      <!-- STEP 1: AUDIT -->
+      <div class="method-step">
+        <div class="method-text">
+          <div class="method-label">01/ AI Audit</div>
+          <h3>귀사의 브랜드를 진단합니다. (200+ 항목)</h3>
+          <p>귀사의 웹사이트가 AI와 검색엔진에 제대로 읽히고 있는지 구조, 콘텐츠, 기술 요소를 진단합니다. 진단 결과는 개선 우선순위가 포함된 리포트로 제공됩니다.</p>
+          <div class="why-box">
+            <span class="why-box-tag">기술 GEO 진단</span>
+            <span class="why-box-tag">AI 검색 결과 분석</span>
+            <span class="why-box-tag">구조화 데이터 점검</span>
+            <span class="why-box-tag">인용 현황 분석</span>
+          </div>
+        </div>
+        <div class="method-visual">
+          <div class="visual-card audit-visual" style="padding: 20px; background: linear-gradient(135deg, #FF6B00 0%, #FF8C00 25%, #FF4500 50%, #FF7518 75%, #FFA500 100%); border: none; border-radius: 0; position: relative; min-height: 360px;">
+            <img src="../section/Process_1-2.png" alt="GEO Checklist" style="width: 80%; height: auto; display: block; border-radius: 0; box-shadow: 0 8px 32px rgba(0,0,0,0.2); position: relative; z-index: 1; filter: blur(0.8px);">
+            <img src="../section/Process_1-1.png" alt="Screaming Frog SEO Audit" style="width: 80%; height: auto; display: block; border-radius: 0; box-shadow: 0 12px 40px rgba(0,0,0,0.3); position: absolute; bottom: 12px; right: 12px; z-index: 2; filter: blur(0.8px);">
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: ARCHITECT -->
+      <div class="method-step">
+        <div class="method-text">
+          <div class="method-label">02/ Technical GEO</div>
+          <h3>AI가 인용할 수밖에 없는 사이트 구조를 만듭니다.</h3>
+          <p>AI와 검색엔진이 귀사의 콘텐츠를 정확히 이해하고 우선 인용하도록 웹사이트의 기술적 토대를 개선합니다.</p>
+          <div class="why-box">
+            <span class="why-box-tag">robots.txt</span>
+            <span class="why-box-tag">llms.txt</span>
+            <span class="why-box-tag">sitemap.xml</span>
+            <span class="why-box-tag">인덱싱&크롤링</span>
+            <span class="why-box-tag">AI 크롤러 최적화</span>
+          </div>
+        </div>
+        <div class="method-visual">
+          <div class="visual-card audit-visual" style="padding: 22px; background: linear-gradient(135deg, #FF6B00 0%, #FF8C00 25%, #FF4500 50%, #FF7518 75%, #FFA500 100%); border: none; border-radius: 0;">
+            <img src="../section/Process_2.png" alt="Technical GEO Dashboard" style="width: 100%; height: auto; display: block; border-radius: 0; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: ACCELERATE -->
+      <div class="method-step">
+        <div class="method-text">
+          <div class="method-label">03/ Brand Entity GEO</div>
+          <h3>브랜드 엔티티를 최적화합니다.</h3>
+          <p>AI가 귀사의 브랜드를 단순 키워드가 아닌 '고유 엔티티(개체)'로 인식하게 만듭니다. 브랜드명을 말하면 AI가 즉시 연결하는 상태를 목표로 합니다.</p>
+          <div class="why-box">
+            <span class="why-box-tag">스키마 마크업</span>
+            <span class="why-box-tag">지식 그래프 구축</span>
+            <span class="why-box-tag">엔티티 연결</span>
+            <span class="why-box-tag">권위 소스 정비</span>
+          </div>
+        </div>
+        <div class="method-visual">
+          <div class="visual-card audit-visual" style="padding: 22px; background: linear-gradient(135deg, #FF6B00 0%, #FF8C00 25%, #FF4500 50%, #FF7518 75%, #FFA500 100%); border: none; border-radius: 0;">
+            <iframe src="../section/knowledge-graph-lg.html?embed" style="width:100%; aspect-ratio:900/620; border:none; display:block; box-shadow:0 8px 32px rgba(0,0,0,0.15); background:#fff;" scrolling="no"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: AMPLIFY -->
+      <div class="method-step">
+        <div class="method-text">
+          <div class="method-label">04/ Off Site GEO</div>
+          <h3>외부 신뢰를 구축합니다.</h3>
+          <p>AI는 웹사이트 밖의 신호도 평가합니다. 외부에서 귀사의 브랜드가 신뢰할 수 있는 출처로 언급되도록 설계합니다.</p>
+          <div class="why-box">
+            <span class="why-box-tag">디지털 PR</span>
+            <span class="why-box-tag">백링크 구축</span>
+            <span class="why-box-tag">커뮤니티 마케팅</span>
+            <span class="why-box-tag">평판 관리</span>
+          </div>
+        </div>
+        <div class="method-visual">
+          <div class="visual-card audit-visual" style="padding: 22px; background: linear-gradient(135deg, #FF6B00 0%, #FF8C00 25%, #FF4500 50%, #FF7518 75%, #FFA500 100%); border: none; border-radius: 0;">
+            <img src="../section/Process_4.png" alt="Off Site GEO Process" style="width: 100%; height: auto; display: block; border-radius: 0; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     SECTION 04: PROMPT MARQUEE
+     ============================================================ -->
+
+<div class="section-divider"></div>
+
+<div class="section-border">
+  <section class="prompt-marquee">
+    <div class="prompt-marquee-header">
+      <span class="sp-badge">AI Prompts</span>
+      <h2>수천개의 프롬프트에 노출되세요</h2>
+      <p>매일 수백만 건의 AI 검색이 일어납니다. 이 질문들에 브랜드가 등장하지 않으면, 기회를 놓치고 있는 것입니다.</p>
+    </div>
+    <div class="marquee-rows">
+      <!-- Row 1: Left scroll -->
+      <div class="marquee-row">
+        <div class="marquee-track marquee-track--left">
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-chatgpt-web.png" alt="ChatGPT"><span class="marquee-card-text">스마일라식 안전성 높은 안과 추천해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-perplexity-web.png" alt="Perplexity"><span class="marquee-card-text">오메가3 흡수율 높은 브랜드 추천해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-gemini-web.png" alt="Gemini"><span class="marquee-card-text">강남 임플란트 잘하는 치과 비교해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-naver.png" alt="Naver"><span class="marquee-card-text">남성 탈모 샴푸 효과 좋은 제품 추천</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-chatgpt-web.png" alt="ChatGPT"><span class="marquee-card-text">비절개 눈매교정 후기 좋은 성형외과는?</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-chatgpt-web.png" alt="ChatGPT"><span class="marquee-card-text">스마일라식 안전성 높은 안과 추천해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-perplexity-web.png" alt="Perplexity"><span class="marquee-card-text">오메가3 흡수율 높은 브랜드 추천해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-gemini-web.png" alt="Gemini"><span class="marquee-card-text">강남 임플란트 잘하는 치과 비교해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-naver.png" alt="Naver"><span class="marquee-card-text">남성 탈모 샴푸 효과 좋은 제품 추천</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-chatgpt-web.png" alt="ChatGPT"><span class="marquee-card-text">비절개 눈매교정 후기 좋은 성형외과는?</span></div>
+        </div>
+      </div>
+      <!-- Row 2: Right scroll -->
+      <div class="marquee-row">
+        <div class="marquee-track marquee-track--right" style="animation-duration:30s">
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-perplexity-web.png" alt="Perplexity"><span class="marquee-card-text">B2B 마케팅 자동화 툴 비교해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-chatgpt-web.png" alt="ChatGPT"><span class="marquee-card-text">무선 청소기 성능 좋은 모델 추천해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-gemini-web.png" alt="Gemini"><span class="marquee-card-text">스타트업에 적합한 CRM 비교해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-naver.png" alt="Naver"><span class="marquee-card-text">아기 분유 성분 안전한 브랜드 비교</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-perplexity-web.png" alt="Perplexity"><span class="marquee-card-text">전자계약 솔루션 도입 시 비교 분석</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-perplexity-web.png" alt="Perplexity"><span class="marquee-card-text">B2B 마케팅 자동화 툴 비교해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-chatgpt-web.png" alt="ChatGPT"><span class="marquee-card-text">무선 청소기 성능 좋은 모델 추천해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-gemini-web.png" alt="Gemini"><span class="marquee-card-text">스타트업에 적합한 CRM 비교해줘</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-naver.png" alt="Naver"><span class="marquee-card-text">아기 분유 성분 안전한 브랜드 비교</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-perplexity-web.png" alt="Perplexity"><span class="marquee-card-text">전자계약 솔루션 도입 시 비교 분석</span></div>
+        </div>
+      </div>
+      <!-- Row 3: Left scroll -->
+      <div class="marquee-row">
+        <div class="marquee-track marquee-track--left" style="animation-duration:40s">
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-naver.png" alt="Naver"><span class="marquee-card-text">소아 교정 전문 치과 어디가 좋아?</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-perplexity-web.png" alt="Perplexity"><span class="marquee-card-text">단백질 보충제 가성비 좋은 제품 비교</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-chatgpt-web.png" alt="ChatGPT"><span class="marquee-card-text">클라우드 ERP 중소기업에 맞는 솔루션은?</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-gemini-web.png" alt="Gemini"><span class="marquee-card-text">반려동물 사료 프리미엄 브랜드 추천</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-naver.png" alt="Naver"><span class="marquee-card-text">체외충격파 치료 잘하는 정형외과 추천</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-naver.png" alt="Naver"><span class="marquee-card-text">소아 교정 전문 치과 어디가 좋아?</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-perplexity-web.png" alt="Perplexity"><span class="marquee-card-text">단백질 보충제 가성비 좋은 제품 비교</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-chatgpt-web.png" alt="ChatGPT"><span class="marquee-card-text">클라우드 ERP 중소기업에 맞는 솔루션은?</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-gemini-web.png" alt="Gemini"><span class="marquee-card-text">반려동물 사료 프리미엄 브랜드 추천</span></div>
+          <div class="marquee-card"><img class="marquee-icon" src="../sp-images/icon-naver.png" alt="Naver"><span class="marquee-card-text">체외충격파 치료 잘하는 정형외과 추천</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     SECTION 05: CTA + TEAM
+     ============================================================ -->
+
+<div class="section-divider"></div>
+
+<div class="section-border" id="contact">
+  <section class="cta-team">
+    <div class="container">
+      <div class="cta-team-grid">
+        <div class="team-intro">
+          <h2>GEO 엔지니어와 콘텐츠 전문가가<br><span class="highlight">당신의 팀</span>으로 일합니다.</h2>
+          <p>AI 검색 노출은 예고 없이 바뀝니다. 서치폴라리스는 브랜드의 AI 가시성을 상시 모니터링하고, 무슨 일이 생겨도 1시간 이내에 원인 분석과 해결까지 완료합니다.</p>
+          <div class="team-avatars">
+            <div class="team-avatar-group">
+              <div class="avatar"><img src="../image/consultant_1.png" alt="컨설턴트 1"></div>
+              <div class="avatar"><img src="../image/consultant_2.png" alt="컨설턴트 2"></div>
+            </div>
+            <div class="team-meta">
+              <div class="team-names">서치폴라리스 팀</div>
+              <div class="team-roles">GEO 모니터링 + 1시간 내 긴급 대응</div>
+            </div>
+          </div>
+        </div>
+        <div class="cta-card">
+          <h3>지금 AI 답변 리스크를 점검하세요</h3>
+          <p>무료 AI 가시성 진단으로 현재 브랜드의 AI 검색 노출 상태와 오답변 리스크를 확인해 드립니다.</p>
+          <a href="#" class="btn-cta"><img src="../image/googlemeetlogo.png" alt="Google Meet" style="width:20px; height:auto; flex-shrink:0;">무료 진단 신청하기</a>
+          <p class="cta-note">부담 없이 30분 통화</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script>
+// Demo tab switching + progress bar (Section 01)
+(function() {
+  const tabs = document.querySelectorAll('.demo-tab');
+  const videos = document.querySelectorAll('.demo-video-wrap video:not(.demo-video-sizer)');
+  const bars = document.querySelectorAll('.demo-progress-bar');
+  const INTERVAL = 5000;
+  let current = 0;
+  let timer = null;
+
+  function switchTo(index) {
+    tabs.forEach(t => t.classList.remove('active'));
+    tabs[index].classList.add('active');
+
+    videos.forEach(v => {
+      v.classList.remove('active');
+      v.pause();
+      v.currentTime = 0;
+    });
+    videos[index].classList.add('active');
+    videos[index].play();
+
+    bars.forEach(b => b.classList.remove('active'));
+    void bars[index].offsetWidth;
+    bars[index].classList.add('active');
+
+    current = index;
+  }
+
+  function next() {
+    switchTo((current + 1) % 3);
+  }
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(next, INTERVAL);
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      switchTo(parseInt(tab.dataset.index));
+      startTimer();
+    });
+  });
+
+  bars.forEach(bar => {
+    bar.addEventListener('click', () => {
+      switchTo(parseInt(bar.dataset.index));
+      startTimer();
+    });
+  });
+
+  startTimer();
+})();
+
+// Rotating text for hero headline (Section 01)
+(function() {
+  const items = document.querySelectorAll('.rotating-text');
+  const wrapper = document.querySelector('.rotating-text-wrapper');
+  if (!items.length || !wrapper) return;
+  let idx = 0;
+
+  function updateWidth() {
+    const active = items[idx];
+    wrapper.style.width = active.scrollWidth + 'px';
+  }
+
+  document.fonts.ready.then(() => {
+    items[0].classList.add('active');
+    updateWidth();
+  });
+
+  setInterval(() => {
+    items[idx].classList.remove('active');
+    idx = (idx + 1) % items.length;
+    items[idx].classList.add('active');
+    updateWidth();
+  }, 3000);
+})();
+
+// Chart scroll animation (Section 02)
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const chart = document.querySelector('.chart-area');
+  if (chart) observer.observe(chart);
+})();
+
+// GEO Staircase scroll animation
+(function() {
+  const geoSection = document.querySelector('.geo-section');
+  if (!geoSection) return;
+  const TOTAL_SEGS = 5;
+  const geoLines = document.querySelectorAll('[data-geo-seg]');
+
+  function getGeoProgress() {
+    const rect = geoSection.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const start = rect.top - vh * 0.7;
+    const end = rect.bottom - vh * 0.5;
+    const total = end - start;
+    if (total <= 0) return 1;
+    return Math.max(0, Math.min(1, -start / total));
+  }
+
+  function getSegP(segIndex, globalP) {
+    const segWidth = 1 / TOTAL_SEGS;
+    const overlap = segWidth * 0.3;
+    const segStart = segIndex * segWidth;
+    const segEnd = segStart + segWidth + overlap;
+    if (globalP <= segStart) return 0;
+    if (globalP >= segEnd) return 1;
+    return (globalP - segStart) / (segEnd - segStart);
+  }
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+  let geoTicking = false;
+
+  function geoUpdate() {
+    if (window.innerWidth <= 768) { geoTicking = false; return; }
+    const progress = getGeoProgress();
+    geoLines.forEach(function(line) {
+      var seg = parseInt(line.dataset.geoSeg);
+      var p = easeOut(getSegP(seg, progress));
+      if (line.classList.contains('geo-line-horizontal')) {
+        line.style.transform = 'scale3d(' + p + ', 1, 1)';
+      } else {
+        line.style.transform = 'scale3d(1, ' + p + ', 1)';
+      }
+    });
+    geoTicking = false;
+  }
+
+  function onGeoScroll() {
+    if (!geoTicking) {
+      geoTicking = true;
+      requestAnimationFrame(geoUpdate);
+    }
+  }
+
+  window.addEventListener('scroll', onGeoScroll, { passive: true });
+  window.addEventListener('resize', onGeoScroll, { passive: true });
+  geoUpdate();
+})();
+</script>
+
+</body>
+</html>

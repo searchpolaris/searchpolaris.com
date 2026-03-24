@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>네이버 SEO 방법론 - 서치폴라리스 | 네이버 검색 최적화 에이전시</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { font-family: inherit; border: none; cursor: pointer; }
+
+/* ===== DESIGN SYSTEM ===== */
+:root {
+  --bg: #08090A;
+  --bg-elevated: #111214;
+  --bg-surface: #18191C;
+  --border: #232323;
+  --border-light: rgba(255,255,255,0.08);
+  --text-primary: rgba(255,255,255,0.95);
+  --text-secondary: rgba(255,255,255,0.5);
+  --text-tertiary: rgba(255,255,255,0.35);
+  --text-muted: rgba(255,255,255,0.2);
+  --white: #FFFFFF;
+  --accent: #FFFFFF;
+  --green: #22c55e;
+  --yellow: #eab308;
+  --red: #ef4444;
+  --naver-green: #03c75a;
+  --radius: 8px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+/* ===== BASE ===== */
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 120px;
+}
+
+.container-narrow {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== HEADER ===== */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: 64px;
+  background: rgba(8,9,10,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.header-logo {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.header-logo span {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-nav > a,
+.nav-dropdown > .nav-dropdown-trigger {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  transition: color 0.2s;
+  letter-spacing: 0.01em;
+  background: none;
+  padding: 0;
+}
+
+.header-nav > a:hover,
+.header-nav > a.active,
+.nav-dropdown:hover > .nav-dropdown-trigger,
+.nav-dropdown.active > .nav-dropdown-trigger { color: var(--text-primary); }
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.nav-dropdown-trigger svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  transition: transform 0.2s;
+}
+
+.nav-dropdown:hover .nav-dropdown-trigger svg {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 160px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 999;
+}
+
+.nav-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 0;
+  right: 0;
+  height: 16px;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-dropdown-menu a {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.nav-dropdown-menu a:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+}
+
+.nav-dropdown-menu a.active {
+  color: var(--text-primary);
+}
+
+.btn-header {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--white);
+  padding: 8px 20px;
+  border-radius: var(--radius);
+  transition: opacity 0.2s;
+}
+
+.btn-header:hover { opacity: 0.9; }
+
+/* ===== SECTION SHARED ===== */
+.section-border {
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  padding-top: 144px;
+  padding-bottom: 80px;
+  text-align: center;
+  overflow: hidden;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 80px 32px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 16px;
+}
+
+.hero-naver-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.hero-naver-logo svg {
+  width: 56px;
+  height: 56px;
+  filter: drop-shadow(0 0 24px rgba(3,199,90,0.25)) drop-shadow(0 0 64px rgba(3,199,90,0.10));
+}
+
+.hero-naver-logo::after {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(3,199,90,0.10) 0%, rgba(3,199,90,0.03) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.hero h1 {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.21;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  max-width: 700px;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 560px;
+}
+
+.btn-cta {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: #111111;
+  background: var(--white);
+  padding: 16px 32px;
+  border-radius: var(--radius);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  display: inline-block;
+}
+
+.btn-cta:hover {
+  background: rgba(255,255,255,0.9);
+  transform: translateY(-1px);
+}
+
+/* ===== TRUSTED BY ===== */
+.trusted-by {
+  padding: 48px 0;
+  text-align: center;
+}
+
+.trusted-by-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.trusted-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+
+.trusted-logo {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 0.02em;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.trusted-logo:hover { opacity: 0.8; }
+
+/* ===== TESTIMONIAL ===== */
+.testimonial {
+  padding: 64px 0;
+}
+
+.testimonial-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px;
+}
+
+.testimonial-logo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+}
+
+.testimonial-quote {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonial-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--text-tertiary);
+}
+
+.testimonial-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.testimonial-role {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* ===== DIFFERENTIATORS ===== */
+.differentiators {
+  padding: 96px 0;
+}
+
+.diff-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.diff-header h2 {
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.diff-header p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.diff-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.diff-card {
+  background: var(--bg-elevated);
+  padding: 36px;
+}
+
+.diff-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.diff-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ===== 4-STEP METHOD ===== */
+.method-section {
+  padding: 96px 0;
+}
+
+.method-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.method-header h2 {
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.method-header p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.method-step {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  padding: 64px 0;
+  border-top: 1px solid var(--border);
+}
+
+.method-step:nth-child(even) .method-text { order: 2; }
+.method-step:nth-child(even) .method-visual { order: 1; }
+
+.method-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 16px;
+}
+
+.method-text h3 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.method-text > p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+
+.why-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+}
+
+.why-box-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.why-box p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ===== VISUAL CARDS ===== */
+.visual-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  overflow: hidden;
+}
+
+.visual-card-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 20px;
+}
+
+/* -- Naver Tab Visibility Card -- */
+.naver-tab-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.naver-tab-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.naver-tab-header span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.naver-tab-header span:first-child { color: transparent; }
+
+.naver-tab-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.naver-tab-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.naver-tab-status.visible {
+  background: rgba(34,197,94,0.12);
+  color: var(--green);
+}
+
+.naver-tab-status.partial {
+  background: rgba(234,179,8,0.12);
+  color: var(--yellow);
+}
+
+.naver-tab-status.invisible {
+  background: rgba(239,68,68,0.1);
+  color: var(--red);
+}
+
+.naver-tab-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.naver-tab-footer span {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* -- C-Rank Score Card -- */
+.crank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.crank-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+}
+
+.crank-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.crank-item-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.crank-item-score {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.crank-item-score.high { color: var(--green); }
+.crank-item-score.medium { color: var(--yellow); }
+.crank-item-score.low { color: var(--red); }
+
+.crank-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.crank-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.crank-bar-fill.high { background: var(--green); }
+.crank-bar-fill.medium { background: var(--yellow); }
+.crank-bar-fill.low { background: var(--red); }
+
+.crank-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.crank-footer span {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.crank-footer .score-total {
+  font-weight: 700;
+  color: var(--yellow);
+}
+
+/* -- Smart Block Card -- */
+.smartblock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.smartblock-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.smartblock-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.smartblock-icon {
+  font-size: 14px;
+  width: 32px;
+  height: 32px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+}
+
+.smartblock-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.smartblock-status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.smartblock-status.active {
+  background: rgba(34,197,94,0.12);
+  color: var(--green);
+}
+
+.smartblock-status.targeting {
+  background: rgba(234,179,8,0.12);
+  color: var(--yellow);
+}
+
+.smartblock-status.planned {
+  background: rgba(255,255,255,0.06);
+  color: var(--text-tertiary);
+}
+
+.smartblock-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.smartblock-footer span {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* -- Growth Flywheel Card -- */
+.naver-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.naver-metric {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.naver-metric-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.naver-metric-value.highlight { color: var(--green); }
+
+.naver-metric-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.naver-outlier-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+}
+
+.naver-outlier {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.naver-outlier-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.naver-outlier-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.naver-outlier-pct {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.naver-outlier-meta {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.naver-channels {
+  margin-top: 12px;
+}
+
+.naver-channels-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.naver-channel-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.naver-channel-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* ===== RESULTS ===== */
+.results-section {
+  padding: 96px 0;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.results-header h2 {
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.results-header p {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.result-card {
+  background: var(--bg-elevated);
+  padding: 36px;
+}
+
+.result-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 16px;
+}
+
+.result-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.result-link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s, gap 0.2s;
+}
+
+.result-link:hover { color: var(--text-primary); gap: 12px; }
+
+.result-link svg {
+  width: 14px; height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ===== PROPRIETARY TECH ===== */
+.tech-section {
+  padding: 96px 0;
+}
+
+.tech-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.tech-left h2 {
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.tech-left > p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.tech-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tech-tab {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  transition: all 0.2s;
+}
+
+.tech-tab.active {
+  background: var(--white);
+  color: var(--bg);
+  border-color: var(--white);
+}
+
+.tech-tab:hover:not(.active) {
+  border-color: rgba(255,255,255,0.15);
+  color: var(--text-secondary);
+}
+
+.tech-description {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+}
+
+.tech-visual {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+
+.tech-visual-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 20px;
+}
+
+.tech-channel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.tech-channel-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  text-align: center;
+}
+
+.tech-channel-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+}
+
+.tech-channel-status {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.tech-channel-status.top { color: var(--green); }
+.tech-channel-status.rising { color: var(--yellow); }
+.tech-channel-status.needs-work { color: var(--red); }
+
+.tech-visual-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ===== FAQ ===== */
+.faq {
+  padding: 96px 0;
+}
+
+.faq h2 {
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 48px;
+  letter-spacing: -0.02em;
+}
+
+.faq-item { border-bottom: 1px solid var(--border); }
+
+.faq-question {
+  width: 100%;
+  background: none;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 24px 0;
+  transition: color 0.2s;
+}
+
+.faq-question:hover { color: var(--white); }
+
+.faq-question::after {
+  content: '+';
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.faq-item.open .faq-question::after { content: '\2212'; }
+
+.faq-answer {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  padding-bottom: 24px;
+  display: none;
+}
+
+.faq-item.open .faq-answer { display: block; }
+
+/* ===== CTA + TEAM ===== */
+.cta-team {
+  padding: 96px 0;
+}
+
+.cta-team-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.team-intro h2 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.team-intro h2 .highlight {
+  background: rgba(255,255,255,0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.team-intro > p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.team-avatars {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.team-avatar-group {
+  display: flex;
+}
+
+.team-avatar-group .avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 2px solid var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--text-tertiary);
+}
+
+.team-avatar-group .avatar + .avatar {
+  margin-left: -12px;
+}
+
+.team-meta .team-names {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.team-meta .team-roles {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.cta-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px;
+  text-align: center;
+}
+
+.cta-card h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.cta-card > p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.cta-card .btn-cta {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.cta-card .cta-note {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 36px 0 0;
+}
+
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 28px;
+}
+
+.footer-logo {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.footer-logo span { color: var(--text-tertiary); font-weight: 400; }
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--text-primary); }
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding: 16px 0;
+  text-align: center;
+}
+
+.footer-bottom p {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content > * {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.hero-content > *:nth-child(1) { animation-delay: 0.05s; }
+.hero-content > *:nth-child(2) { animation-delay: 0.15s; }
+.hero-content > *:nth-child(3) { animation-delay: 0.25s; }
+.hero-content > *:nth-child(4) { animation-delay: 0.35s; }
+.hero-content > *:nth-child(5) { animation-delay: 0.4s; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .container { padding: 0 48px; }
+  .hero { border-left: none; border-right: none; max-width: 100%; }
+  .section-border { border-left: none; border-right: none; max-width: 100%; }
+  .method-step { gap: 32px; }
+  .tech-card { gap: 32px; }
+  .cta-team-grid { gap: 32px; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+  .container-narrow { padding: 0 24px; }
+  .header-nav { display: none; }
+  .hero h1 { font-size: 28px; }
+  .hero-subtitle { font-size: 16px; }
+  .diff-grid { grid-template-columns: 1fr; }
+  .method-step {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .method-step:nth-child(even) .method-text { order: 1; }
+  .method-step:nth-child(even) .method-visual { order: 2; }
+  .results-grid { grid-template-columns: 1fr; }
+  .tech-card { grid-template-columns: 1fr; }
+  .cta-team-grid { grid-template-columns: 1fr; }
+  .trusted-logos { flex-wrap: wrap; gap: 24px; }
+  .footer-top { flex-direction: column; gap: 20px; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+  .diff-header h2,
+  .method-header h2,
+  .results-header h2 { font-size: 26px; }
+  .naver-metrics { grid-template-columns: repeat(3, 1fr); }
+  .tech-channel-grid { grid-template-columns: 1fr 1fr; }
+  .testimonial-quote { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <a href="searchpolaris.html" class="header-logo">서치폴라리스 <span>/ SearchPolaris</span></a>
+    <nav class="header-nav">
+      <div class="nav-dropdown active">
+        <button class="nav-dropdown-trigger">서비스 <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="searchpolaris-methodology.html">GEO 최적화</a>
+          <a href="searchpolaris-seo-methodology.html">SEO 최적화</a>
+          <a href="searchpolaris-naver-seo-methodology.html" class="active">네이버</a>
+        </div>
+      </div>
+      <a href="searchpolaris.html#case-study">성과</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#contact" class="btn-header">상담 신청</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-naver-logo">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.6 0S0 0 0 1.6v20.8S0 24 1.6 24h20.8s1.6 0 1.6-1.6V1.6S24 0 22.4 0z" fill="#03c75a"/>
+        <path d="M5.015 5.6h4.78l4.425 6.458V5.6h4.765v12.8h-4.78L9.78 11.943V18.4H5.015z" fill="#fff"/>
+      </svg>
+    </div>
+    <span class="hero-badge">Naver SEO Methodology</span>
+    <h1>네이버 검색 생태계를<br>완전히 지배하는 구조를 만듭니다</h1>
+    <p class="hero-subtitle">C-Rank, D.I.A., VIEW탭, 스마트블록 등 네이버 고유 알고리즘을 역설계한 4단계 방법론으로, 통합검색 전 영역에서 브랜드 점유율을 극대화합니다.</p>
+    <a href="#contact" class="btn-cta">Speak with team</a>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- TRUSTED BY -->
+<div class="section-border">
+  <section class="trusted-by">
+    <div class="container">
+      <p class="trusted-by-label">Trusted by forward-thinking brands</p>
+      <div class="trusted-logos">
+        <span class="trusted-logo">TechCrunch</span>
+        <span class="trusted-logo">Forbes</span>
+        <span class="trusted-logo">Bloomberg</span>
+        <span class="trusted-logo">매경</span>
+        <span class="trusted-logo">조선비즈</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- TESTIMONIAL -->
+<div class="section-border">
+  <section class="testimonial">
+    <div class="container">
+      <div class="testimonial-card">
+        <div class="testimonial-logo">뷰티 브랜드 C사</div>
+        <h2 class="testimonial-quote">"VIEW탭 상위 노출이 2주 만에 시작됐고, 3개월 후 네이버 통합검색에서 우리 브랜드가 5개 영역을 동시에 점유하게 됐습니다. 매출 상승 효과는 기대 이상이었습니다."</h2>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">P</div>
+          <div>
+            <div class="testimonial-name">박 이사</div>
+            <div class="testimonial-role">D2C 뷰티 브랜드 마케팅 이사</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- DIFFERENTIATORS -->
+<div class="section-border">
+  <section class="differentiators">
+    <div class="container">
+      <div class="diff-header">
+        <h2>네이버 SEO, 구글과는 완전히 다릅니다</h2>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-card">
+          <h3>통합검색 멀티채널 전략</h3>
+          <p>네이버는 블로그, 카페, 지식iN, VIEW, 쇼핑, 플레이스 등 다중 탭으로 결과를 제공합니다. 단일 웹사이트 순위가 아닌, 통합검색 전체 점유율을 설계합니다.</p>
+        </div>
+        <div class="diff-card">
+          <h3>C-Rank & D.I.A. 역설계</h3>
+          <p>네이버 고유의 C-Rank(창작자 등급)와 D.I.A.(문서 품질 분석) 알고리즘을 실제 데이터로 분석합니다. 알고리즘이 보상하는 신호를 정확히 파악하고 최적화합니다.</p>
+        </div>
+        <div class="diff-card">
+          <h3>자사몰 + 플랫폼 시너지</h3>
+          <p>네이버 블로그, 스마트스토어, 플레이스 등 네이버 자체 플랫폼과 자사 웹사이트를 동시에 최적화합니다. 네이버가 선호하는 자체 생태계를 전략적으로 활용합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- 4-STEP NAVER SEO METHOD -->
+<div class="section-border">
+  <section class="method-section">
+    <div class="container">
+      <div class="method-header">
+        <h2>네이버 SEO 4단계 방법론</h2>
+        <p>네이버 통합검색의 구조를 이해하고, 모든 영역에서 브랜드를 노출시키는 체계적 프로세스입니다.</p>
+      </div>
+
+      <!-- STEP 1: SCAN -->
+      <div class="method-step">
+        <div class="method-text">
+          <div class="method-label">Scan</div>
+          <h3>통합검색 전 영역에서<br>현재 노출 현황을 정밀 진단합니다</h3>
+          <p>네이버 통합검색의 모든 탭(웹사이트, VIEW, 블로그, 카페, 지식iN, 쇼핑, 플레이스, 이미지, 뉴스)에서 브랜드 노출 현황을 스캔합니다. Search Advisor 데이터를 기반으로 인덱싱 상태, 크롤링 현황, 사이트 최적화 점수를 분석하고, 경쟁사 대비 각 탭별 점유율 갭을 식별합니다.</p>
+          <div class="why-box">
+            <div class="why-box-label">Why this matters</div>
+            <p>네이버 통합검색에서는 웹사이트 순위보다 어떤 탭에 얼마나 자주 노출되는지가 더 중요합니다. 멀티채널 가시성을 먼저 파악해야 전략의 우선순위가 보입니다.</p>
+          </div>
+        </div>
+        <div class="method-visual">
+          <div class="visual-card">
+            <div class="visual-card-title">Naver SERP Visibility Map</div>
+            <div class="naver-tab-grid">
+              <div class="naver-tab-row naver-tab-header">
+                <span></span>
+                <span>Your Brand</span>
+                <span>Competitor</span>
+              </div>
+              <div class="naver-tab-row">
+                <span class="naver-tab-name">VIEW탭</span>
+                <span class="naver-tab-status invisible">Invisible</span>
+                <span class="naver-tab-status visible">Top 3</span>
+              </div>
+              <div class="naver-tab-row">
+                <span class="naver-tab-name">블로그</span>
+                <span class="naver-tab-status partial">Partial</span>
+                <span class="naver-tab-status visible">Top 5</span>
+              </div>
+              <div class="naver-tab-row">
+                <span class="naver-tab-name">웹사이트</span>
+                <span class="naver-tab-status partial">Page 2</span>
+                <span class="naver-tab-status visible">Top 3</span>
+              </div>
+              <div class="naver-tab-row">
+                <span class="naver-tab-name">쇼핑</span>
+                <span class="naver-tab-status invisible">Invisible</span>
+                <span class="naver-tab-status visible">Visible</span>
+              </div>
+              <div class="naver-tab-row">
+                <span class="naver-tab-name">플레이스</span>
+                <span class="naver-tab-status visible">Top 3</span>
+                <span class="naver-tab-status partial">Partial</span>
+              </div>
+              <div class="naver-tab-row">
+                <span class="naver-tab-name">지식iN</span>
+                <span class="naver-tab-status invisible">Invisible</span>
+                <span class="naver-tab-status visible">Active</span>
+              </div>
+            </div>
+            <div class="naver-tab-footer">
+              <span>6개 탭 분석</span>
+              <span>점유율 28% → 목표 75%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: STRUCTURE -->
+      <div class="method-step">
+        <div class="method-text">
+          <div class="method-label">Structure</div>
+          <h3>C-Rank를 높이는<br>콘텐츠 & 채널 아키텍처 설계</h3>
+          <p>네이버의 C-Rank 알고리즘이 높은 점수를 부여하는 조건(주제 집중도, 경험 기반 콘텐츠, 사용자 체류 시간, 소셜 인터랙션)에 맞춰 채널별 콘텐츠 전략을 설계합니다. 블로그는 주제 클러스터로 전문성을 구축하고, 카페는 커뮤니티 신뢰도를, 지식iN은 검색 의도 커버리지를 확보합니다.</p>
+          <div class="why-box">
+            <div class="why-box-label">Why this matters</div>
+            <p>C-Rank는 네이버가 창작자의 전문성과 신뢰도를 평가하는 핵심 지표입니다. C-Rank가 낮으면 아무리 좋은 콘텐츠도 상위 노출이 불가능합니다.</p>
+          </div>
+        </div>
+        <div class="method-visual">
+          <div class="visual-card">
+            <div class="visual-card-title">C-Rank Signal Analysis</div>
+            <div class="crank-list">
+              <div class="crank-item">
+                <div class="crank-item-header">
+                  <span class="crank-item-name">주제 집중도</span>
+                  <span class="crank-item-score high">92/100</span>
+                </div>
+                <div class="crank-bar">
+                  <div class="crank-bar-fill high" style="width: 92%"></div>
+                </div>
+              </div>
+              <div class="crank-item">
+                <div class="crank-item-header">
+                  <span class="crank-item-name">콘텐츠 품질 (D.I.A.)</span>
+                  <span class="crank-item-score medium">68/100</span>
+                </div>
+                <div class="crank-bar">
+                  <div class="crank-bar-fill medium" style="width: 68%"></div>
+                </div>
+              </div>
+              <div class="crank-item">
+                <div class="crank-item-header">
+                  <span class="crank-item-name">사용자 인터랙션</span>
+                  <span class="crank-item-score medium">55/100</span>
+                </div>
+                <div class="crank-bar">
+                  <div class="crank-bar-fill medium" style="width: 55%"></div>
+                </div>
+              </div>
+              <div class="crank-item">
+                <div class="crank-item-header">
+                  <span class="crank-item-name">발행 일관성</span>
+                  <span class="crank-item-score low">34/100</span>
+                </div>
+                <div class="crank-bar">
+                  <div class="crank-bar-fill low" style="width: 34%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="crank-footer">
+              <span>4개 시그널 분석</span>
+              <span class="score-total">종합 C-Rank: B+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: SATURATE -->
+      <div class="method-step">
+        <div class="method-text">
+          <div class="method-label">Saturate</div>
+          <h3>통합검색 스마트블록을<br>브랜드로 채웁니다</h3>
+          <p>네이버 통합검색의 스마트블록(인기글, 최신순, 정확도순, 경험리뷰) 각각에 최적화된 콘텐츠를 배포합니다. VIEW탭을 위한 블로그·인플루언서 콘텐츠, 쇼핑탭을 위한 스마트스토어 SEO, 플레이스 최적화, 지식iN 체계적 답변 전략을 동시에 실행합니다. D.I.A. 알고리즘이 선호하는 문서 구조, 이미지 비율, 체류 시간 패턴에 맞춰 콘텐츠를 교정합니다.</p>
+          <div class="why-box">
+            <div class="why-box-label">Why this matters</div>
+            <p>네이버 사용자의 75%는 통합검색 첫 화면에서 클릭합니다. 스마트블록 5개 중 3개를 점유하면, 해당 키워드에서 경쟁사가 끼어들 틈이 사라집니다.</p>
+          </div>
+        </div>
+        <div class="method-visual">
+          <div class="visual-card">
+            <div class="visual-card-title">Smart Block Domination</div>
+            <div class="smartblock-list">
+              <div class="smartblock-item">
+                <div class="smartblock-item-left">
+                  <div class="smartblock-icon">V</div>
+                  <span class="smartblock-name">VIEW탭 인기글</span>
+                </div>
+                <span class="smartblock-status active">Active</span>
+              </div>
+              <div class="smartblock-item">
+                <div class="smartblock-item-left">
+                  <div class="smartblock-icon">B</div>
+                  <span class="smartblock-name">블로그 경험리뷰</span>
+                </div>
+                <span class="smartblock-status active">Active</span>
+              </div>
+              <div class="smartblock-item">
+                <div class="smartblock-item-left">
+                  <div class="smartblock-icon">S</div>
+                  <span class="smartblock-name">쇼핑 스마트스토어</span>
+                </div>
+                <span class="smartblock-status targeting">Targeting</span>
+              </div>
+              <div class="smartblock-item">
+                <div class="smartblock-item-left">
+                  <div class="smartblock-icon">P</div>
+                  <span class="smartblock-name">플레이스 TOP 3</span>
+                </div>
+                <span class="smartblock-status active">Active</span>
+              </div>
+              <div class="smartblock-item">
+                <div class="smartblock-item-left">
+                  <div class="smartblock-icon">Q</div>
+                  <span class="smartblock-name">지식iN 채택 답변</span>
+                </div>
+                <span class="smartblock-status targeting">Targeting</span>
+              </div>
+              <div class="smartblock-item">
+                <div class="smartblock-item-left">
+                  <div class="smartblock-icon">C</div>
+                  <span class="smartblock-name">카페 주요글</span>
+                </div>
+                <span class="smartblock-status planned">Planned</span>
+              </div>
+            </div>
+            <div class="smartblock-footer">
+              <span>6개 블록 타겟</span>
+              <span>3/6 점유 완료</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: SCALE -->
+      <div class="method-step">
+        <div class="method-text">
+          <div class="method-label">Scale</div>
+          <h3>키워드 확장과 채널 시너지로<br>복리 성장을 만듭니다</h3>
+          <p>초기 성과가 검증된 키워드 클러스터에서 연관 키워드로 확장하며, 네이버 데이터랩과 자체 분석 도구로 신규 수요를 선점합니다. 블로그→쇼핑→플레이스 간 크로스 트래픽을 설계하고, 브랜드 검색량 자체를 끌어올리는 브랜딩 SEO를 병행합니다. 네이버 알고리즘 변경을 실시간 모니터링하며 전략을 민첩하게 조정합니다.</p>
+          <div class="why-box">
+            <div class="why-box-label">Why this matters</div>
+            <p>네이버에서 한 채널의 성과는 다른 채널의 순위를 끌어올립니다. 블로그 C-Rank가 높아지면 VIEW탭 노출이 늘고, 쇼핑 리뷰가 쌓이면 스마트스토어 순위가 올라갑니다.</p>
+          </div>
+        </div>
+        <div class="method-visual">
+          <div class="visual-card">
+            <div class="visual-card-title">Naver Ecosystem Flywheel</div>
+            <div class="naver-metrics">
+              <div class="naver-metric">
+                <div class="naver-metric-value">580</div>
+                <div class="naver-metric-label">Keywords</div>
+              </div>
+              <div class="naver-metric">
+                <div class="naver-metric-value highlight">+215%</div>
+                <div class="naver-metric-label">Naver Traffic</div>
+              </div>
+              <div class="naver-metric">
+                <div class="naver-metric-value">6</div>
+                <div class="naver-metric-label">Channels</div>
+              </div>
+            </div>
+            <div class="naver-outlier-label">Top performing channel</div>
+            <div class="naver-outlier">
+              <div class="naver-outlier-top">
+                <span class="naver-outlier-name">VIEW탭 인플루언서 콘텐츠</span>
+                <span class="naver-outlier-pct">+420%</span>
+              </div>
+              <div class="naver-outlier-meta">45 keywords top 5 &middot; Highest CTR</div>
+            </div>
+            <div class="naver-channels">
+              <div class="naver-channels-label">Channel synergy</div>
+              <div class="naver-channel-tags">
+                <span class="naver-channel-tag">블로그 +180%</span>
+                <span class="naver-channel-tag">스마트스토어 +95%</span>
+                <span class="naver-channel-tag">플레이스 +67%</span>
+                <span class="naver-channel-tag">브랜드검색 +340%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- RESULTS -->
+<div class="section-border">
+  <section class="results-section">
+    <div class="container">
+      <div class="results-header">
+        <h2>성과가 증명합니다</h2>
+        <p>네이버 SEO 4단계 방법론을 적용한 기업들의 실제 성과입니다.</p>
+      </div>
+      <div class="results-grid">
+        <div class="result-card">
+          <div class="result-label">D2C 뷰티 브랜드</div>
+          <div class="result-value">3개월 만에 네이버 유입<br>8,000 → 52,000+</div>
+          <a href="#" class="result-link">
+            사례 연구 읽기
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+        <div class="result-card">
+          <div class="result-label">프랜차이즈</div>
+          <div class="result-value">플레이스 TOP 3 달성<br>가맹점 방문 180% 증가</div>
+        </div>
+        <div class="result-card">
+          <div class="result-label">스마트스토어</div>
+          <div class="result-value">쇼핑 검색 1위<br>월 매출 4배 성장</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- PROPRIETARY TECH -->
+<div class="section-border">
+  <section class="tech-section">
+    <div class="container">
+      <div class="tech-card">
+        <div class="tech-left">
+          <h2>네이버 특화 기술로<br>운영됩니다</h2>
+          <p>네이버 Search Advisor API, 데이터랩, 쇼핑 인사이트 등 네이버 공식 데이터와 자체 크롤링 엔진을 결합하여, 다른 에이전시가 제공하지 못하는 인사이트를 추출합니다.</p>
+          <div class="tech-tabs">
+            <button class="tech-tab active">통합검색 모니터링</button>
+            <button class="tech-tab">C-Rank 분석기</button>
+            <button class="tech-tab">VIEW탭 최적화</button>
+            <button class="tech-tab">쇼핑 SEO 엔진</button>
+            <button class="tech-tab">키워드 인텔리전스</button>
+          </div>
+          <p class="tech-description">네이버 통합검색 모든 탭의 순위 변동을 실시간 추적하고, 경쟁사 점유율 변화를 자동 알림으로 제공합니다.</p>
+        </div>
+        <div class="tech-visual">
+          <div class="tech-visual-title">Naver Channel Dashboard</div>
+          <div class="tech-channel-grid">
+            <div class="tech-channel-item">
+              <div class="tech-channel-name">VIEW탭</div>
+              <div class="tech-channel-status top">Top 3</div>
+            </div>
+            <div class="tech-channel-item">
+              <div class="tech-channel-name">블로그</div>
+              <div class="tech-channel-status top">Top 5</div>
+            </div>
+            <div class="tech-channel-item">
+              <div class="tech-channel-name">쇼핑</div>
+              <div class="tech-channel-status rising">Rising</div>
+            </div>
+            <div class="tech-channel-item">
+              <div class="tech-channel-name">플레이스</div>
+              <div class="tech-channel-status top">Top 3</div>
+            </div>
+            <div class="tech-channel-item">
+              <div class="tech-channel-name">웹사이트</div>
+              <div class="tech-channel-status rising">Page 1</div>
+            </div>
+            <div class="tech-channel-item">
+              <div class="tech-channel-name">지식iN</div>
+              <div class="tech-channel-status needs-work">Needs Work</div>
+            </div>
+          </div>
+          <div class="tech-visual-footer">네이버 통합검색 6개 채널 실시간 모니터링</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- FAQ -->
+<div class="section-border" id="faq">
+  <section class="faq">
+    <div class="container-narrow">
+      <h2>자주 묻는 질문</h2>
+      <div class="faq-list">
+        <div class="faq-item open">
+          <button class="faq-question">네이버 SEO와 구글 SEO는 어떻게 다른가요?</button>
+          <div class="faq-answer">
+            <p>구글은 웹사이트 중심의 단일 순위 체계지만, 네이버는 블로그, 카페, VIEW, 쇼핑, 플레이스 등 멀티탭 통합검색 구조입니다. C-Rank와 D.I.A. 같은 네이버 고유 알고리즘이 있고, 네이버 자체 플랫폼(블로그, 카페)이 외부 웹사이트보다 우선 노출되는 경우가 많습니다. 따라서 네이버 SEO는 멀티채널 동시 최적화가 핵심입니다.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">네이버 블로그를 꼭 운영해야 하나요?</button>
+          <div class="faq-answer">
+            <p>대부분의 경우 네이버 블로그 운영은 필수입니다. VIEW탭과 블로그탭에서 노출을 확보하려면 네이버 블로그가 가장 효과적이며, C-Rank를 통해 장기적인 상위 노출 기반을 구축할 수 있습니다. 다만 업종에 따라 인플루언서 콘텐츠, 카페 전략, 또는 웹사이트 SEO가 더 효과적일 수 있어 초기 진단에서 최적 채널 조합을 제안합니다.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">저품질 블로그 문제는 어떻게 해결하나요?</button>
+          <div class="faq-answer">
+            <p>네이버 저품질(검색 누락)은 과도한 광고성 콘텐츠, 유사 문서 반복, C-Rank 하락 등이 원인입니다. 저희는 먼저 저품질 원인을 정밀 진단한 후, 콘텐츠 품질 개선, 주제 집중도 회복, 발행 패턴 정상화, 사용자 인터랙션 복구를 순차적으로 진행합니다. 심각한 경우 새로운 채널 구축과 기존 채널 복구를 병행합니다.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">스마트스토어 SEO도 해주시나요?</button>
+          <div class="faq-answer">
+            <p>네, 네이버 쇼핑 SEO는 핵심 서비스 중 하나입니다. 상품명 최적화, 카테고리 매핑, 태그 전략, 리뷰 확보, 판매 지수 관리 등 네이버 쇼핑 랭킹 알고리즘에 맞춘 체계적 최적화를 수행합니다. 쇼핑 검색뿐 아니라 통합검색 쇼핑탭 노출까지 동시에 공략합니다.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">성과가 나오기까지 얼마나 걸리나요?</button>
+          <div class="faq-answer">
+            <p>네이버는 구글 대비 초기 성과가 빠른 편입니다. 블로그 C-Rank 최적화 효과는 2-4주, VIEW탭 상위 노출은 2-6주, 스마트스토어 순위 개선은 1-3개월 내에 나타납니다. 통합검색 전체 점유율 극대화는 3-6개월의 누적 효과가 필요합니다.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">최소 계약 기간이 있나요?</button>
+          <div class="faq-answer">
+            <p>30일 롤링 계약입니다. 네이버 SEO 특성상 3개월 이상을 권장하지만, 장기 구속은 없습니다. 매월 성과 기반으로 계속 여부를 결정할 수 있습니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DIVIDER -->
+<div class="section-divider"></div>
+
+<!-- CTA + TEAM -->
+<div class="section-border" id="contact">
+  <section class="cta-team">
+    <div class="container">
+      <div class="cta-team-grid">
+        <div class="team-intro">
+          <h2>네이버 생태계 전문가가<br><span class="highlight">당신의 팀</span>으로 일합니다.</h2>
+          <p>네이버 알고리즘의 작동 원리를 실데이터로 검증한 전문팀이, 통합검색 전 영역에서 브랜드가 선택받는 구조를 만듭니다. 고객이 네이버에서 검색할 때, 모든 탭에서 당신의 브랜드를 만나도록 합니다.</p>
+          <div class="team-avatars">
+            <div class="team-avatar-group">
+              <div class="avatar">S</div>
+              <div class="avatar">P</div>
+            </div>
+            <div class="team-meta">
+              <div class="team-names">SearchPolaris Team</div>
+              <div class="team-roles">Naver SEO + Content Strategy</div>
+            </div>
+          </div>
+        </div>
+        <div class="cta-card">
+          <h3>시작할 준비가 되셨나요?</h3>
+          <p>무료 네이버 통합검색 진단으로 현재 브랜드의 탭별 노출 상태와 성장 기회를 확인하세요.</p>
+          <a href="#" class="btn-cta">Speak with team</a>
+          <p class="cta-note">부담 없이 30분 통화</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <a href="searchpolaris.html" class="footer-logo">서치폴라리스 <span>/ SearchPolaris</span></a>
+      <nav class="footer-links">
+        <a href="searchpolaris.html#services">GEO 최적화</a>
+        <a href="searchpolaris.html#services">SEO 최적화</a>
+        <a href="#">네이버 SEO 방법론</a>
+        <a href="searchpolaris.html#case-study">성과</a>
+        <a href="#faq">FAQ</a>
+        <a href="#">개인정보처리방침</a>
+        <a href="#">이용약관</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 SearchPolaris. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// FAQ Accordion
+document.querySelectorAll('.faq-question').forEach(button => {
+  button.addEventListener('click', () => {
+    const item = button.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// Tech Tabs
+document.querySelectorAll('.tech-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tech-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Intersection Observer for fade-in
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.diff-card, .method-step, .result-card, .tech-card, .testimonial-card, .cta-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

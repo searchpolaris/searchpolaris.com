@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서치폴라리스 - AI 동작 원리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; border: none; cursor: pointer; }
+
+/* ===== DESIGN SYSTEM ===== */
+:root {
+  --bg: #08090A;
+  --bg-elevated: #111214;
+  --bg-surface: #18191C;
+  --border: #232323;
+  --border-light: rgba(255,255,255,0.08);
+  --text-primary: rgba(255,255,255,0.95);
+  --text-secondary: rgba(255,255,255,0.5);
+  --text-tertiary: rgba(255,255,255,0.35);
+  --text-muted: rgba(255,255,255,0.2);
+  --white: #FFFFFF;
+  --accent: #FFFFFF;
+  --radius: 8px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+/* ===== BASE ===== */
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* ===== DASHED GRID LAYOUT ===== */
+.section-border {
+  border-top: 1px dashed rgba(255,255,255,0.12);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 80px;
+  border-left: 1px dashed rgba(255,255,255,0.12);
+  border-right: 1px dashed rgba(255,255,255,0.12);
+}
+
+/* ===== PROCESS SECTION ===== */
+.process-section {
+  padding: 96px 0;
+}
+
+.process-header {
+  border-top: 1px dashed rgba(255,255,255,0.15);
+  padding-top: 72px;
+  margin-bottom: 56px;
+}
+
+.process-header h2 {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  max-width: 550px;
+  color: var(--white);
+}
+
+.process-header p {
+  font-size: 18px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.process-header p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ===== TABS CARD ===== */
+.tabs-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.35);
+}
+
+/* ===== SLIDE PANEL ===== */
+.slide-panel {
+  display: none;
+}
+
+.slide-panel.active {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.07fr);
+  gap: 0;
+  min-height: 370px;
+}
+
+/* ===== LEFT: TEXT ===== */
+.slide-text {
+  padding: 48px 44px;
+}
+
+.slide-dots {
+  margin-bottom: 28px;
+}
+
+.slide-dots img {
+  height: 14px;
+  width: auto;
+}
+
+.slide-heading {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.27;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.slide-paragraph {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 420px;
+  margin-bottom: 12px;
+}
+
+.slide-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.slide-paragraph strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ===== RIGHT: IMAGE ===== */
+.slide-image {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 32px;
+  border-left: 1px solid var(--border);
+}
+
+.slide-image > img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  align-self: center;
+}
+
+/* Inline components fill the slide-image area */
+.slide-image .json-card,
+.slide-image .prov-card {
+  width: 100%;
+  align-self: center;
+}
+
+.slide-image .fanout-container {
+  width: 100%;
+}
+
+/* ===== TAB MENU ===== */
+.tabs-menu {
+  display: flex;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 12px;
+  padding: 3px;
+  width: fit-content;
+  margin: 28px auto 0;
+}
+
+.tab-link {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+
+.tab-link:hover {
+  color: var(--text-secondary);
+}
+
+.tab-link.active {
+  color: var(--white);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tabs-card,
+.tabs-menu {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.tabs-card.visible,
+.tabs-menu.visible {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.tabs-menu.visible { animation-delay: 0.15s; }
+
+/* ============================================================
+   INLINE COMPONENT: Layer 1 — JSON Code Block
+   ============================================================ */
+.json-card {
+  position: relative;
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.json-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.json-title {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+}
+
+.json-badge {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: #10B981;
+  padding: 4px 12px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+}
+
+.json-content {
+  position: relative;
+  padding: 24px 24px 28px;
+}
+
+.json-content pre {
+  font-family: 'JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.35);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.json-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: jsonLineReveal 0.4s ease-out forwards;
+}
+.json-line:nth-child(1) { animation-delay: 0.2s; }
+.json-line:nth-child(2) { animation-delay: 0.4s; }
+.json-line:nth-child(3) { animation-delay: 0.6s; }
+.json-line:nth-child(4) { animation-delay: 0.8s; }
+.json-line:nth-child(5) { animation-delay: 1.0s; }
+.json-line:nth-child(6) { animation-delay: 1.2s; }
+.json-line:nth-child(7) { animation-delay: 1.4s; }
+.json-line:nth-child(8) { animation-delay: 1.6s; }
+
+@keyframes jsonLineReveal {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.json-content .json-key { color: rgba(255,255,255,0.7); }
+.json-content .json-number { color: #7DD3FC; animation: jsonPulseNum 3s ease-in-out infinite; }
+.json-content .json-string { color: #86EFAC; animation: jsonPulseStr 3s ease-in-out infinite; }
+
+@keyframes jsonPulseNum {
+  0%, 100% { text-shadow: none; color: #7DD3FC; }
+  50%      { text-shadow: 0 0 8px rgba(125,211,252,0.4); color: #a5e4fd; }
+}
+@keyframes jsonPulseStr {
+  0%, 100% { text-shadow: none; color: #86EFAC; }
+  50%      { text-shadow: 0 0 8px rgba(134,239,172,0.4); color: #b0f5cb; }
+}
+
+.json-scan {
+  position: absolute;
+  left: 0; width: 100%; height: 24px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
+  pointer-events: none;
+  animation: jsonScan 4s ease-in-out infinite;
+  animation-delay: 2.2s;
+  opacity: 0;
+}
+@keyframes jsonScan {
+  0%   { top: 0; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: calc(100% - 24px); opacity: 0; }
+}
+
+.json-cursor {
+  display: inline-block;
+  width: 2px; height: 16px;
+  background: rgba(255,255,255,0.6);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: jsonCursorBlink 1s step-end infinite;
+  opacity: 0;
+}
+.json-line:last-child .json-cursor {
+  animation: jsonCursorAppear 0s 1.8s forwards, jsonCursorBlink 1s 1.8s step-end infinite;
+}
+@keyframes jsonCursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes jsonCursorAppear { to { opacity: 1; } }
+
+/* ============================================================
+   INLINE COMPONENT: Layer 2 — Fanout Diagram
+   ============================================================ */
+.fanout-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+}
+
+.fanout-beams {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateZ(0);
+  z-index: 0;
+}
+
+.fanout-body {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  padding: 40px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fanout-origin-col {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.fanout-origin {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 22px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  opacity: 0;
+  animation: fanoutFadeIn 0.5s ease-out 0.1s forwards;
+}
+
+@keyframes fanoutFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.fanout-origin .fanout-node-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.fanout-targets {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 8px 0;
+  gap: 12px;
+}
+
+.fanout-label {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.fanout-label::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    transparent 0deg, transparent 200deg,
+    rgba(255,255,255,0.3) 240deg, rgba(255,255,255,0.7) 290deg,
+    rgba(255,255,255,1) 330deg, rgba(255,255,255,0.7) 345deg,
+    transparent 360deg
+  );
+  animation: fanoutSpin 3s linear infinite;
+}
+
+.fanout-label::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+@keyframes fanoutSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.fanout-label span {
+  position: relative;
+  z-index: 1;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.85);
+}
+
+.fanout-target {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 11px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  width: fit-content;
+  opacity: 0;
+  animation: fanoutFadeIn 0.4s ease-out forwards;
+}
+
+.fanout-target:nth-child(1) { animation-delay: 0.7s; }
+.fanout-target:nth-child(2) { animation-delay: 0.85s; }
+.fanout-target:nth-child(3) { animation-delay: 1.0s; }
+.fanout-target:nth-child(4) { animation-delay: 1.15s; }
+
+.fanout-target .fanout-node-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   INLINE COMPONENT: Layer 3 — Provider Table
+   ============================================================ */
+.prov-card {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.prov-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.prov-title {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+}
+
+.prov-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.prov-card thead th {
+  padding: 8px 12px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.prov-card tbody td {
+  padding: 10px 12px;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  vertical-align: middle;
+}
+
+.prov-card tbody tr:last-child td { border-bottom: none; }
+
+td.prov-name {
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  white-space: nowrap;
+}
+
+.prov-name-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prov-logo {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  filter: invert(1);
+  flex-shrink: 0;
+}
+
+.prov-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 400;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.6);
+  white-space: nowrap;
+}
+
+td.prov-desc {
+  color: rgba(255,255,255,0.45);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.prov-card tbody tr {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: provRowReveal 0.4s ease-out forwards;
+  transition: background 0.15s ease;
+}
+.prov-card tbody tr:nth-child(1) { animation-delay: 0.1s; }
+.prov-card tbody tr:nth-child(2) { animation-delay: 0.2s; }
+.prov-card tbody tr:nth-child(3) { animation-delay: 0.3s; }
+.prov-card tbody tr:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes provRowReveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.prov-card tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+/* ============================================================
+   INLINE COMPONENT: Layer 4 — Entity Card
+   ============================================================ */
+.entity-card {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  background: transparent;
+  align-self: center;
+  opacity: 0;
+  transform: scale(0.96);
+  animation: entityReveal 0.6s ease-out 0.15s forwards;
+  box-shadow: 0 0 20px rgba(255,255,255,0.06);
+}
+
+.entity-card img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+@keyframes entityReveal {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .section-border { max-width: 100%; }
+  .container { padding: 0 48px; }
+  .process-header h2 { font-size: 40px; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 20px; }
+  .process-section { padding: 64px 0; }
+  .process-header { padding-top: 48px; }
+  .process-header h2 { font-size: 30px; }
+  .process-header p { font-size: 16px; }
+
+  .slide-panel.active {
+    grid-template-columns: 1fr;
+  }
+
+  .slide-text {
+    padding: 32px 24px;
+  }
+
+  .slide-image {
+    border-left: none;
+    border-top: 1px solid var(--border);
+    padding: 24px;
+  }
+
+  .slide-heading { font-size: 24px; }
+  .slide-paragraph { font-size: 15px; }
+
+  .tab-link {
+    font-size: 12px;
+    padding: 8px 14px;
+  }
+
+  .fanout-container { height: 260px; }
+  .fanout-body { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="section-border">
+  <section class="process-section">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="process-header">
+        <h2>ChatGPT Search는<br>어떻게 작동할까?</h2>
+        <p>ChatGPT의 검색 시스템은 단순한 RAG가 아닙니다. <strong>확률 분류기, 쿼리 팬아웃, 제3자 데이터 파이프라인, 엔티티 연결</strong>이 결합된 복합 시스템입니다.</p>
+      </div>
+
+      <!-- Tabs Card -->
+      <div class="tabs-card">
+
+        <!-- Layer 1: Sonic 분류기 -->
+        <div class="slide-panel active" data-phase="0">
+          <div class="slide-text">
+            <div class="slide-dots">
+              <img src="../image/phase/dots-1.svg" alt="">
+            </div>
+            <h2 class="slide-heading">Sonic 분류기</h2>
+            <p class="slide-paragraph">검색 전, 확률 분류기가 <strong>외부 데이터 필요 여부를 판단</strong>합니다. search_prob이 임계값(65%)을 넘으면 웹 검색이 실행됩니다. "프랑스 수도"는 낮은 확률, "어제 챔피언스리그 결과"는 높은 확률로 판정됩니다.</p>
+            <p class="slide-paragraph"><strong>196ms의 지연시간</strong>으로 작동합니다.</p>
+          </div>
+          <div class="slide-image">
+            <!-- INLINE: JSON Code Block -->
+            <div class="json-card">
+              <div class="json-header">
+                <span class="json-title">Real JSON Example</span>
+                <span class="json-badge">JSON</span>
+              </div>
+              <div class="json-content">
+                <div class="json-scan"></div>
+<pre><span class="json-line">{</span><span class="json-line">  "<span class="json-key">sonic_classification_result</span>": {</span><span class="json-line">    "<span class="json-key">latency_ms</span>": <span class="json-number">196.58</span>,</span><span class="json-line">    "<span class="json-key">search_prob</span>": <span class="json-number">0.7135</span>,</span><span class="json-line">    "<span class="json-key">force_search_threshold</span>": <span class="json-number">0.65</span>,</span><span class="json-line">    "<span class="json-key">classifier_config_name</span>": <span class="json-string">"sonic_force_pg_switcher"</span></span><span class="json-line">  }</span><span class="json-line">}<span class="json-cursor"></span></span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer 2: 팬아웃 엔진 -->
+        <div class="slide-panel" data-phase="1">
+          <div class="slide-text">
+            <div class="slide-dots">
+              <img src="../image/phase/dots-2.svg" alt="">
+            </div>
+            <h2 class="slide-heading">팬아웃 엔진</h2>
+            <p class="slide-paragraph">사용자 질문 1개가 <strong>N개의 병렬 쿼리로 변환</strong>됩니다. 검색(13개, 사고모드 20+), 쇼핑(짧은 제품 중심 쿼리), 이미지(38+개) 팬아웃이 동시에 작동합니다.</p>
+            <p class="slide-paragraph">대부분 <strong>2가지 유형이 조합</strong>됩니다.</p>
+          </div>
+          <div class="slide-image">
+            <!-- INLINE: Fanout Diagram -->
+            <div class="fanout-container" id="fanout-container">
+              <div class="fanout-body">
+                <div class="fanout-label"><span>Fan out</span></div>
+                <div class="fanout-origin-col">
+                  <div class="fanout-origin" data-fanout="origin">
+                    <span class="fanout-node-text">서울 여행 맛집 추천해줘</span>
+                  </div>
+                </div>
+                <div class="fanout-targets">
+                  <div class="fanout-target" data-fanout="q1"><span class="fanout-node-text">서울 한식 맛집 평점순</span></div>
+                  <div class="fanout-target" data-fanout="q2"><span class="fanout-node-text">서울 관광지 근처 맛집</span></div>
+                  <div class="fanout-target" data-fanout="q3"><span class="fanout-node-text">서울 데이트 코스 맛집</span></div>
+                  <div class="fanout-target" data-fanout="q4"><span class="fanout-node-text">서울 맛집 블로그 후기</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer 3: 데이터 제공자 생태계 -->
+        <div class="slide-panel" data-phase="2">
+          <div class="slide-text">
+            <div class="slide-dots">
+              <img src="../image/phase/dots-3.svg" alt="">
+            </div>
+            <h2 class="slide-heading">데이터 제공자 생태계</h2>
+            <p class="slide-paragraph">OpenAI는 수십억을 투자했지만 핵심 전략은 <strong>제3자를 통한 구글 스크래핑</strong>입니다. SerpAPI로 구글 검색, SearchApi.io로 구글 쇼핑, Getty로 이미지, 'b1' 프로바이더로 구글 지도 데이터를 가져옵니다.</p>
+            <p class="slide-paragraph">2026년 1월 <strong>구글이 SerpAPI를 고소</strong>했습니다. 이는 chatGPT가 제 3자 API를 활발하게 사용함을 증명합니다.</p>
+          </div>
+          <div class="slide-image">
+            <!-- INLINE: Provider Table -->
+            <div class="prov-card">
+              <div class="prov-header">
+                <span class="prov-title">데이터 프로바이더</span>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>PROVIDER</th>
+                    <th>TYPE</th>
+                    <th>USAGE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="prov-name"><span class="prov-name-inner"><img class="prov-logo" src="../image/ai-icons/serpapi.svg" alt="">SerpAPI</span></td>
+                    <td><span class="prov-badge">웹 검색 + 이미지</span></td>
+                    <td class="prov-desc">Google 검색 결과를 스크래핑하여 구조화된 JSON으로 제공하는 메인 프로바이더</td>
+                  </tr>
+                  <tr>
+                    <td class="prov-name"><span class="prov-name-inner"><img class="prov-logo" src="../image/ai-icons/bing.svg" alt="">Bing</span></td>
+                    <td><span class="prov-badge">웹 검색</span></td>
+                    <td class="prov-desc">Microsoft Bing 검색 API (2025년 8월 서비스 종료 예정, 용도 미확정)</td>
+                  </tr>
+                  <tr>
+                    <td class="prov-name"><span class="prov-name-inner"><img class="prov-logo" src="../image/ai-icons/labrador.svg" alt="">Labrador</span></td>
+                    <td><span class="prov-badge">이미지</span></td>
+                    <td class="prov-desc">Getty Images API를 통한 이미지 검색 프로바이더</td>
+                  </tr>
+                  <tr>
+                    <td class="prov-name"><span class="prov-name-inner"><img class="prov-logo" src="../image/ai-icons/searchapi.svg" alt="">SearchAPI</span></td>
+                    <td><span class="prov-badge">쇼핑</span></td>
+                    <td class="prov-desc">Google Shopping 결과를 스크래핑하여 상품 데이터 수집</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layer 4: 엔티티 연결 시스템 -->
+        <div class="slide-panel" data-phase="3">
+          <div class="slide-text">
+            <div class="slide-dots">
+              <img src="../image/phase/dots-4.svg" alt="">
+            </div>
+            <h2 class="slide-heading">엔티티 연결 시스템</h2>
+            <p class="slide-paragraph">ChatGPT는 자체 NER로 <strong>인물, 기업, 장소 등을 감지</strong>하고 사이드바를 생성합니다. gpt-5-instant 모델이 동적 프롬프트로 맥락 정보를 만듭니다.</p>
+            <p class="slide-paragraph">코드에서 <strong>'Hide Ads' 문구가 발견</strong>되어 향후 광고 시스템 준비 가능성이 제기됩니다.</p>
+          </div>
+          <div class="slide-image">
+            <div class="entity-card">
+              <img src="../image/section-howtoai/FAANG.png" alt="Layer 4: 엔티티 연결">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tabs-menu">
+        <button class="tab-link active" data-phase="0">Layer 1: Sonic 분류기</button>
+        <button class="tab-link" data-phase="1">Layer 2: 팬아웃 엔진</button>
+        <button class="tab-link" data-phase="2">Layer 3: 데이터 생태계</button>
+        <button class="tab-link" data-phase="3">Layer 4: 엔티티 연결</button>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script>
+/* ===== TAB SWITCHING ===== */
+(function() {
+  const tabs = document.querySelectorAll('.tab-link');
+  const panels = document.querySelectorAll('.slide-panel');
+
+  function switchTo(index) {
+    tabs.forEach(t => t.classList.remove('active'));
+    tabs[index].classList.add('active');
+    panels.forEach(p => p.classList.remove('active'));
+    panels[index].classList.add('active');
+
+    // Init fanout beams when Layer 2 becomes active (delay for layout)
+    if (index === 1 && !window.__fanoutInit) {
+      window.__fanoutInit = true;
+      requestAnimationFrame(() => { requestAnimationFrame(() => { initFanoutBeams(); }); });
+    }
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      switchTo(parseInt(tab.dataset.phase));
+    });
+  });
+
+  // Scroll-triggered fade-in
+  const targets = document.querySelectorAll('.tabs-card, .tabs-menu');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  targets.forEach(t => observer.observe(t));
+})();
+
+/* ===== AnimatedBeamJS (for Fanout Diagram) ===== */
+(function() {
+  const __FanoutClocks = new Map();
+
+  function getClock(id, duration, delay) {
+    if (!__FanoutClocks.has(id)) {
+      __FanoutClocks.set(id, {
+        startTime: null, duration, delay, started: false,
+        ensureStart(nowTs) {
+          if (!this.started) {
+            if (this.startTime === null) this.startTime = nowTs;
+            if (nowTs - this.startTime >= this.delay * 1000) this.started = true;
+          }
+          return this;
+        }
+      });
+    }
+    const clk = __FanoutClocks.get(id);
+    clk.duration = duration; clk.delay = delay;
+    return clk;
+  }
+
+  function ensureDefs(svg) {
+    let defs = svg.querySelector('defs');
+    if (!defs) { defs = document.createElementNS(svg.namespaceURI, 'defs'); svg.prepend(defs); }
+    return defs;
+  }
+
+  class AnimatedBeamJS {
+    constructor(opts) {
+      Object.assign(this, {
+        curvature: 0, reverse: false,
+        duration: (Math.random() * 3 + 4), delay: 0,
+        pathColor: "rgba(100,100,100,0.35)", pathWidth: 2, pathOpacity: 0.25,
+        gradientStartColor: "#ffaa40", gradientStopColor: "#9c40ff",
+        startXOffset: 0, startYOffset: 0, endXOffset: 0, endYOffset: 0,
+        clockId: null, ...opts
+      });
+      this.gradId1 = `fg-${Math.random().toString(36).slice(2)}`;
+      this.gradId2 = `fg-${Math.random().toString(36).slice(2)}`;
+      this.t0 = null; this.started = false;
+      if (this.clockId) this.clock = getClock(this.clockId, this.duration, this.delay);
+      this.init();
+      this.updatePath = this.updatePath.bind(this);
+      this.tick = this.tick.bind(this);
+      this.updatePath();
+      new ResizeObserver(this.updatePath).observe(this.containerEl);
+      requestAnimationFrame(this.tick);
+    }
+    init() {
+      const defs = ensureDefs(this.beamsSvg);
+      const makeGrad = (id) => {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+        g.setAttribute('id', id); g.setAttribute('gradientUnits', 'objectBoundingBox');
+        g.setAttribute('y1', '0'); g.setAttribute('y2', '0');
+        const mk = (o, c, op) => { const s = document.createElementNS(g.namespaceURI, 'stop'); s.setAttribute('offset', o); s.setAttribute('stop-color', c); s.setAttribute('stop-opacity', String(op)); return s; };
+        g.append(mk('0%', this.gradientStartColor, 0), mk('10%', this.gradientStartColor, 1), mk('50%', this.gradientStopColor, 1), mk('100%', this.gradientStopColor, 0));
+        defs.appendChild(g); return g;
+      };
+      this.gradient1 = makeGrad(this.gradId1);
+      this.gradient2 = makeGrad(this.gradId2);
+      const mkPath = (stroke) => { const p = document.createElementNS(this.beamsSvg.namespaceURI, 'path'); p.setAttribute('fill', 'none'); p.setAttribute('stroke', stroke); p.setAttribute('stroke-width', String(this.pathWidth)); p.setAttribute('stroke-linecap', 'round'); return p; };
+      this.pathBg = mkPath(this.pathColor); this.pathBg.setAttribute('stroke-opacity', String(this.pathOpacity));
+      this.pathFg1 = mkPath(`url(#${this.gradId1})`);
+      this.pathFg2 = mkPath(`url(#${this.gradId2})`);
+      this.beamsSvg.append(this.pathBg, this.pathFg1, this.pathFg2);
+    }
+    updatePath() {
+      const cont = this.containerEl.getBoundingClientRect();
+      const a = this.fromEl.getBoundingClientRect();
+      const b = this.toEl.getBoundingClientRect();
+      const w = cont.width, h = cont.height;
+      this.beamsSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      this.beamsSvg.setAttribute('width', w); this.beamsSvg.setAttribute('height', h);
+      // Dynamic edge-to-edge: start from right edge of origin, end at left edge of target
+      const sx = (a.left - cont.left) + a.width + this.startXOffset;
+      const sy = (a.top - cont.top) + a.height / 2 + this.startYOffset;
+      const ex = (b.left - cont.left) + this.endXOffset;
+      const ey = (b.top - cont.top) + b.height / 2 + this.endYOffset;
+      const d = `M ${sx},${sy} Q ${(sx+ex)/2},${sy - this.curvature} ${ex},${ey}`;
+      this.pathBg.setAttribute('d', d); this.pathFg1.setAttribute('d', d); this.pathFg2.setAttribute('d', d);
+    }
+    _posFromU(u) {
+      const s = this.reverse ? 0.9 : 0.1, e = this.reverse ? -0.1 : 1.1;
+      return { x1: s + (e - s) * u, x2: (this.reverse ? 1 : 0) + ((this.reverse ? 0 : 1) - (this.reverse ? 1 : 0)) * u };
+    }
+    tick(ts) {
+      if (this.clock) {
+        const { started, startTime, duration } = this.clock.ensureStart(ts);
+        if (!started) { requestAnimationFrame(this.tick); return; }
+        const u = ((ts - startTime) / (duration * 1000)) % 1, u2 = (u + 0.5) % 1;
+        const p1 = this._posFromU(u), p2 = this._posFromU(u2);
+        this.gradient1.setAttribute('x1', p1.x1.toFixed(3)); this.gradient1.setAttribute('x2', p1.x2.toFixed(3));
+        this.gradient2.setAttribute('x1', p2.x1.toFixed(3)); this.gradient2.setAttribute('x2', p2.x2.toFixed(3));
+        requestAnimationFrame(this.tick); return;
+      }
+      if (!this.started) { if (!this.t0) this.t0 = ts; if (ts - this.t0 < this.delay * 1000) { requestAnimationFrame(this.tick); return; } this.started = true; this.t0 = ts; }
+      const u = ((ts - this.t0) / (this.duration * 1000)) % 1, u2 = (u + 0.5) % 1;
+      const p1 = this._posFromU(u), p2 = this._posFromU(u2);
+      this.gradient1.setAttribute('x1', p1.x1.toFixed(3)); this.gradient1.setAttribute('x2', p1.x2.toFixed(3));
+      this.gradient2.setAttribute('x1', p2.x1.toFixed(3)); this.gradient2.setAttribute('x2', p2.x2.toFixed(3));
+      requestAnimationFrame(this.tick);
+    }
+  }
+
+  window.initFanoutBeams = function() {
+    const container = document.getElementById('fanout-container');
+    if (!container) return;
+
+    const beamsLayer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    beamsLayer.setAttribute('class', 'fanout-beams');
+    container.prepend(beamsLayer);
+
+    const fit = () => {
+      const r = container.getBoundingClientRect();
+      beamsLayer.setAttribute('width', r.width); beamsLayer.setAttribute('height', r.height);
+      beamsLayer.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+    };
+    fit();
+    new ResizeObserver(fit).observe(container);
+
+    const origin = container.querySelector('[data-fanout="origin"]');
+    const targets = ['q1','q2','q3','q4'].map(id => container.querySelector(`[data-fanout="${id}"]`));
+    if (!origin) return;
+
+    const DUR = 2.6 * 1.35;
+    const BEAM_COLOR = "rgba(255,255,255,0.25)";
+
+    targets.forEach(t => {
+      if (!t) return;
+      new AnimatedBeamJS({
+        beamsSvg: beamsLayer, containerEl: container,
+        fromEl: origin, toEl: t,
+        curvature: 0, reverse: false,
+        gradientStartColor: BEAM_COLOR, gradientStopColor: BEAM_COLOR,
+        pathColor: "rgba(255,255,255,0.08)", pathWidth: 1.5,
+        duration: DUR, delay: 0, clockId: "fanout-all",
+      });
+    });
+  };
+})();
+</script>
+
+</body>
+</html>
