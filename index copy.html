@@ -4,6 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>서치폴라리스 - GEO 최적화 에이전시</title>
+<meta name="description" content="AI가 추천하는 브랜드가 되세요. GEO, SEO, 네이버 최적화 전문 에이전시 서치폴라리스.">
+<link rel="canonical" href="https://searchpolaris.com/">
+<meta property="og:title" content="서치폴라리스 - GEO 최적화 에이전시">
+<meta property="og:description" content="AI가 추천하는 브랜드가 되세요. GEO, SEO, 네이버 최적화.">
+<meta property="og:image" content="https://searchpolaris.com/image/og-image.png">
+<meta property="og:url" content="https://searchpolaris.com/">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "서치폴라리스",
+  "url": "https://searchpolaris.com",
+  "description": "GEO, SEO, 네이버 최적화 전문 에이전시"
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -2299,7 +2315,15 @@ td.prov-desc {
 
 /* ===== FOOTER ===== */
 .footer {
-  padding: 80px 48px 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 0;
+}
+
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 48px 0;
 }
 
 .footer-upper {
@@ -2340,10 +2364,12 @@ td.prov-desc {
 .footer-divider {
   height: 1px;
   background: var(--border);
-  margin-top: 48px;
+  margin-top: 32px;
 }
 
 .footer-lower {
+  max-width: 1280px;
+  margin: 0 auto;
   padding: 24px 48px;
   display: flex;
   align-items: center;
@@ -2444,7 +2470,7 @@ td.prov-desc {
   .why-cards { gap: 20px; }
   .container-narrow { padding: 0 48px; }
   .prompt-marquee-header h2 { font-size: 36px; }
-  .footer { padding: 64px 32px 0; }
+  .footer-inner { padding: 40px 32px 0; }
   .footer-lower { padding: 24px 32px; }
 }
 
@@ -2525,7 +2551,7 @@ td.prov-desc {
   .prompt-marquee-header p { font-size: 17px; }
   .marquee-card { padding: 10px 16px; }
   .marquee-card-text { font-size: 13px; }
-  .footer { padding: 48px 24px 0; }
+  .footer-inner { padding: 32px 24px 0; }
   .footer-upper { flex-direction: column; gap: 40px; }
   .footer-lower { padding: 20px 24px; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
   .footer-powered { justify-content: center; }
@@ -2541,13 +2567,13 @@ td.prov-desc {
 <!-- HEADER -->
 <header class="header">
   <div class="header-inner">
-    <a href="./searchpolaris.html" class="header-logo">
+    <a href="https://searchpolaris.com/" class="header-logo">
       <span style="font-weight:100">Search</span>Polaris
       <span class="logo-cursor"></span>
     </a>
     <nav class="header-nav">
       <a href="#services">서비스</a>
-      <a href="./searchpolaris.html#case-study">성과</a>
+      <a href="#case-study">성과</a>
       <a href="#faq">FAQ</a>
     </nav>
     <a href="#contact" class="btn-header">상담 신청</a>
@@ -3017,7 +3043,7 @@ td.prov-desc {
      SECTION 05: PROCESS
      ============================================================ -->
 
-<div class="section-border-process">
+<div class="section-border-process" id="services">
   <div class="container">
 
     <!-- SECTION HEADER -->
@@ -3132,7 +3158,7 @@ td.prov-desc {
      ============================================================ -->
 
 <div class="section-border">
-  <section class="casestudy-section">
+  <section class="casestudy-section" id="case-study">
     <div class="container">
 
       <!-- Header -->
@@ -3444,8 +3470,8 @@ td.prov-desc {
      FOOTER
      ============================================================ -->
 
-<div class="section-border">
-  <footer class="footer" id="contact">
+<footer class="footer" id="contact">
+  <div class="footer-inner">
     <div class="footer-upper">
       <div class="footer-left">
         <h3 class="footer-contact-title">Contact</h3>
@@ -3471,8 +3497,8 @@ td.prov-desc {
         </div>
       </div>
     </div>
-  </footer>
-</div>
+  </div>
+</footer>
 
 <!-- ============================================================
      JAVASCRIPT

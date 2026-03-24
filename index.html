@@ -4,6 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>서치폴라리스 - GEO 최적화 에이전시</title>
+<meta name="description" content="AI가 추천하는 브랜드가 되세요. GEO, SEO, 네이버 최적화 전문 에이전시 서치폴라리스.">
+<link rel="canonical" href="https://searchpolaris.com/">
+<meta property="og:title" content="서치폴라리스 - GEO 최적화 에이전시">
+<meta property="og:description" content="AI가 추천하는 브랜드가 되세요. GEO, SEO, 네이버 최적화.">
+<meta property="og:image" content="https://searchpolaris.com/image/og-image.png">
+<meta property="og:url" content="https://searchpolaris.com/">
+<meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "서치폴라리스",
+  "url": "https://searchpolaris.com",
+  "description": "GEO, SEO, 네이버 최적화 전문 에이전시"
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -88,8 +104,6 @@ h1, h2, h3, h4 {
   padding: 10px 20px;
   margin-bottom: 32px;
 }
-.paradigm-section .sp-badge { margin-bottom: 80px; }
-.casestudy-section .sp-badge { margin-bottom: 40px; }
 
 /* ===== SHARED: BTN CTA (section-01 base) ===== */
 .btn-cta {
@@ -127,7 +141,7 @@ h1, h2, h3, h4 {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
-  height: 64px;
+  height: 80px;
   background: rgba(8,9,10,0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -135,6 +149,7 @@ h1, h2, h3, h4 {
 }
 
 .header-inner {
+  position: relative;
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 48px;
@@ -145,19 +160,29 @@ h1, h2, h3, h4 {
 }
 
 .header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0;
   font-family: var(--font-sans);
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 600;
   color: var(--text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
-.header-logo span {
-  color: var(--text-tertiary);
-  font-weight: 400;
+.logo-cursor {
+  width: 3px;
+  height: 22px;
+  background: #FF4500;
+  border-radius: 1px;
+  flex-shrink: 0;
+  margin-left: 6px;
 }
 
 .header-nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 32px;
@@ -165,7 +190,7 @@ h1, h2, h3, h4 {
 
 .header-nav > a,
 .nav-dropdown > .nav-dropdown-trigger {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-tertiary);
   transition: color 0.2s;
@@ -234,12 +259,12 @@ h1, h2, h3, h4 {
 
 .btn-header {
   font-family: var(--font-mono);
-  font-size: 11px; font-weight: 400;
+  font-size: 13px; font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--bg);
   background: var(--white);
-  padding: 8px 20px;
+  padding: 10px 24px;
   border-radius: var(--radius);
   transition: opacity 0.2s;
 }
@@ -249,7 +274,7 @@ h1, h2, h3, h4 {
 /* ===== SECTION 01: HERO ===== */
 .hero {
   position: relative;
-  padding-top: 144px;
+  padding-top: 160px;
   padding-bottom: 80px;
   text-align: center;
   overflow: hidden;
@@ -427,7 +452,7 @@ h1, h2, h3, h4 {
 }
 
 .demo-progress-bar.active .demo-progress-fill {
-  animation: progress-fill 5s linear forwards;
+  animation: progress-fill var(--progress-duration, 10s) linear forwards;
 }
 
 .demo-caption {
@@ -482,7 +507,6 @@ h1, h2, h3, h4 {
   position: relative;
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
 }
 
 .portfolio-marquee-label {
@@ -565,12 +589,34 @@ h1, h2, h3, h4 {
 .paradigm-section {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 80px 0 0;
+  padding: 120px 0 0;
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
 }
 
-.geo-inner { padding: 0 120px; }
+.geo-inner { padding: 0 120px; text-align: center; }
+
+.paradigm-title {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  line-height: 1.25;
+  margin-bottom: 20px;
+}
+
+.paradigm-desc {
+  font-size: 18px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto 72px;
+}
+
+.paradigm-desc strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
 
 /* 3x3 GRID */
 .era-grid {
@@ -578,6 +624,7 @@ h1, h2, h3, h4 {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto auto auto;
   gap: 0;
+  text-align: left;
 }
 
 /* CONTENT CARDS */
@@ -690,8 +737,7 @@ h1, h2, h3, h4 {
 
 /* CONCLUSION */
 .conclusion-wrap {
-  padding: 96px 120px 140px;
-  border-top: 1px solid var(--border);
+  padding: 120px 120px 120px;
 }
 
 .paradigm-conclusion {
@@ -711,23 +757,29 @@ h1, h2, h3, h4 {
 }
 
 .paradigm-conclusion h2 {
-  font-size: 52px;
+  font-size: 48px;
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--white);
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .paradigm-conclusion p {
-  font-size: 20px;
+  font-size: 26px;
+  font-weight: 700;
   color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 560px;
+  line-height: 1.3;
+  max-width: 680px;
+}
+
+.paradigm-conclusion p strong {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 /* ===== SECTION 03: PROBLEMS ===== */
 .problem-section {
-  padding: 140px 0;
+  padding: 120px 0;
 }
 
 .problem-header {
@@ -735,9 +787,9 @@ h1, h2, h3, h4 {
 }
 
 .problem-header h2 {
-  font-size: 52px;
+  font-size: 48px;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.03em;
   margin-bottom: 28px;
   max-width: 800px;
@@ -753,7 +805,7 @@ h1, h2, h3, h4 {
 }
 
 .problem-header p {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--text-secondary);
   line-height: 1.7;
   max-width: 600px;
@@ -887,7 +939,6 @@ h1, h2, h3, h4 {
 
 /* ===== SECTION 04: HOW TO AI ===== */
 .section-border-howtoai {
-  border-top: 1px dashed rgba(255,255,255,0.12);
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -895,19 +946,18 @@ h1, h2, h3, h4 {
 .container-howtoai {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 80px;
-  border-left: 1px dashed rgba(255,255,255,0.12);
-  border-right: 1px dashed rgba(255,255,255,0.12);
+  padding: 0 120px;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
 }
 
 .process-section {
-  padding: 96px 0;
+  padding: 120px 0;
 }
 
 .process-header {
-  border-top: 1px dashed rgba(255,255,255,0.15);
-  padding-top: 72px;
   margin-bottom: 56px;
+  text-align: center;
 }
 
 .process-header h2 {
@@ -916,7 +966,6 @@ h1, h2, h3, h4 {
   line-height: 1.25;
   letter-spacing: -0.03em;
   margin-bottom: 28px;
-  max-width: 550px;
   color: var(--white);
 }
 
@@ -925,6 +974,7 @@ h1, h2, h3, h4 {
   color: var(--text-secondary);
   line-height: 1.7;
   max-width: 600px;
+  margin: 0 auto;
 }
 
 .process-header p strong {
@@ -1028,7 +1078,7 @@ h1, h2, h3, h4 {
   border-radius: 12px;
   padding: 3px;
   width: fit-content;
-  margin: 28px auto 0;
+  margin: 0 auto 28px;
 }
 
 .tab-link {
@@ -1061,12 +1111,12 @@ h1, h2, h3, h4 {
   transform: translateY(24px);
 }
 
-.tabs-card.visible,
-.tabs-menu.visible {
+.tabs-menu.visible,
+.tabs-card.visible {
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
-.tabs-menu.visible { animation-delay: 0.15s; }
+.tabs-card.visible { animation-delay: 0.15s; }
 
 /* JSON Code Block */
 .json-card {
@@ -1431,28 +1481,18 @@ td.prov-desc {
   position: absolute;
   top: 0; bottom: 0;
   width: 1px;
-  background: repeating-linear-gradient(180deg, var(--border) 0px, var(--border) 4px, transparent 4px, transparent 8px);
+  background: var(--border);
 }
 .section-border-process::before { left: 0; }
 .section-border-process::after  { right: 0; }
 
 .geo-section {
-  padding: 96px 0 0;
+  padding: 120px 0 0;
 }
 
 .geo-header {
   text-align: center;
   margin-bottom: 72px;
-}
-
-.geo-header-label {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 18px;
 }
 
 .geo-header h2 {
@@ -1468,7 +1508,7 @@ td.prov-desc {
   font-size: 18px;
   color: var(--text-secondary);
   line-height: 1.7;
-  max-width: 640px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -1487,13 +1527,8 @@ td.prov-desc {
   left: 0;
   right: 0;
   height: 1px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--border) 0px,
-    var(--border) 4px,
-    transparent 4px,
-    transparent 8px
-  );
+  border-top: 1px dashed var(--border);
+  background: none;
 }
 .step-block::before { top: 0; }
 .step-block::after  { bottom: 0; }
@@ -1513,14 +1548,8 @@ td.prov-desc {
   top: 0;
   right: 0;
   bottom: -64px;
-  width: 1px;
-  background: repeating-linear-gradient(
-    180deg,
-    var(--border) 0px,
-    var(--border) 4px,
-    transparent 4px,
-    transparent 8px
-  );
+  width: 0;
+  border-left: 1px dashed var(--border);
 }
 .step-block:last-child .step-left::after {
   bottom: 0;
@@ -1682,7 +1711,7 @@ td.prov-desc {
 
 /* ===== SECTION 06: CASE STUDY ===== */
 .casestudy-section {
-  padding: 140px 0;
+  padding: 120px 0;
 }
 
 .casestudy-header {
@@ -1691,9 +1720,9 @@ td.prov-desc {
 }
 
 .casestudy-header h2 {
-  font-size: 52px;
+  font-size: 48px;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.03em;
   margin-bottom: 20px;
   color: var(--white);
@@ -1703,7 +1732,7 @@ td.prov-desc {
   font-size: 18px;
   color: var(--text-secondary);
   line-height: 1.7;
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -1952,7 +1981,7 @@ td.prov-desc {
 
 /* ===== SECTION 07: COMPARISON (WHY SP) ===== */
 .why-section {
-  padding: 120px 0 96px;
+  padding: 120px 0;
 }
 
 .why-header {
@@ -1960,18 +1989,8 @@ td.prov-desc {
   margin-bottom: 72px;
 }
 
-.why-label {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--white);
-  margin-bottom: 18px;
-}
-
 .why-header h2 {
-  font-size: 44px;
+  font-size: 48px;
   font-weight: 800;
   line-height: 1.25;
   letter-spacing: -0.03em;
@@ -1980,10 +1999,10 @@ td.prov-desc {
 }
 
 .why-header p {
-  font-size: 17px;
+  font-size: 18px;
   color: var(--text-secondary);
   line-height: 1.7;
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto;
   word-break: keep-all;
   overflow-wrap: break-word;
@@ -2168,17 +2187,20 @@ td.prov-desc {
 }
 
 .faq {
-  padding: 96px 0;
+  padding: 120px 0;
 }
 
-.faq .container-narrow { max-width: 720px; padding: 0 24px; }
+.faq .container-narrow { max-width: 720px; padding: 0 24px; text-align: center; }
+.faq .faq-list { text-align: left; }
 
 .faq h2 {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 48px;
+  font-weight: 800;
   text-align: center;
   margin-bottom: 48px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  line-height: 1.25;
 }
 
 .faq-item { border-bottom: 1px solid var(--border); padding: 28px 0; }
@@ -2199,7 +2221,7 @@ td.prov-desc {
 
 /* ===== SECTION 09: CTA MARQUEE ===== */
 .prompt-marquee {
-  padding: 140px 0;
+  padding: 120px 0;
   text-align: center;
   overflow: hidden;
 }
@@ -2210,9 +2232,9 @@ td.prov-desc {
 }
 
 .prompt-marquee-header h2 {
-  font-size: 52px;
+  font-size: 48px;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.03em;
   margin-bottom: 28px;
   max-width: 800px;
@@ -2222,7 +2244,7 @@ td.prov-desc {
 }
 
 .prompt-marquee-header p {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--text-secondary);
   line-height: 1.7;
   max-width: 600px;
@@ -2291,6 +2313,112 @@ td.prov-desc {
   font-weight: 500;
 }
 
+/* ===== FOOTER ===== */
+.footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 0;
+}
+
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 48px 0;
+}
+
+.footer-upper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.footer-contact-title {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 32px;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.footer-info-row {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.footer-info-row strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.footer-divider {
+  height: 1px;
+  background: var(--border);
+  margin-top: 32px;
+}
+
+.footer-lower {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-copyright {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.footer-powered {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-powered-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.footer-powered-logos {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-powered-logo {
+  height: 16px;
+  width: auto;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.footer-powered-logo[alt="Peec.ai"] {
+  height: 13px;
+}
+
+.footer-powered-logo:hover {
+  opacity: 1;
+}
+
 /* ===== KEYFRAMES ===== */
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes progress-fill { from { width: 0%; } to { width: 100%; } }
@@ -2315,14 +2443,15 @@ td.prov-desc {
   .hero { border-left: none; border-right: none; max-width: 100%; }
   .paradigm-section { border: none; max-width: 100%; }
   .geo-inner { padding: 0 48px; }
-  .conclusion-wrap { padding: 72px 48px 96px; }
-  .paradigm-conclusion h2 { font-size: 40px; }
+  .conclusion-wrap { padding: 96px 48px 96px; }
+  .paradigm-title { font-size: 36px; }
+  .paradigm-conclusion h2 { font-size: 36px; }
   .section-border { border-left: none; border-right: none; max-width: 100%; }
   .container { padding: 0 48px; }
-  .problem-header h2 { font-size: 42px; }
+  .problem-header h2 { font-size: 36px; }
   .section-border-howtoai { max-width: 100%; }
   .container-howtoai { padding: 0 48px; }
-  .process-header h2 { font-size: 40px; }
+  .process-header h2 { font-size: 36px; }
   .section-border-process { max-width: 100%; }
   .section-border-process::before, .section-border-process::after { display: none; }
   .geo-header h2 { font-size: 36px; }
@@ -2334,13 +2463,15 @@ td.prov-desc {
   .step-block.reversed .step-left { padding: 40px 0 40px 36px; }
   .step-block.reversed .step-right { padding: 40px 36px 40px 0; }
   .step-image-frame { padding: 20px; }
-  .casestudy-header h2 { font-size: 40px; }
+  .casestudy-header h2 { font-size: 36px; }
   .cs-left, .cs-right { padding: 40px 32px; }
   .why-header h2 { font-size: 36px; }
   .why-card { padding: 36px 24px; }
   .why-cards { gap: 20px; }
   .container-narrow { padding: 0 48px; }
-  .prompt-marquee-header h2 { font-size: 42px; }
+  .prompt-marquee-header h2 { font-size: 36px; }
+  .footer-inner { padding: 40px 32px 0; }
+  .footer-lower { padding: 24px 32px; }
 }
 
 /* ===== RESPONSIVE: 768px ===== */
@@ -2352,7 +2483,7 @@ td.prov-desc {
   .hero-subtitle { font-size: 16px; }
   .demo-showcase { max-width: 100%; }
   .demo-tab { font-size: 12px; padding: 7px 14px; }
-  .paradigm-section { padding: 48px 0 0; }
+  .paradigm-section { padding: 80px 0 0; }
   .geo-inner { padding: 0 20px; }
   .era-grid { display: flex; flex-direction: column; }
   .era-empty { display: none; }
@@ -2360,24 +2491,26 @@ td.prov-desc {
   .era-card--1 h3, .era-card--2 h3 { color: var(--text-tertiary); }
   .line-vertical, .line-horizontal, .square-dot { display: none; }
   .era-card h3 { font-size: 22px; }
-  .conclusion-wrap { padding: 64px 20px 80px; }
-  .paradigm-conclusion h2 { font-size: 32px; }
-  .paradigm-conclusion p { font-size: 17px; }
+  .conclusion-wrap { padding: 80px 20px 80px; }
+  .paradigm-title { font-size: 28px; }
+  .paradigm-desc { margin-bottom: 48px; }
+  .paradigm-conclusion h2 { font-size: 28px; }
+  .paradigm-conclusion p { font-size: 16px; }
   .stat-grid { grid-template-columns: 1fr; max-width: 100%; }
   .stat-number { font-size: 52px; }
   .container { padding: 0 24px; }
-  .problem-section { padding: 96px 0; }
-  .problem-header h2 { font-size: 32px; }
-  .problem-header p { font-size: 17px; }
+  .problem-section { padding: 80px 0; }
+  .problem-header h2 { font-size: 28px; }
+  .problem-header p { font-size: 16px; }
   .chart-wrap { padding: 20px 16px 16px; }
   .chart-legend { flex-wrap: wrap; }
   .legend-item { flex: 0 0 calc(50% - 8px); }
   .legend-num { font-size: 22px; }
   .chart-title { font-size: 14px; }
   .container-howtoai { padding: 0 20px; }
-  .process-section { padding: 64px 0; }
+  .process-section { padding: 80px 0; }
   .process-header { padding-top: 48px; }
-  .process-header h2 { font-size: 30px; }
+  .process-header h2 { font-size: 28px; }
   .process-header p { font-size: 16px; }
   .slide-panel.active { grid-template-columns: 1fr; }
   .slide-text { padding: 32px 24px; }
@@ -2398,8 +2531,8 @@ td.prov-desc {
   .step-block.reversed .step-right { padding: 0 0 36px; }
   .step-title { font-size: 22px; }
   .step-image-frame { padding: 16px; }
-  .casestudy-section { padding: 96px 0; }
-  .casestudy-header h2 { font-size: 32px; }
+  .casestudy-section { padding: 80px 0; }
+  .casestudy-header h2 { font-size: 28px; }
   .casestudy-header p { font-size: 16px; }
   .casestudy-header { margin-bottom: 48px; }
   .cs-card-inner { grid-template-columns: 1fr; }
@@ -2411,13 +2544,17 @@ td.prov-desc {
   .why-card { padding: 32px 24px; }
   .why-card:hover { transform: translateY(-4px); }
   .container-narrow { padding: 0 20px; }
-  .faq { padding: 64px 0; }
-  .faq h2 { font-size: 26px; margin-bottom: 36px; }
-  .prompt-marquee { padding: 96px 0; }
-  .prompt-marquee-header h2 { font-size: 32px; }
+  .faq { padding: 80px 0; }
+  .faq h2 { font-size: 28px; margin-bottom: 36px; }
+  .prompt-marquee { padding: 80px 0; }
+  .prompt-marquee-header h2 { font-size: 28px; }
   .prompt-marquee-header p { font-size: 17px; }
   .marquee-card { padding: 10px 16px; }
   .marquee-card-text { font-size: 13px; }
+  .footer-inner { padding: 32px 24px 0; }
+  .footer-upper { flex-direction: column; gap: 40px; }
+  .footer-lower { padding: 20px 24px; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+  .footer-powered { justify-content: center; }
 }
 </style>
 </head>
@@ -2430,17 +2567,13 @@ td.prov-desc {
 <!-- HEADER -->
 <header class="header">
   <div class="header-inner">
-    <a href="./searchpolaris.html" class="header-logo">서치폴라리스 <span>/ SearchPolaris</span></a>
+    <a href="https://searchpolaris.com/" class="header-logo">
+      <span style="font-weight:100">Search</span>Polaris
+      <span class="logo-cursor"></span>
+    </a>
     <nav class="header-nav">
-      <div class="nav-dropdown">
-        <button class="nav-dropdown-trigger">서비스 <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-        <div class="nav-dropdown-menu">
-          <a href="./searchpolaris-methodology.html">GEO 최적화</a>
-          <a href="./searchpolaris-seo-methodology.html">SEO 최적화</a>
-          <a href="./searchpolaris-naver-seo-methodology.html">네이버</a>
-        </div>
-      </div>
-      <a href="./searchpolaris.html#case-study">성과</a>
+      <a href="#services">서비스</a>
+      <a href="#case-study">성과</a>
       <a href="#faq">FAQ</a>
     </nav>
     <a href="#contact" class="btn-header">상담 신청</a>
@@ -2475,13 +2608,13 @@ td.prov-desc {
       </div>
       <div class="demo-video-wrap">
         <video class="active" data-index="0" autoplay muted loop playsinline>
-          <source src="./video/hero-demo-cropped.mp4" type="video/mp4">
+          <source src="./video/hero-service.mp4" type="video/mp4">
         </video>
         <video data-index="1" muted loop playsinline>
-          <source src="./video/hero-demo-cropped.mp4" type="video/mp4">
+          <source src="./video/hero-commerce.mp4" type="video/mp4">
         </video>
         <video data-index="2" muted loop playsinline>
-          <source src="./video/hero-demo-cropped.mp4" type="video/mp4">
+          <source src="./video/hero-hospital.mp4" type="video/mp4">
         </video>
       </div>
       <div class="demo-progress">
@@ -2567,11 +2700,11 @@ td.prov-desc {
      SECTION 02: PARADIGM (WHY GEO)
      ============================================================ -->
 
-<div class="section-divider"></div>
-
 <section class="paradigm-section" id="paradigmSection">
   <div class="geo-inner">
     <span class="sp-badge">How Consumers Decide</span>
+    <h2 class="paradigm-title">매체가 변할 때마다<br>방법도 변했습니다</h2>
+    <p class="paradigm-desc"></p>
 
     <div class="era-grid">
 
@@ -2632,8 +2765,7 @@ td.prov-desc {
   <!-- 결론 브릿지 -->
   <div class="conclusion-wrap">
     <div class="paradigm-conclusion" id="conclusion">
-      <h2>매체가 변할 때마다<br>방법도 변했습니다</h2>
-      <p>새로운 매체에 먼저 자리 잡은 브랜드가 시장을 장악했습니다.<br>AI 검색 시대, GEO가 그 자리를 결정합니다.</p>
+      <p><strong>새로운 매체에 먼저 자리 잡은 브랜드가 시장을 장악했습니다.<br>AI 검색 시대, GEO가 그 자리를 결정합니다.</strong></p>
     </div>
   </div>
 </section>
@@ -2641,8 +2773,6 @@ td.prov-desc {
 <!-- ============================================================
      SECTION 03: PROBLEMS
      ============================================================ -->
-
-<div class="section-divider"></div>
 
 <div class="section-border">
   <section class="problem-section">
@@ -2763,8 +2893,17 @@ td.prov-desc {
 
       <!-- Header -->
       <div class="process-header">
+        <span class="sp-badge">How AI Search Works</span>
         <h2>ChatGPT Search는<br>어떻게 작동할까?</h2>
-        <p>ChatGPT의 검색 시스템은 단순한 RAG가 아닙니다. <strong>확률 분류기, 쿼리 팬아웃, 제3자 데이터 파이프라인, 엔티티 연결</strong>이 결합된 복합 시스템입니다.</p>
+        <p>ChatGPT의 검색 시스템은 단순한 RAG가 아닙니다.<br><strong>확률 분류기, 쿼리 팬아웃, 제3자 데이터 파이프라인, 엔티티 연결</strong>이 결합된 복합 시스템입니다.</p>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tabs-menu">
+        <button class="tab-link active" data-phase="0">Layer 1: Sonic 분류기</button>
+        <button class="tab-link" data-phase="1">Layer 2: 팬아웃 엔진</button>
+        <button class="tab-link" data-phase="2">Layer 3: 데이터 생태계</button>
+        <button class="tab-link" data-phase="3">Layer 4: 엔티티 연결</button>
       </div>
 
       <!-- Tabs Card -->
@@ -2896,14 +3035,6 @@ td.prov-desc {
 
       </div>
 
-      <!-- Tab Navigation -->
-      <div class="tabs-menu">
-        <button class="tab-link active" data-phase="0">Layer 1: Sonic 분류기</button>
-        <button class="tab-link" data-phase="1">Layer 2: 팬아웃 엔진</button>
-        <button class="tab-link" data-phase="2">Layer 3: 데이터 생태계</button>
-        <button class="tab-link" data-phase="3">Layer 4: 엔티티 연결</button>
-      </div>
-
     </div>
   </section>
 </div>
@@ -2912,13 +3043,13 @@ td.prov-desc {
      SECTION 05: PROCESS
      ============================================================ -->
 
-<div class="section-border-process">
+<div class="section-border-process" id="services">
   <div class="container">
 
     <!-- SECTION HEADER -->
     <div class="geo-section">
       <div class="geo-header">
-        <div class="geo-header-label">HOW TO GEO?</div>
+        <span class="sp-badge">Our Process</span>
         <h2>GEO 프로세스</h2>
         <p>AI와 검색엔진 모두에서 브랜드가 발견되고 인용되도록,<br>체계적인 4단계 프로세스를 통해 최적화합니다.</p>
       </div>
@@ -3026,10 +3157,8 @@ td.prov-desc {
      SECTION 06: CASE STUDY
      ============================================================ -->
 
-<div class="section-divider"></div>
-
 <div class="section-border">
-  <section class="casestudy-section">
+  <section class="casestudy-section" id="case-study">
     <div class="container">
 
       <!-- Header -->
@@ -3131,7 +3260,7 @@ td.prov-desc {
 
       <!-- HEADER -->
       <div class="why-header">
-        <div class="why-label">Why SearchPolaris</div>
+        <span class="sp-badge">Why SearchPolaris</span>
         <h2>마케팅 대행사가 아닙니다.<br>GEO 전문 엔진입니다.</h2>
         <p>일반 대행사는 광고를 돌리고, SEO 대행사는 키워드를 잡습니다.<br>서치폴라리스는 AI가 귀사를 인용하도록 설계합니다.</p>
         <div class="team-avatars">
@@ -3231,6 +3360,7 @@ td.prov-desc {
 <div class="section-border" id="faq">
   <section class="faq">
     <div class="container-narrow">
+      <span class="sp-badge">FAQ</span>
       <h2>자주 묻는 질문</h2>
       <div class="faq-list">
         <div class="faq-item">
@@ -3249,24 +3379,6 @@ td.prov-desc {
           <p class="faq-question">어떤 AI 플랫폼에 최적화하나요?</p>
           <div class="faq-answer">
             <p>ChatGPT, Claude, Perplexity, Google AI Overviews, Naver AI 등 모든 주요 AI 검색 플랫폼에 최적화합니다. 새로운 플랫폼을 지속적으로 모니터링하고, AI 검색 환경이 변화함에 따라 전략을 적응시킵니다.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <p class="faq-question">성과를 어떻게 측정하나요?</p>
-          <div class="faq-answer">
-            <p>주요 초점은 비즈니스 성과 - 파이프라인 생성과 매출 성장입니다. AI 플랫폼별 인용 빈도, 브랜드 멘션 추적, 경쟁사 대비 포지셔닝을 포괄적으로 관리합니다.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <p class="faq-question">결과를 얼마나 빨리 볼 수 있나요?</p>
-          <div class="faq-answer">
-            <p>초기 결과는 AI 모델이 새 콘텐츠를 반영하면서 보통 1-2주 이내에 나타납니다. 전체 최적화 효과는 3-4개월 내에 확인됩니다. 주간 진행 보고서를 제공하여 가시성 개선 상황을 실시간으로 추적할 수 있습니다.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <p class="faq-question">어떤 산업에 특화되어 있나요?</p>
-          <div class="faq-answer">
-            <p>SaaS, 핀테크, 헬스케어, 전문 서비스 분야의 기업을 전문으로 합니다. 복잡한 제품이나 서비스를 제공하여 AI 검색 사용자가 전문 가이드와 추천을 필요로 하는 기업에 가장 효과적입니다.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -3301,7 +3413,7 @@ td.prov-desc {
     <div class="prompt-marquee-header">
       <span class="sp-badge">AI Prompts</span>
       <h2>수천개의 프롬프트에 노출되세요</h2>
-      <p>매일 수백만 건의 AI 검색이 일어납니다. 이 질문들에 브랜드가 등장하지 않으면, 기회를 놓치고 있는 것입니다.</p>
+      <p>매일 수백만 건의 AI 검색이 일어납니다.<br>이 질문들에 브랜드가 등장하지 않으면, 기회를 놓치고 있는 것입니다.</p>
       <a href="#" class="btn-cta"><img src="./image/team/googlemeetlogo.png" alt="Google Meet" style="width:20px; height:auto; flex-shrink:0;">무료 진단 신청하기</a>
     </div>
     <div class="marquee-rows">
@@ -3355,6 +3467,40 @@ td.prov-desc {
 </div>
 
 <!-- ============================================================
+     FOOTER
+     ============================================================ -->
+
+<footer class="footer" id="contact">
+  <div class="footer-inner">
+    <div class="footer-upper">
+      <div class="footer-left">
+        <h3 class="footer-contact-title">Contact</h3>
+        <div class="footer-info">
+          <p class="footer-info-row"><strong>Company</strong> : 스키마타랩스 &nbsp;&nbsp;<strong>대표자명</strong> : 강세연</p>
+          <p class="footer-info-row"><strong>사업자등록번호</strong> : 845-22-01670</p>
+          <p class="footer-info-row"><strong>E-mail</strong> : team@searchpolaris.com</p>
+          <p class="footer-info-row"><strong>Address</strong> : 서울특별시 강남구 영동대로 602 6층 z225</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-divider"></div>
+
+    <div class="footer-lower">
+      <p class="footer-copyright">&copy; 2026 SearchPolaris. All Rights Reserved</p>
+      <div class="footer-powered">
+        <span class="footer-powered-label">Powered by</span>
+        <div class="footer-powered-logos">
+          <img src="./image/logos/logo-ahrefs.png" alt="Ahrefs" class="footer-powered-logo">
+          <img src="./image/logos/logo-peec-ai.svg" alt="Peec.ai" class="footer-powered-logo">
+          <img src="./image/logos/logo-semrush.svg" alt="Semrush" class="footer-powered-logo">
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
      JAVASCRIPT
      ============================================================ -->
 <script>
@@ -3363,9 +3509,13 @@ td.prov-desc {
   var tabs = document.querySelectorAll('.demo-tab');
   var videos = document.querySelectorAll('.demo-video-wrap video:not(.demo-video-sizer)');
   var bars = document.querySelectorAll('.demo-progress-bar');
-  var INTERVAL = 5000;
   var current = 0;
   var timer = null;
+
+  function getDuration(index) {
+    var v = videos[index];
+    return (v && v.duration && isFinite(v.duration)) ? v.duration * 1000 : 10000;
+  }
 
   function switchTo(index) {
     tabs.forEach(function(t) { t.classList.remove('active'); });
@@ -3373,18 +3523,27 @@ td.prov-desc {
     videos.forEach(function(v) { v.classList.remove('active'); v.pause(); v.currentTime = 0; });
     videos[index].classList.add('active');
     videos[index].play();
-    bars.forEach(function(b) { b.classList.remove('active'); });
+    var dur = getDuration(index);
+    bars.forEach(function(b) { b.classList.remove('active'); b.style.removeProperty('--progress-duration'); });
+    bars[index].style.setProperty('--progress-duration', (dur / 1000) + 's');
     void bars[index].offsetWidth;
     bars[index].classList.add('active');
     current = index;
+    startTimer();
   }
 
   function next() { switchTo((current + 1) % 3); }
-  function startTimer() { clearInterval(timer); timer = setInterval(next, INTERVAL); }
+  function startTimer() { clearTimeout(timer); timer = setTimeout(next, getDuration(current)); }
 
-  tabs.forEach(function(tab) { tab.addEventListener('click', function() { switchTo(parseInt(tab.dataset.index)); startTimer(); }); });
-  bars.forEach(function(bar) { bar.addEventListener('click', function() { switchTo(parseInt(bar.dataset.index)); startTimer(); }); });
-  startTimer();
+  tabs.forEach(function(tab) { tab.addEventListener('click', function() { switchTo(parseInt(tab.dataset.index)); }); });
+  bars.forEach(function(bar) { bar.addEventListener('click', function() { switchTo(parseInt(bar.dataset.index)); }); });
+
+  // Wait for first video metadata before starting
+  if (videos[0]) {
+    var tryStart = function() { switchTo(0); };
+    if (videos[0].readyState >= 1) tryStart();
+    else videos[0].addEventListener('loadedmetadata', tryStart, { once: true });
+  }
 })();
 
 (function() {
