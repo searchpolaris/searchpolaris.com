@@ -18,7 +18,7 @@ _test/
 reference/
 
 # 개발용 소스
-section/src/
+section/
 
 # 백업 파일
 index copy.html
