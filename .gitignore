@@ -5,20 +5,8 @@
 .gsheet
 .gslides
 
-# 개발 도구
-.playwright-mcp/
-
-# 내부 문서 / 기획
-docs/
-디자인수정계획.md
-
-# 아카이브 / 테스트
-_archive/
-_test/
-reference/
-
-# 개발용 소스
+# 작업용
 section/
 
-# 백업 파일
-index copy.html
+# 백업 / 안 쓰는 파일
+_backup/
