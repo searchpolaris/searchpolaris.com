@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://searchpolaris.com/blog/sitemap-index.xml
